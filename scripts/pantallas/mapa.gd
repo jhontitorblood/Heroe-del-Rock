@@ -5,6 +5,7 @@ const BASE := Vector2(1280, 720)
 
 var zona: Dictionary
 var botones := {}
+var lienzo: Control  # nodos y caminos sobre el arte del mapa (coordenadas 1280×720)
 
 
 class Lineas extends Control:
@@ -12,7 +13,7 @@ class Lineas extends Control:
 
 	func _draw() -> void:
 		for s in segmentos:
-			draw_line(s[0] * size / Vector2(1280, 720), s[1] * size / Vector2(1280, 720), s[2], 5.0, true)
+			draw_line(s[0], s[1], s[2], 5.0, true)
 
 	func _notification(what: int) -> void:
 		if what == NOTIFICATION_RESIZED:
@@ -21,11 +22,11 @@ class Lineas extends Control:
 
 func _ready() -> void:
 	zona = Datos.zona(params.get("zona", "cotoca"))
-	UI.fondo(self, Datos.textura("mapas", zona.get("mapa", "")), 0.2)
+	lienzo = UI.lienzo(self, Datos.textura("mapas", zona.get("mapa", "")))
 	var lineas := Lineas.new()
-	lineas.set_anchors_preset(Control.PRESET_FULL_RECT)
+	lineas.size = BASE
 	lineas.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(lineas)
+	lienzo.add_child(lineas)
 	var pos := {}
 	for n in zona["nodos"]:
 		pos[n["id"]] = Vector2(n["pos"][0], n["pos"][1])
@@ -79,16 +80,10 @@ func _crear_boton(n: Dictionary) -> void:
 		b.text += "\nReaparece en " + Estado.formato_tiempo(Estado.segundos_reaparece(n["id"]))
 	var ancho := 210.0
 	var alto := 86.0
-	b.anchor_left = float(n["pos"][0]) / BASE.x
-	b.anchor_top = float(n["pos"][1]) / BASE.y
-	b.anchor_right = b.anchor_left
-	b.anchor_bottom = b.anchor_top
-	b.offset_left = -ancho / 2
-	b.offset_right = ancho / 2
-	b.offset_top = -alto / 2
-	b.offset_bottom = alto / 2
+	b.size = Vector2(ancho, alto)
+	b.position = Vector2(n["pos"][0], n["pos"][1]) - b.size / 2.0
 	b.pressed.connect(_abrir.bind(n))
-	add_child(b)
+	lienzo.add_child(b)
 	botones[n["id"]] = b
 
 

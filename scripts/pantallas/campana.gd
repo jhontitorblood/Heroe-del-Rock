@@ -6,24 +6,16 @@ const BASE := Vector2(1280, 720)
 
 func _ready() -> void:
 	var dep: Dictionary = Datos.territorios["santa_cruz"]
-	UI.fondo(self, Datos.textura("mapas", dep["mapa"]), 0.25)
-	var capa := Control.new()
-	capa.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(capa)
+	# Las zonas van sobre el arte del mapa (coordenadas 1280×720)
+	var capa := UI.lienzo(self, Datos.textura("mapas", dep["mapa"]))
 	for z in dep["zonas"]:
 		var b := Button.new()
 		var activo: bool = z["disponible"]
 		b.text = "%s\n%s" % [z["nombre"], z["banda"]]
 		b.custom_minimum_size = Vector2(230, 84)
 		b.disabled = not activo
-		b.anchor_left = float(z["pos"][0]) / BASE.x
-		b.anchor_top = float(z["pos"][1]) / BASE.y
-		b.anchor_right = b.anchor_left
-		b.anchor_bottom = b.anchor_top
-		b.offset_left = -115
-		b.offset_top = -42
-		b.offset_right = 115
-		b.offset_bottom = 42
+		b.size = Vector2(230, 84)
+		b.position = Vector2(z["pos"][0], z["pos"][1]) - b.size / 2.0
 		if activo:
 			b.pressed.connect(func(): Estado.ir("mapa", {"zona": z["id"]}))
 		else:

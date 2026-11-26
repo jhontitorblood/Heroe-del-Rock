@@ -121,6 +121,56 @@ static func fondo(padre: Control, tex: Texture2D, oscuro := 0.45) -> void:
 	padre.add_child(o)
 
 
+## Lienzo de 1280×720 que se escala y centra junto con la imagen de fondo, para que
+## lo que se pone encima (menús, nodos de mapa) quede siempre sobre la misma parte del arte,
+## en cualquier proporción de pantalla. Los bordes sobrantes se rellenan con el mismo
+## arte ampliado y oscurecido. Devuelve el lienzo: agrega encima con posiciones 1280×720.
+static func lienzo(padre: Control, tex: Texture2D) -> Control:
+	var negro := ColorRect.new()
+	negro.color = Color.BLACK
+	negro.set_anchors_preset(Control.PRESET_FULL_RECT)
+	negro.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	padre.add_child(negro)
+	if tex:
+		var relleno := TextureRect.new()
+		relleno.texture = tex
+		relleno.set_anchors_preset(Control.PRESET_FULL_RECT)
+		relleno.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		relleno.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		relleno.modulate = Color(0.14, 0.12, 0.12)
+		relleno.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		padre.add_child(relleno)
+	var l := Lienzo.new()
+	padre.add_child(l)
+	if tex:
+		var arte := TextureRect.new()
+		arte.texture = tex
+		arte.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		arte.stretch_mode = TextureRect.STRETCH_SCALE
+		arte.size = Lienzo.BASE
+		arte.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		l.add_child(arte)
+	return l
+
+
+class Lienzo extends Control:
+	const BASE := Vector2(1280, 720)
+
+	func _ready() -> void:
+		size = BASE
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		get_parent().resized.connect(_ajustar)
+		_ajustar.call_deferred()
+
+	func _ajustar() -> void:
+		var p: Vector2 = get_parent().size
+		if p.x <= 0 or p.y <= 0:
+			return
+		var k := minf(p.x / BASE.x, p.y / BASE.y)
+		scale = Vector2(k, k)
+		position = (p - BASE * k) / 2.0
+
+
 ## Contenedor con márgenes a pantalla completa.
 static func margen(padre: Control, m := 24) -> MarginContainer:
 	var mc := MarginContainer.new()

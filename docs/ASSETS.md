@@ -31,6 +31,8 @@ Las imágenes fijas de selección también se usan en el menú principal mientra
 
 El texto del menú usa la tipografía **Bangers** (`assets/fuentes/Bangers-Regular.ttf`, licencia libre SIL OFL, ver `OFL-Bangers.txt`). Si mueves el logo o la zona oscura en tu imagen, las posiciones se ajustan en `scripts/pantallas/centro.gd`.
 
+**Pantallas alargadas:** el menú y los mapas se dibujan sobre un lienzo de 1280 × 720 que se escala junto con la imagen, así que el texto queda siempre sobre la misma parte del arte en cualquier celular. En pantallas más alargadas que 16:9, los costados se rellenan con la misma imagen muy oscurecida. Las posiciones de los nodos en `data/territorios.json` están en coordenadas de 1280 × 720 sobre la imagen del mapa.
+
 ## Personajes en combate — `assets/personajes/` — 256 × 256 px, fondo transparente
 
 Cada personaje tiene dos versiones:

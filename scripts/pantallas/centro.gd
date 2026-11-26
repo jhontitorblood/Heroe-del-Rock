@@ -23,19 +23,20 @@ var lbl_desafinado: Label
 var lbl_stats: Label
 var foto: TextureRect
 var navegando := false
+var lienzo: Control  # todo lo que va sobre el arte se agrega aquí (coordenadas 1280×720)
 
 
 func _ready() -> void:
 	Estado.revisar_dia()
 	var fondo := Datos.textura("escenarios", "esc_menu_principal")
-	UI.fondo(self, fondo if fondo else Datos.textura("escenarios", "esc_centro_mando"), 0.0)
+	lienzo = UI.lienzo(self, fondo if fondo else Datos.textura("escenarios", "esc_centro_mando"))
 	_perfil()
 	for o in opciones:
 		_opcion(o[0], o[1], Vector2(o[2], o[3]), o[4])
 	_pista()
 	var ver := _texto("VERSIÓN 0.2 · BETA DE COTOCA", 18, ROJO, Color.BLACK, 5)
 	ver.position = Vector2(1000, 10)
-	add_child(ver)
+	lienzo.add_child(ver)
 	_actualizar_estado()
 
 
@@ -64,7 +65,7 @@ func _pista() -> void:
 	punto.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	h.add_child(punto)
 	h.add_child(_texto("TOCA UNA OPCIÓN", 26, HUESO, Color.BLACK, 6))
-	add_child(pild)
+	lienzo.add_child(pild)
 	pild.reset_size()
 	pild.position = Vector2(830 - pild.size.x / 2.0, 652)
 	var tw := punto.create_tween().set_loops()
@@ -99,7 +100,7 @@ func _perfil() -> void:
 	caja.add_theme_stylebox_override("panel", estilo)
 	caja.position = Vector2(36, 398)
 	caja.custom_minimum_size = Vector2(520, 0)
-	add_child(caja)
+	lienzo.add_child(caja)
 	var h := HBoxContainer.new()
 	h.add_theme_constant_override("separation", 16)
 	caja.add_child(h)
@@ -163,7 +164,7 @@ func _opcion(texto: String, tam: int, centro: Vector2, destino: String) -> void:
 	var b := Button.new()
 	b.text = texto
 	_estilo_boton(b, tam)
-	add_child(b)
+	lienzo.add_child(b)
 	b.reset_size()
 	b.position = centro - b.size / 2.0
 	b.pivot_offset = b.size / 2.0
