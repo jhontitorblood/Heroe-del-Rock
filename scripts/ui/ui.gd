@@ -121,17 +121,23 @@ static func fondo(padre: Control, tex: Texture2D, oscuro := 0.45) -> void:
 	padre.add_child(o)
 
 
-## Lienzo de 1280×720 que se escala y centra junto con la imagen de fondo, para que
-## lo que se pone encima (menús, nodos de mapa) quede siempre sobre la misma parte del arte,
-## en cualquier proporción de pantalla. Los bordes sobrantes se rellenan con el mismo
-## arte ampliado y oscurecido. Devuelve el lienzo: agrega encima con posiciones 1280×720.
+## Lienzo de 1280×720 que se mueve y escala junto con la imagen de fondo, para que lo que
+## se pone encima (menús, nodos de mapa) quede siempre sobre la misma parte del arte.
+## Agrega encima con posiciones de 1280×720.
+##
+## Dos modos, según la medida de la imagen:
+## - Con margen extra (2520×1440, proporción 7:4): la imagen llena toda la pantalla de
+##   cualquier aparato sin deformarse ni dejar bordes; solo se recorta parte del margen.
+##   El lienzo corresponde a la ZONA SEGURA central de 1920×1080.
+## - Imagen 16:9 normal: se ve completa y los costados sobrantes se rellenan oscurecidos.
 static func lienzo(padre: Control, tex: Texture2D) -> Control:
 	var negro := ColorRect.new()
 	negro.color = Color.BLACK
 	negro.set_anchors_preset(Control.PRESET_FULL_RECT)
 	negro.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	padre.add_child(negro)
-	if tex:
+	var con_margen := tex != null and absf(float(tex.get_width()) / tex.get_height() - Lienzo.PROPORCION_MARGEN) < 0.02
+	if tex and not con_margen:
 		var relleno := TextureRect.new()
 		relleno.texture = tex
 		relleno.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -141,20 +147,30 @@ static func lienzo(padre: Control, tex: Texture2D) -> Control:
 		relleno.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		padre.add_child(relleno)
 	var l := Lienzo.new()
+	l.con_margen = con_margen
 	padre.add_child(l)
 	if tex:
 		var arte := TextureRect.new()
 		arte.texture = tex
 		arte.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		arte.stretch_mode = TextureRect.STRETCH_SCALE
-		arte.size = Lienzo.BASE
 		arte.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		if con_margen:
+			# La imagen completa sobresale de la zona segura por todos lados
+			arte.size = Lienzo.ARTE_MARGEN
+			arte.position = -(Lienzo.ARTE_MARGEN - Lienzo.BASE) / 2.0
+		else:
+			arte.size = Lienzo.BASE
 		l.add_child(arte)
 	return l
 
 
 class Lienzo extends Control:
 	const BASE := Vector2(1280, 720)
+	# 2520×1440 con zona segura de 1920×1080 → en unidades del lienzo: 1680×960
+	const ARTE_MARGEN := Vector2(1680, 960)
+	const PROPORCION_MARGEN := 2520.0 / 1440.0
+	var con_margen := false
 
 	func _ready() -> void:
 		size = BASE
@@ -166,7 +182,13 @@ class Lienzo extends Control:
 		var p: Vector2 = get_parent().size
 		if p.x <= 0 or p.y <= 0:
 			return
-		var k := minf(p.x / BASE.x, p.y / BASE.y)
+		var k: float
+		if con_margen:
+			# La imagen completa cubre la pantalla (se recorta solo el margen)
+			k = maxf(p.x / ARTE_MARGEN.x, p.y / ARTE_MARGEN.y)
+		else:
+			# La imagen 16:9 entra completa
+			k = minf(p.x / BASE.x, p.y / BASE.y)
 		scale = Vector2(k, k)
 		position = (p - BASE * k) / 2.0
 

@@ -9,14 +9,14 @@ const ROJO_OSCURO := Color("#5c0a10")
 
 # [texto, tamaño, x del centro, y del centro, acción]
 var opciones := [
-	["CAMPAÑA", 66, 830, 78, "campana"],
-	["MAPA", 52, 870, 150, "mapa"],
-	["ESCUADRÓN", 58, 812, 218, "escuadron"],
-	["EQUIPO", 52, 858, 286, "equipo"],
-	["ARCHIVO", 56, 828, 352, "archivo"],
-	["TAREAS REALES", 50, 846, 418, "tareas"],
-	["SALA DE ENSAYO", 54, 822, 484, "ensayo"],
-	["SALIR", 48, 800, 586, "titulo"],
+	["CAMPAÑA", 64, 1040, 70, "campana"],
+	["MAPA", 50, 1080, 140, "mapa"],
+	["ESCUADRÓN", 56, 1025, 206, "escuadron"],
+	["EQUIPO", 50, 1070, 272, "equipo"],
+	["ARCHIVO", 54, 1040, 336, "archivo"],
+	["TAREAS REALES", 48, 1058, 400, "tareas"],
+	["SALA DE ENSAYO", 52, 1035, 464, "ensayo"],
+	["SALIR", 46, 1020, 560, "titulo"],
 ]
 
 var lbl_desafinado: Label
@@ -35,7 +35,7 @@ func _ready() -> void:
 		_opcion(o[0], o[1], Vector2(o[2], o[3]), o[4])
 	_pista()
 	var ver := _texto("VERSIÓN 0.2 · BETA DE COTOCA", 18, ROJO, Color.BLACK, 5)
-	ver.position = Vector2(1000, 10)
+	ver.position = Vector2(1060, 4)
 	lienzo.add_child(ver)
 	_actualizar_estado()
 
@@ -67,7 +67,7 @@ func _pista() -> void:
 	h.add_child(_texto("TOCA UNA OPCIÓN", 26, HUESO, Color.BLACK, 6))
 	lienzo.add_child(pild)
 	pild.reset_size()
-	pild.position = Vector2(830 - pild.size.x / 2.0, 652)
+	pild.position = Vector2(1045 - pild.size.x / 2.0, 640)
 	var tw := punto.create_tween().set_loops()
 	tw.tween_property(punto, "modulate:a", 0.3, 0.7)
 	tw.tween_property(punto, "modulate:a", 1.0, 0.7)
@@ -98,7 +98,7 @@ func _perfil() -> void:
 	estilo.content_margin_top = 10
 	estilo.content_margin_bottom = 10
 	caja.add_theme_stylebox_override("panel", estilo)
-	caja.position = Vector2(36, 398)
+	caja.position = Vector2(120, 380)
 	caja.custom_minimum_size = Vector2(520, 0)
 	lienzo.add_child(caja)
 	var h := HBoxContainer.new()
