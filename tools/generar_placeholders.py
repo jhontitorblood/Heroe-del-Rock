@@ -282,7 +282,6 @@ def main():
     d.text((640, 300), "HÉROE DEL ROCK", font=fuente(110), fill=(255, 58, 94), anchor="mm", stroke_width=8, stroke_fill=(0, 0, 0))
     d.text((640, 400), "imagen provisional · assets/escenarios/esc_inicio.png", font=fuente(26), fill=(255, 210, 60), anchor="mm")
     guardar(ini, "escenarios", "esc_inicio")
-    guardar(escenario("esc_centro_mando_vertical", (30, 15, 50), (10, 5, 15), "sala", 720, 1280), "escenarios", "esc_centro_mando_vertical")
     guardar(escenario("esc_seleccion", (40, 15, 60), (10, 5, 20), "escenario"), "escenarios", "esc_seleccion")
     # Logo del menú principal (1000x300, transparente)
     logo = Image.new("RGBA", (1000, 300), (0, 0, 0, 0))

@@ -8,13 +8,9 @@ var cat_nueva: OptionButton
 var cats: Array = []
 
 
-func es_vertical() -> bool:
-	return true
-
-
 func _ready() -> void:
 	Estado.revisar_dia()
-	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando_vertical"), 0.7)
+	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando"), 0.7)
 	var m := UI.margen(self, 20)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 10)
@@ -34,18 +30,17 @@ func _ready() -> void:
 	lista.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	lista.add_theme_constant_override("separation", 6)
 	sc.add_child(lista)
-	# Nueva tarea (dos filas para caber en vertical)
+	# Nueva tarea
+	var nueva := HBoxContainer.new()
+	nueva.add_theme_constant_override("separation", 10)
 	nombre_nueva = LineEdit.new()
 	nombre_nueva.placeholder_text = "Nueva tarea (ej.: 30 sentadillas)"
 	nombre_nueva.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	nombre_nueva.custom_minimum_size = Vector2(0, 56)
 	nombre_nueva.max_length = 50
-	v.add_child(nombre_nueva)
-	var nueva := HBoxContainer.new()
-	nueva.add_theme_constant_override("separation", 10)
+	nueva.add_child(nombre_nueva)
 	cat_nueva = OptionButton.new()
 	cat_nueva.custom_minimum_size = Vector2(260, 56)
-	cat_nueva.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	for c in Datos.tareas["categorias"]:
 		cats.append(c)
 		cat_nueva.add_item(Datos.tareas["categorias"][c]["nombre"])

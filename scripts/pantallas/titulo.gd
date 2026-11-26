@@ -17,7 +17,7 @@ func _ready() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if not listo:
 		return
-	if (event is InputEventScreenTouch and event.pressed) or (event is InputEventMouseButton and event.pressed):
+	if event is InputEventScreenTouch and event.pressed:
 		listo = false
 		_comenzar()
 

@@ -15,9 +15,9 @@ Es un APK de prueba (debug). No necesita internet y guarda la partida en el prop
 
 ## Qué incluye la beta
 
-- Video de entrada (se salta tocando 2 veces), pantalla de inicio "Toca para comenzar" y selección de personaje con animación de la señal de rock.
+- Video de entrada (se salta solo con 2 toques seguidos; un toque no hace nada), pantalla de inicio "Toca para comenzar" y selección de personaje con animación de la señal de rock.
 - Creación de personaje (masculino o femenino) con nombre propio.
-- **Orientación por pantalla:** el menú principal, Equipo, Archivo y Tareas reales van en vertical; el resto (incluido el combate) en horizontal.
+- Todas las pantallas van en horizontal.
 - **Foto del protagonista:** el jugador puede usar una foto de su galería en el menú principal.
 - **Centro de Mando:** Campaña, Mapa, Escuadrón, Equipo, Archivo, Tareas reales y Sala de Ensayo.
 - **Cotoca completo:** 7 combates (con 2 sublíderes y la líder Aruma), el jefe Jichi Ancestral y una zona secreta que se abre con una racha de 3 días.

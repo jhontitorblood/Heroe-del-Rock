@@ -14,14 +14,29 @@ func _ready() -> void:
 	await _esperar(5)
 	_ok("intro (video)", main.nombre_actual == "intro")
 	_ok("intro horizontal", not main.vertical_actual)
-	main.actual._salir()
+	# Doble toque: uno solo (más el clic simulado que Android envía con cada toque) no salta
+	var intro = main.actual
+	intro._gui_input(_toque())
+	var clic := InputEventMouseButton.new()
+	clic.button_index = MOUSE_BUTTON_LEFT
+	clic.pressed = true
+	clic.device = InputEvent.DEVICE_ID_EMULATION
+	intro._gui_input(clic)
+	await _esperar(3)
+	_ok("un toque no salta el video", main.nombre_actual == "intro")
+	await get_tree().create_timer(0.6 * Engine.time_scale).timeout
+	intro._gui_input(_toque())
+	await _esperar(3)
+	_ok("toques separados no saltan el video", main.nombre_actual == "intro")
+	intro._gui_input(_toque())
 	await _esperar(5)
+	_ok("dos toques saltan el video", main.nombre_actual == "titulo")
 	_ok("titulo", main.nombre_actual == "titulo")
 	Estado.ir("creacion")
 	await _esperar(5)
 	_ok("animacion de rock", Datos.animacion("protagonista_m_rock").size() >= 1 and Datos.animacion("protagonista_f_rock").size() >= 1)
 	Estado.nueva_partida("f", "Prueba")
-	var verticales := ["centro", "equipo", "archivo", "tareas"]
+	var verticales := []  # todas las pantallas van en horizontal
 	for p in ["centro", "campana", "mapa", "escuadron", "equipo", "archivo", "tareas", "ensayo"]:
 		Estado.ir(p, {"zona": "cotoca"})
 		await _esperar(4)
@@ -126,6 +141,13 @@ func _pulsar_todo(n: Node) -> void:
 		if b.is_visible_in_tree() and not b.disabled and b.text in ["Aceptar", "Continuar >", "¡DESPERTAR!", "Continuar"]:
 			b.pressed.emit()
 			return
+
+
+func _toque() -> InputEventScreenTouch:
+	var t := InputEventScreenTouch.new()
+	t.pressed = true
+	t.index = 0
+	return t
 
 
 func _esperar(frames: int) -> void:

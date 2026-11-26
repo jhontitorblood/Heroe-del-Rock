@@ -2,12 +2,8 @@ extends "res://scripts/pantallas/pantalla.gd"
 ## Archivo: colección de la legión espectral y bestiario de enemigos encontrados.
 
 
-func es_vertical() -> bool:
-	return true
-
-
 func _ready() -> void:
-	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando_vertical"), 0.7)
+	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando"), 0.7)
 	var m := UI.margen(self, 20)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 10)
@@ -21,7 +17,7 @@ func _ready() -> void:
 	cuerpo.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	sc.add_child(cuerpo)
 	var g := GridContainer.new()
-	g.columns = 3
+	g.columns = 6
 	g.add_theme_constant_override("h_separation", 10)
 	g.add_theme_constant_override("v_separation", 10)
 	cuerpo.add_child(g)
@@ -31,7 +27,7 @@ func _ready() -> void:
 		g.add_child(_ficha(s["base_id"], true, int(s["nivel"])))
 	cuerpo.add_child(UI.etiqueta("Bestiario · enemigos encontrados", 26, UI.ORO))
 	var g2 := GridContainer.new()
-	g2.columns = 3
+	g2.columns = 6
 	g2.add_theme_constant_override("h_separation", 10)
 	g2.add_theme_constant_override("v_separation", 10)
 	cuerpo.add_child(g2)

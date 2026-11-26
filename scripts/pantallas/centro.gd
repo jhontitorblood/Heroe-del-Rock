@@ -1,59 +1,67 @@
 extends "res://scripts/pantallas/pantalla.gd"
-## Centro de Mando (vertical): logo, protagonista con su estado y menú en botones de a 2.
+## Centro de Mando: logo arriba, protagonista con su estado y menú en botones de a 2.
 
 var lbl_desafinado: Label
 var lbl_stats: Label
 var foto: TextureRect
 
 
-func es_vertical() -> bool:
-	return true
-
-
 func _ready() -> void:
 	Estado.revisar_dia()
-	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando_vertical"), 0.55)
-	var m := UI.margen(self, 20)
+	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando"), 0.55)
+	var m := UI.margen(self, 16)
 	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 14)
+	v.add_theme_constant_override("separation", 10)
 	m.add_child(v)
 
-	# 1) Logo
-	var logo := UI.imagen(Datos.textura("ui", "logo"), Vector2(0, 190))
+	# 1) Logo arriba
+	var logo := UI.imagen(Datos.textura("ui", "logo"), Vector2(0, 130))
 	logo.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	v.add_child(logo)
 
-	# 2) Protagonista y su estado
+	var cuerpo := HBoxContainer.new()
+	cuerpo.add_theme_constant_override("separation", 16)
+	cuerpo.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	v.add_child(cuerpo)
+
+	# 2) Protagonista y su estado (izquierda)
 	var cab := UI.panel()
-	v.add_child(cab)
+	cab.custom_minimum_size = Vector2(430, 0)
+	cuerpo.add_child(cab)
+	var izq := VBoxContainer.new()
+	izq.add_theme_constant_override("separation", 8)
+	cab.add_child(izq)
 	var h := HBoxContainer.new()
-	h.add_theme_constant_override("separation", 18)
-	cab.add_child(h)
+	h.add_theme_constant_override("separation", 14)
+	izq.add_child(h)
 	var col_foto := VBoxContainer.new()
 	h.add_child(col_foto)
-	foto = UI.imagen(Estado.textura_protagonista(), Vector2(230, 230))
+	foto = UI.imagen(Estado.textura_protagonista(), Vector2(190, 190))
 	col_foto.add_child(foto)
-	col_foto.add_child(UI.boton("Cambiar foto", _menu_foto, Vector2(230, 52)))
+	col_foto.add_child(UI.boton("Cambiar foto", _menu_foto, Vector2(190, 50)))
 	var info := VBoxContainer.new()
 	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	info.add_theme_constant_override("separation", 6)
+	info.add_theme_constant_override("separation", 4)
 	h.add_child(info)
-	info.add_child(UI.etiqueta(Estado.nombre_jugador(), 30, UI.ORO))
-	info.add_child(UI.etiqueta("Nivel %d" % int(Estado.d["nivel"]), 24, UI.TEXTO))
-	info.add_child(UI.barra(int(Estado.d["xp"]), Estado.xp_necesaria(int(Estado.d["nivel"])), Color("#ffd23a"), 14))
-	lbl_stats = UI.etiqueta("", 21, UI.TEXTO)
+	var nom := UI.etiqueta(Estado.nombre_jugador(), 28, UI.ORO)
+	nom.clip_text = true
+	info.add_child(nom)
+	info.add_child(UI.etiqueta("Nivel %d" % int(Estado.d["nivel"]), 22, UI.TEXTO))
+	info.add_child(UI.barra(int(Estado.d["xp"]), Estado.xp_necesaria(int(Estado.d["nivel"])), Color("#ffd23a"), 12))
+	lbl_stats = UI.etiqueta("", 19, UI.TEXTO)
 	info.add_child(lbl_stats)
-	lbl_desafinado = UI.etiqueta("", 20, Color("#ff7a7a"), true)
-	v.add_child(lbl_desafinado)
+	lbl_desafinado = UI.etiqueta("", 18, Color("#ff7a7a"), true)
+	izq.add_child(lbl_desafinado)
 	_actualizar_estado()
 
-	# 3) Menú en botones rectangulares de a 2 (orden original)
+	# 3) Menú en botones de a 2, mismo orden (derecha)
 	var g := GridContainer.new()
 	g.columns = 2
-	g.add_theme_constant_override("h_separation", 14)
-	g.add_theme_constant_override("v_separation", 14)
+	g.add_theme_constant_override("h_separation", 12)
+	g.add_theme_constant_override("v_separation", 12)
+	g.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	g.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	v.add_child(g)
+	cuerpo.add_child(g)
 	var botones := [
 		["Campaña", "Historia y territorios", func(): Estado.ir("campana")],
 		["Mapa", "Zona actual y enemigos", func(): Estado.ir("mapa", {"zona": "cotoca"})],
@@ -67,8 +75,8 @@ func _ready() -> void:
 	for b in botones:
 		var bt := Button.new()
 		bt.text = "%s\n%s" % [b[0], b[1]]
-		bt.add_theme_font_size_override("font_size", 23)
-		bt.custom_minimum_size = Vector2(0, 120)
+		bt.add_theme_font_size_override("font_size", 21)
+		bt.custom_minimum_size = Vector2(0, 100)
 		bt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		bt.size_flags_vertical = Control.SIZE_EXPAND_FILL
 		bt.pressed.connect(b[2])

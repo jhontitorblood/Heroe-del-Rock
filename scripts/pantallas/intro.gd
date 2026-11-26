@@ -40,12 +40,16 @@ func _ready() -> void:
 
 
 func _gui_input(event: InputEvent) -> void:
-	var toque: bool = (event is InputEventScreenTouch and event.pressed) or (event is InputEventMouseButton and event.pressed)
-	if not toque:
+	# Solo toques de pantalla: en Android cada toque genera además un clic de ratón
+	# simulado, que antes se contaba como segundo toque y saltaba el video con uno solo.
+	# En computadora el clic se convierte en toque (emulate_touch_from_mouse).
+	if not (event is InputEventScreenTouch) or not event.pressed or event.index != 0:
 		return
+	accept_event()
 	var t := Time.get_ticks_msec() / 1000.0
 	if t - ultimo_toque <= DOBLE_TOQUE_SEG:
 		_salir()
+		return
 	ultimo_toque = t
 
 

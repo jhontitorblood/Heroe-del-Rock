@@ -4,12 +4,8 @@ extends "res://scripts/pantallas/pantalla.gd"
 var detalle: VBoxContainer
 
 
-func es_vertical() -> bool:
-	return true
-
-
 func _ready() -> void:
-	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando_vertical"), 0.7)
+	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando"), 0.7)
 	var m := UI.margen(self, 20)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 10)
@@ -58,9 +54,13 @@ func _mostrar(uid: String) -> void:
 	var p := Datos.personaje(base_id)
 	var st := Datos.stats(base_id, nivel)
 	var tex := Estado.textura_protagonista() if uid == "prota" else Datos.sprite(p.get("imagen", base_id), espectral)
-	detalle.add_child(UI.imagen(tex, Vector2(0, 260)))
+	var fila := HBoxContainer.new()
+	fila.add_theme_constant_override("separation", 16)
+	detalle.add_child(fila)
+	fila.add_child(UI.imagen(tex, Vector2(220, 220)))
 	var col := VBoxContainer.new()
-	detalle.add_child(col)
+	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	fila.add_child(col)
 	col.add_child(UI.etiqueta(nombre, 30, UI.ESPECTRAL if espectral else UI.ORO))
 	var cl: Dictionary = Datos.clases[p["clase"]]
 	col.add_child(UI.etiqueta("%s (%s) · %s · Nivel %d" % [cl["nombre"], cl["funcion"], Datos.nombre_genero(p["genero"]), nivel], 20, Datos.color_genero(p["genero"]), true))

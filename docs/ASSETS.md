@@ -23,12 +23,11 @@ Todas las imágenes actuales son **provisionales**. Para poner el arte final, re
 
 Las imágenes fijas de selección también se usan en el menú principal mientras el jugador no elija una foto propia.
 
-## Menú principal (vertical)
+## Menú principal
 
 | Archivo | Uso | Medida |
 | --- | --- | --- |
 | `assets/ui/logo.png` | Logo en la parte superior del menú principal | PNG transparente, 1000 × 300 |
-| `assets/escenarios/esc_centro_mando_vertical.png` | Fondo del menú principal, Equipo, Archivo y Tareas reales | PNG, 720 × 1280 |
 
 ## Personajes en combate — `assets/personajes/` — 256 × 256 px, fondo transparente
 
@@ -59,7 +58,7 @@ Los enemigos se muestran volteados horizontalmente: dibújalos mirando a la dere
 
 | Archivo | Uso |
 | --- | --- |
-| `esc_centro_mando.png` | Escuadrón (horizontal) |
+| `esc_centro_mando.png` | Fondo del menú principal, Escuadrón, Equipo, Archivo y Tareas reales |
 | `esc_sala_ensayo.png` | Sala de Ensayo |
 | `esc_cotoca_pueblo.png` | Combates en el pueblo |
 | `esc_cotoca_laguna.png` | Combates en la laguna |
