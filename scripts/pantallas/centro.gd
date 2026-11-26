@@ -1,97 +1,161 @@
 extends "res://scripts/pantallas/pantalla.gd"
-## Centro de Mando: logo arriba, protagonista con su estado y menú en botones de a 2.
+## Menú principal al estilo de un juego de rock clásico: fondo ilustrado con el logo,
+## perfil del protagonista sobre la calavera y opciones escalonadas sobre la zona oscura.
+
+const FUENTE := preload("res://assets/fuentes/Bangers-Regular.ttf")
+const HUESO := Color("#ece3d0")
+const ROJO := Color("#d8232c")
+const ROJO_OSCURO := Color("#5c0a10")
+
+# [texto, tamaño, x del centro, y del centro, acción]
+var opciones := [
+	["CAMPAÑA", 66, 830, 78, "campana"],
+	["MAPA", 52, 870, 150, "mapa"],
+	["ESCUADRÓN", 58, 812, 218, "escuadron"],
+	["EQUIPO", 52, 858, 286, "equipo"],
+	["ARCHIVO", 56, 828, 352, "archivo"],
+	["TAREAS REALES", 50, 846, 418, "tareas"],
+	["SALA DE ENSAYO", 54, 822, 484, "ensayo"],
+	["SALIR", 48, 800, 586, "titulo"],
+]
 
 var lbl_desafinado: Label
 var lbl_stats: Label
 var foto: TextureRect
+var navegando := false
 
 
 func _ready() -> void:
 	Estado.revisar_dia()
-	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando"), 0.55)
-	var m := UI.margen(self, 16)
-	var v := VBoxContainer.new()
-	v.add_theme_constant_override("separation", 10)
-	m.add_child(v)
-
-	# 1) Logo arriba
-	var logo := UI.imagen(Datos.textura("ui", "logo"), Vector2(0, 130))
-	logo.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	v.add_child(logo)
-
-	var cuerpo := HBoxContainer.new()
-	cuerpo.add_theme_constant_override("separation", 16)
-	cuerpo.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	v.add_child(cuerpo)
-
-	# 2) Protagonista y su estado (izquierda)
-	var cab := UI.panel()
-	cab.custom_minimum_size = Vector2(430, 0)
-	cuerpo.add_child(cab)
-	var izq := VBoxContainer.new()
-	izq.add_theme_constant_override("separation", 8)
-	cab.add_child(izq)
-	var h := HBoxContainer.new()
-	h.add_theme_constant_override("separation", 14)
-	izq.add_child(h)
-	var col_foto := VBoxContainer.new()
-	h.add_child(col_foto)
-	foto = UI.imagen(Estado.textura_protagonista(), Vector2(190, 190))
-	col_foto.add_child(foto)
-	col_foto.add_child(UI.boton("Cambiar foto", _menu_foto, Vector2(190, 50)))
-	var info := VBoxContainer.new()
-	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	info.add_theme_constant_override("separation", 4)
-	h.add_child(info)
-	var nom := UI.etiqueta(Estado.nombre_jugador(), 28, UI.ORO)
-	nom.clip_text = true
-	info.add_child(nom)
-	info.add_child(UI.etiqueta("Nivel %d" % int(Estado.d["nivel"]), 22, UI.TEXTO))
-	info.add_child(UI.barra(int(Estado.d["xp"]), Estado.xp_necesaria(int(Estado.d["nivel"])), Color("#ffd23a"), 12))
-	lbl_stats = UI.etiqueta("", 19, UI.TEXTO)
-	info.add_child(lbl_stats)
-	lbl_desafinado = UI.etiqueta("", 18, Color("#ff7a7a"), true)
-	izq.add_child(lbl_desafinado)
+	var fondo := Datos.textura("escenarios", "esc_menu_principal")
+	UI.fondo(self, fondo if fondo else Datos.textura("escenarios", "esc_centro_mando"), 0.0)
+	_perfil()
+	for o in opciones:
+		_opcion(o[0], o[1], Vector2(o[2], o[3]), o[4])
+	var ver := _texto("VERSIÓN 0.2 · BETA DE COTOCA", 22, ROJO, Color.BLACK, 6)
+	ver.position = Vector2(640, 668)
+	add_child(ver)
 	_actualizar_estado()
 
-	# 3) Menú en botones de a 2, mismo orden (derecha)
-	var g := GridContainer.new()
-	g.columns = 2
-	g.add_theme_constant_override("h_separation", 12)
-	g.add_theme_constant_override("v_separation", 12)
-	g.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	g.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	cuerpo.add_child(g)
-	var botones := [
-		["Campaña", "Historia y territorios", func(): Estado.ir("campana")],
-		["Mapa", "Zona actual y enemigos", func(): Estado.ir("mapa", {"zona": "cotoca"})],
-		["Escuadrón", "Elige quién combate", func(): Estado.ir("escuadron")],
-		["Equipo", "Estadísticas y habilidades", func(): Estado.ir("equipo")],
-		["Archivo", "Tu legión espectral", func(): Estado.ir("archivo")],
-		["Tareas reales", "Gana experiencia y energía", func(): Estado.ir("tareas")],
-		["Sala de Ensayo", "Recupera a tu equipo", func(): Estado.ir("ensayo")],
-		["Menú principal", "Salir al inicio", func(): Estado.ir("titulo")],
-	]
-	for b in botones:
-		var bt := Button.new()
-		bt.text = "%s\n%s" % [b[0], b[1]]
-		bt.add_theme_font_size_override("font_size", 21)
-		bt.custom_minimum_size = Vector2(0, 100)
-		bt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		bt.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		bt.pressed.connect(b[2])
-		g.add_child(bt)
+
+func _texto(t: String, tam: int, color: Color, borde: Color, grosor: int) -> Label:
+	var l := Label.new()
+	l.text = t
+	l.add_theme_font_override("font", FUENTE)
+	l.add_theme_font_size_override("font_size", tam)
+	l.add_theme_color_override("font_color", color)
+	l.add_theme_color_override("font_outline_color", borde)
+	l.add_theme_constant_override("outline_size", grosor)
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return l
+
+
+## Perfil del protagonista, justo debajo del logo y sobre la calavera del fondo.
+func _perfil() -> void:
+	var caja := PanelContainer.new()
+	var estilo := StyleBoxFlat.new()
+	estilo.bg_color = Color(0.05, 0.01, 0.02, 0.72)
+	estilo.border_color = ROJO
+	estilo.set_border_width_all(3)
+	estilo.set_corner_radius_all(10)
+	estilo.content_margin_left = 14
+	estilo.content_margin_right = 14
+	estilo.content_margin_top = 10
+	estilo.content_margin_bottom = 10
+	caja.add_theme_stylebox_override("panel", estilo)
+	caja.position = Vector2(36, 398)
+	caja.custom_minimum_size = Vector2(520, 0)
+	add_child(caja)
+	var h := HBoxContainer.new()
+	h.add_theme_constant_override("separation", 16)
+	caja.add_child(h)
+	var col_foto := VBoxContainer.new()
+	col_foto.add_theme_constant_override("separation", 6)
+	h.add_child(col_foto)
+	var marco := PanelContainer.new()
+	var em := StyleBoxFlat.new()
+	em.bg_color = Color.BLACK
+	em.border_color = HUESO
+	em.set_border_width_all(3)
+	marco.add_theme_stylebox_override("panel", em)
+	col_foto.add_child(marco)
+	foto = UI.imagen(Estado.textura_protagonista(), Vector2(170, 170))
+	marco.add_child(foto)
+	var bf := Button.new()
+	bf.text = "CAMBIAR FOTO"
+	_estilo_boton(bf, 24)
+	bf.pressed.connect(_menu_foto)
+	col_foto.add_child(bf)
+	var info := VBoxContainer.new()
+	info.add_theme_constant_override("separation", 2)
+	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	h.add_child(info)
+	var nom := _texto(Estado.nombre_jugador().to_upper(), 42, HUESO, ROJO_OSCURO, 10)
+	nom.clip_text = true
+	info.add_child(nom)
+	info.add_child(_texto("NIVEL %d" % int(Estado.d["nivel"]), 32, ROJO, Color.BLACK, 8))
+	var xp := UI.barra(int(Estado.d["xp"]), Estado.xp_necesaria(int(Estado.d["nivel"])), ROJO, 10)
+	info.add_child(xp)
+	lbl_stats = _texto("", 23, HUESO, Color.BLACK, 6)
+	info.add_child(lbl_stats)
+	lbl_desafinado = _texto("", 20, Color("#ff6a6a"), Color.BLACK, 6)
+	lbl_desafinado.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	lbl_desafinado.custom_minimum_size = Vector2(300, 0)
+	info.add_child(lbl_desafinado)
+
+
+func _estilo_boton(b: Button, tam: int) -> void:
+	b.add_theme_font_override("font", FUENTE)
+	b.add_theme_font_size_override("font_size", tam)
+	b.add_theme_color_override("font_color", HUESO)
+	b.add_theme_color_override("font_hover_color", HUESO)
+	b.add_theme_color_override("font_pressed_color", ROJO_OSCURO)
+	b.add_theme_color_override("font_focus_color", HUESO)
+	b.add_theme_color_override("font_outline_color", ROJO_OSCURO)
+	b.add_theme_constant_override("outline_size", 10)
+	var vacio := StyleBoxEmpty.new()
+	var marcado := StyleBoxFlat.new()
+	marcado.bg_color = HUESO
+	marcado.set_corner_radius_all(4)
+	marcado.content_margin_left = 14
+	marcado.content_margin_right = 14
+	for estado in ["normal", "hover", "focus", "disabled"]:
+		b.add_theme_stylebox_override(estado, vacio)
+	b.add_theme_stylebox_override("pressed", marcado)
+
+
+## Opción del menú: texto grande escalonado sobre la zona oscura del fondo.
+func _opcion(texto: String, tam: int, centro: Vector2, destino: String) -> void:
+	var b := Button.new()
+	b.text = texto
+	_estilo_boton(b, tam)
+	add_child(b)
+	b.reset_size()
+	b.position = centro - b.size / 2.0
+	b.pivot_offset = b.size / 2.0
+	b.pressed.connect(func():
+		if navegando:
+			return
+		navegando = true
+		var tw := b.create_tween()
+		tw.tween_property(b, "scale", Vector2(1.12, 1.12), 0.08)
+		tw.tween_property(b, "scale", Vector2.ONE, 0.08)
+		tw.tween_callback(func():
+			if destino == "mapa":
+				Estado.ir("mapa", {"zona": "cotoca"})
+			else:
+				Estado.ir(destino)))
 
 
 func _actualizar_estado() -> void:
 	var d := Estado.d
-	lbl_stats.text = "Energía: %d / %d\nPúas Espectrales: %d\nRacha: %d días\nFama: %d\nSeguidores: %d" % [
+	lbl_stats.text = "ENERGÍA %d/%d\nPÚAS ESPECTRALES %d\nRACHA %d DÍAS\nFAMA %d  ·  SEGUIDORES %d" % [
 		int(d["energia"]), int(Datos.reglas["energia"]["maxima"]), int(d["pua"]), int(d["racha"]), int(d["fama"]), d["seguidores"].size()]
 	if Estado.esta_desafinado():
-		lbl_desafinado.text = "¡DESAFINADOS! Tu equipo no puede combatir por %s. Cada ejercicio extra resta 1 minuto (en Tareas reales)." % Estado.formato_tiempo(Estado.segundos_desafinado())
-		lbl_desafinado.add_theme_color_override("font_color", Color("#ff7a7a"))
+		lbl_desafinado.text = "¡DESAFINADOS! %s" % Estado.formato_tiempo(Estado.segundos_desafinado())
+		lbl_desafinado.add_theme_color_override("font_color", Color("#ff6a6a"))
 	elif bool(d.get("en_sintonia", false)):
-		lbl_desafinado.text = "En sintonía: +5% de daño en el próximo combate."
+		lbl_desafinado.text = "EN SINTONÍA: +5% DE DAÑO"
 		lbl_desafinado.add_theme_color_override("font_color", UI.ESPECTRAL)
 	else:
 		lbl_desafinado.text = ""

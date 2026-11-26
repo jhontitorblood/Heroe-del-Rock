@@ -78,7 +78,15 @@ static func barra(valor: float, maximo: float, color: Color, alto := 14) -> Prog
 	b.value = valor
 	b.show_percentage = false
 	b.custom_minimum_size = Vector2(0, alto)
-	b.add_theme_stylebox_override("fill", _caja(color, Color("#00000000"), 0))
+	# Sin esto la barra toma la altura de la letra y queda más gruesa de lo pedido
+	b.add_theme_font_size_override("font_size", 1)
+	var fondo_b := _caja(Color("#1a1022"), Color("#00000000"), 0)
+	var relleno := _caja(color, Color("#00000000"), 0)
+	for c in [fondo_b, relleno]:
+		c.set_content_margin_all(0)
+		c.set_corner_radius_all(int(min(alto / 2.0, 10)))
+	b.add_theme_stylebox_override("background", fondo_b)
+	b.add_theme_stylebox_override("fill", relleno)
 	return b
 
 

@@ -338,7 +338,7 @@ func ejecutar(u: Unidad, id: String, objetivo: Unidad = null) -> Array:
 	var eventos := []
 	var h := hab(id)
 	var es_banda := bool(h.get("banda", false))
-	eventos.append({"t": "accion", "obj": u.uid, "nombre": h.get("nombre", id)})
+	eventos.append({"t": "accion", "obj": u.uid, "nombre": h.get("nombre", id), "id": id})
 	# Costos
 	if es_banda:
 		medidor_banda = 0.0

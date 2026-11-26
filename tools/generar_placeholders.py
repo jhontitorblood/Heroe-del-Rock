@@ -283,12 +283,6 @@ def main():
     d.text((640, 400), "imagen provisional · assets/escenarios/esc_inicio.png", font=fuente(26), fill=(255, 210, 60), anchor="mm")
     guardar(ini, "escenarios", "esc_inicio")
     guardar(escenario("esc_seleccion", (40, 15, 60), (10, 5, 20), "escenario"), "escenarios", "esc_seleccion")
-    # Logo del menú principal (1000x300, transparente)
-    logo = Image.new("RGBA", (1000, 300), (0, 0, 0, 0))
-    d = ImageDraw.Draw(logo)
-    d.polygon([(40, 150), (120, 40), (880, 40), (960, 150), (880, 260), (120, 260)], fill=(30, 12, 40, 230), outline=(255, 210, 60, 255), width=8)
-    d.text((500, 150), "HÉROE DEL ROCK", font=fuente(96), fill=(255, 58, 94), anchor="mm", stroke_width=6, stroke_fill=(0, 0, 0))
-    guardar(logo, "ui", "logo")
     # Protagonistas: imagen fija de selección y animación de la señal de rock
     for g in ("m", "f"):
         color = hex_rgb(clases["guitarrista"]["color"])

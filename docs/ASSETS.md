@@ -27,7 +27,9 @@ Las imágenes fijas de selección también se usan en el menú principal mientra
 
 | Archivo | Uso | Medida |
 | --- | --- | --- |
-| `assets/ui/logo.png` | Logo en la parte superior del menú principal | PNG transparente, 1000 × 300 |
+| `assets/escenarios/esc_menu_principal.png` | Fondo del menú principal. Incluye el logo: el perfil va debajo del logo (sobre la calavera) y las opciones sobre la zona oscura del centro | PNG, 16:9 (1280 × 720 o mayor) |
+
+El texto del menú usa la tipografía **Bangers** (`assets/fuentes/Bangers-Regular.ttf`, licencia libre SIL OFL, ver `OFL-Bangers.txt`). Si mueves el logo o la zona oscura en tu imagen, las posiciones se ajustan en `scripts/pantallas/centro.gd`.
 
 ## Personajes en combate — `assets/personajes/` — 256 × 256 px, fondo transparente
 
@@ -37,6 +39,7 @@ Cada personaje tiene dos versiones:
 - `pj_<id>_espectral.png`: su apariencia espectral (como seguidor). Debe conservar la identidad del personaje.
 
 Los enemigos se muestran volteados horizontalmente: dibújalos mirando a la derecha.
+En combate se muestran sin recuadro, con la sombra bajo los pies: deja los pies cerca del borde inferior de la imagen.
 
 | id | Personaje |
 | --- | --- |
@@ -58,7 +61,7 @@ Los enemigos se muestran volteados horizontalmente: dibújalos mirando a la dere
 
 | Archivo | Uso |
 | --- | --- |
-| `esc_centro_mando.png` | Fondo del menú principal, Escuadrón, Equipo, Archivo y Tareas reales |
+| `esc_centro_mando.png` | Fondo de Escuadrón, Equipo, Archivo y Tareas reales |
 | `esc_sala_ensayo.png` | Sala de Ensayo |
 | `esc_cotoca_pueblo.png` | Combates en el pueblo |
 | `esc_cotoca_laguna.png` | Combates en la laguna |

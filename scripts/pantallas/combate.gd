@@ -15,6 +15,43 @@ var barra_banda: ProgressBar
 var btn_usar: Button
 var btn_auto: Button
 var seleccion := ""
+
+# Formaciones (x, y de los pies) según cantidad de combatientes por lado; los enemigos se reflejan
+const FORMACIONES := {
+	1: [[0.24, 0.62]],
+	2: [[0.17, 0.42], [0.31, 0.86]],
+	3: [[0.12, 0.36], [0.30, 0.62], [0.12, 0.90]],
+	4: [[0.08, 0.32], [0.24, 0.50], [0.08, 0.72], [0.24, 0.90]],
+	5: [[0.07, 0.28], [0.21, 0.44], [0.35, 0.60], [0.07, 0.74], [0.21, 0.90]],
+}
+const TAM_SPRITE := {1: 210, 2: 185, 3: 155, 4: 135, 5: 125}
+
+
+## Sombra elíptica bajo los pies: normal, turno (anillo dorado) u objetivo (anillo que late).
+class Sombra extends Control:
+	var modo := 0
+	var color_objetivo := Color.RED
+	var t := 0.0
+
+	func _ready() -> void:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	func _process(delta: float) -> void:
+		if modo == 2:
+			t += delta
+			queue_redraw()
+
+	func _draw() -> void:
+		var c := size / 2.0
+		var pts := PackedVector2Array()
+		for i in 33:
+			var a := TAU * i / 32.0
+			pts.append(c + Vector2(cos(a) * c.x, sin(a) * c.y))
+		draw_colored_polygon(pts.slice(0, 32), Color(0, 0, 0, 0.5))
+		if modo == 1:
+			draw_polyline(pts, Color("#ffd23a"), 4.0, true)
+		elif modo == 2:
+			draw_polyline(pts, Color(color_objetivo, 0.5 + 0.5 * sin(t * 7.0)), 4.0, true)
 var esperando_jugador := false
 var auto := false
 var terminado := false
@@ -60,25 +97,25 @@ func _construir() -> void:
 	top.add_child(btn_auto)
 	top.add_child(UI.boton("Retirarse", _retirarse, Vector2(150, 50)))
 
-	var campo := HBoxContainer.new()
+	# Campo de batalla: sprites libres en formación (aliados a la izquierda, enemigos a la derecha)
+	var campo := Control.new()
 	campo.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	campo.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	v.add_child(campo)
-	var izq := VBoxContainer.new()
-	izq.alignment = BoxContainer.ALIGNMENT_CENTER
-	izq.add_theme_constant_override("separation", 8)
-	campo.add_child(izq)
-	var medio := Control.new()
-	medio.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	campo.add_child(medio)
-	var der := VBoxContainer.new()
-	der.alignment = BoxContainer.ALIGNMENT_CENTER
-	der.add_theme_constant_override("separation", 8)
-	campo.add_child(der)
-	var n_unidades: int = max(b.lado(Batalla.ALIADO, false).size(), b.lado(Batalla.ENEMIGO, false).size())
-	var alto := 112 if n_unidades <= 3 else 92
-	for u in b.unidades:
-		var t := _tarjeta(u, alto)
-		(izq if u.lado == Batalla.ALIADO else der).add_child(t)
+	var colocados := []
+	for lado in [Batalla.ALIADO, Batalla.ENEMIGO]:
+		var lista := b.lado(lado, false)
+		var n: int = clamp(lista.size(), 1, 5)
+		var form: Array = FORMACIONES[n]
+		var tam: int = TAM_SPRITE[n]
+		for i in lista.size():
+			var p: Array = form[min(i, form.size() - 1)]
+			var fx: float = p[0] if lado == Batalla.ALIADO else 1.0 - p[0]
+			colocados.append([float(p[1]), _unidad(lista[i], fx, float(p[1]), tam)])
+	# Los de más abajo se dibujan delante
+	colocados.sort_custom(func(x, y): return x[0] < y[0])
+	for c in colocados:
+		campo.add_child(c[1])
 
 	var abajo := UI.panel()
 	v.add_child(abajo)
@@ -88,7 +125,7 @@ func _construir() -> void:
 	av.add_child(fila_info)
 	lbl_info = UI.etiqueta("", 20, UI.TEXTO, true)
 	lbl_info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	lbl_info.custom_minimum_size = Vector2(0, 52)
+	lbl_info.custom_minimum_size = Vector2(0, 40)
 	fila_info.add_child(lbl_info)
 	btn_usar = UI.boton("Usar", _usar_sin_objetivo, Vector2(140, 52))
 	btn_usar.visible = false
@@ -106,44 +143,79 @@ func _construir() -> void:
 	_refrescar()
 
 
-func _tarjeta(u, alto: int) -> Button:
+## Un combatiente en el campo: sombra bajo los pies, sprite sin recuadro y barras debajo.
+func _unidad(u, fx: float, fy: float, s: int) -> Control:
+	var n := Control.new()
+	n.anchor_left = fx
+	n.anchor_right = fx
+	n.anchor_top = fy
+	n.anchor_bottom = fy
+	n.offset_left = -s / 2.0
+	n.offset_right = s / 2.0
+	n.offset_top = -s
+	n.offset_bottom = 50
+	n.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var sombra := Sombra.new()
+	sombra.position = Vector2(s * 0.14, s * 0.88)
+	sombra.size = Vector2(s * 0.72, s * 0.2)
+	sombra.color_objetivo = Color("#ff4a4a") if u.lado == Batalla.ENEMIGO else UI.ESPECTRAL
+	n.add_child(sombra)
+	var spr := TextureRect.new()
+	spr.texture = Datos.sprite(u.imagen, u.espectral)
+	spr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	spr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	spr.size = Vector2(s, s)
+	spr.pivot_offset = Vector2(s / 2.0, s * 0.95)
+	spr.flip_h = u.lado == Batalla.ENEMIGO
+	spr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	n.add_child(spr)
+	# Zona tocable para elegir objetivo
 	var bt := Button.new()
-	bt.custom_minimum_size = Vector2(430, alto)
+	for estado in ["normal", "hover", "pressed", "focus", "disabled"]:
+		bt.add_theme_stylebox_override(estado, StyleBoxEmpty.new())
+	bt.position = Vector2(s * 0.12, s * 0.05)
+	bt.size = Vector2(s * 0.76, s * 0.95)
 	bt.pressed.connect(_tocar_tarjeta.bind(u.uid))
-	var h := HBoxContainer.new()
-	h.set_anchors_preset(Control.PRESET_FULL_RECT)
-	h.offset_left = 8
-	h.offset_right = -8
-	h.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	h.add_theme_constant_override("separation", 10)
-	bt.add_child(h)
-	var img := UI.imagen(Datos.sprite(u.imagen, u.espectral), Vector2(alto - 12, alto - 12))
-	img.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if u.lado == Batalla.ENEMIGO:
-		img.flip_h = true
-	h.add_child(img)
-	var col := VBoxContainer.new()
-	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	col.alignment = BoxContainer.ALIGNMENT_CENTER
-	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	col.add_theme_constant_override("separation", 2)
-	h.add_child(col)
+	n.add_child(bt)
+	# Barras bajo los pies
+	var barras := VBoxContainer.new()
+	barras.position = Vector2(-s * 0.1, s + 2)
+	barras.size = Vector2(s * 1.2, 48)
+	barras.add_theme_constant_override("separation", 2)
+	barras.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	n.add_child(barras)
 	var rz := Datos.rareza(u.rareza)
-	var nom := UI.etiqueta(u.nombre, 18, Color(rz["color"]) if u.lado == Batalla.ENEMIGO else (UI.ESPECTRAL if u.espectral else UI.ORO))
-	nom.clip_text = true
-	col.add_child(nom)
-	col.add_child(UI.etiqueta("Nv %d · %s · %s" % [u.nivel, Datos.clases[u.clase]["nombre"], Datos.nombre_genero(u.genero)], 14, Datos.color_genero(u.genero)))
-	var hp := UI.barra(u.hp, u.hp_max, Color("#3ae889") if u.lado == Batalla.ALIADO else Color("#ff4a4a"), 14)
-	col.add_child(hp)
-	var hp_txt := UI.etiqueta("", 14, UI.TEXTO)
-	hp_txt.clip_text = true
-	col.add_child(hp_txt)
-	var med := UI.barra(u.medidor, 100, Color("#ffd23a"), 6)
-	col.add_child(med)
-	for c in col.get_children():
+	var color_nombre: Color = Color(rz["color"]) if u.lado == Batalla.ENEMIGO else (UI.ESPECTRAL if u.espectral else UI.ORO)
+	var nom := _texto(u.nombre, 14, color_nombre)
+	barras.add_child(nom)
+	var hp := UI.barra(u.hp, u.hp_max, Color("#3ae889") if u.lado == Batalla.ALIADO else Color("#ff4a4a"), 9)
+	hp.custom_minimum_size.x = s * 0.8
+	hp.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	barras.add_child(hp)
+	var med := UI.barra(u.medidor, 100, Color("#ffd23a"), 5)
+	med.custom_minimum_size.x = s * 0.8
+	med.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	barras.add_child(med)
+	var hp_txt := _texto("", 12, UI.TEXTO)
+	barras.add_child(hp_txt)
+	for c in barras.get_children():
 		c.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	tarjetas[u.uid] = {"boton": bt, "hp": hp, "hp_txt": hp_txt, "med": med}
-	return bt
+	# Respiración: leve balanceo continuo
+	var bob := spr.create_tween().set_loops()
+	bob.tween_interval(randf() * 0.8)
+	bob.tween_property(spr, "position:y", -4.0, 0.9).set_trans(Tween.TRANS_SINE)
+	bob.tween_property(spr, "position:y", 0.0, 0.9).set_trans(Tween.TRANS_SINE)
+	tarjetas[u.uid] = {"nodo": n, "spr": spr, "sombra": sombra, "hp": hp, "hp_txt": hp_txt, "med": med, "lado": u.lado}
+	return n
+
+
+func _texto(t: String, tam: int, color: Color) -> Label:
+	var l := UI.etiqueta(t, tam, color)
+	l.add_theme_color_override("font_outline_color", Color.BLACK)
+	l.add_theme_constant_override("outline_size", 5)
+	l.clip_text = true
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	return l
 
 
 func _refrescar() -> void:
@@ -151,13 +223,13 @@ func _refrescar() -> void:
 		var t: Dictionary = tarjetas[u.uid]
 		t["hp"].max_value = u.hp_max
 		t["hp"].value = u.hp
-		var txt: String = "%d / %d" % [u.hp, u.hp_max] if u.vivo() else "Fuera de combate"
+		var txt: String = "Nv %d · %d / %d" % [u.nivel, u.hp, u.hp_max] if u.vivo() else "Fuera de combate"
 		var est: String = u.texto_estados()
 		if est != "" and u.vivo():
-			txt += "   " + est
+			txt += " · " + est
 		t["hp_txt"].text = txt
 		t["med"].value = u.medidor
-		t["boton"].modulate = Color(1, 1, 1) if u.vivo() else Color(0.4, 0.4, 0.4)
+		t["nodo"].modulate = Color(1, 1, 1) if u.vivo() else Color(1, 1, 1, 0.35)
 	barra_banda.value = b.medidor_banda
 	if b.actual:
 		lbl_turno.text = "Ronda %d · Turno de %s" % [b.ronda, b.actual.nombre]
@@ -166,13 +238,69 @@ func _refrescar() -> void:
 func _resaltar(validos: Array) -> void:
 	var ids := validos.map(func(x): return x.uid)
 	for u in b.unidades:
-		var bt: Button = tarjetas[u.uid]["boton"]
+		var so: Sombra = tarjetas[u.uid]["sombra"]
 		if u == b.actual:
-			bt.modulate = Color(1.25, 1.2, 0.8)
+			so.modo = 1
 		elif u.uid in ids:
-			bt.modulate = Color(1.3, 1.3, 1.3)
-		elif u.vivo():
-			bt.modulate = Color(0.8, 0.8, 0.8) if not ids.is_empty() else Color(1, 1, 1)
+			so.modo = 2
+		else:
+			so.modo = 0
+		so.queue_redraw()
+
+
+# ---------------------------------------------------------------------
+# Animaciones de los combatientes
+# ---------------------------------------------------------------------
+
+func _anim_accion(uid: String, id: String) -> void:
+	var t: Dictionary = tarjetas.get(uid, {})
+	if t.is_empty():
+		return
+	var spr: TextureRect = t["spr"]
+	var tw := spr.create_tween()
+	if float(b.hab(id).get("poder", 0)) > 0:
+		# Embestida hacia el rival
+		var dir := 1.0 if t["lado"] == Batalla.ALIADO else -1.0
+		tw.tween_property(spr, "position:x", dir * 55.0, 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tw.tween_property(spr, "position:x", 0.0, 0.22).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	else:
+		# Apoyo: pequeño salto con brillo
+		tw.set_parallel(true)
+		tw.tween_property(spr, "scale", Vector2(1.08, 1.08), 0.14)
+		tw.tween_property(spr, "modulate", Color(1.4, 1.4, 1.7), 0.14)
+		tw.chain().tween_property(spr, "scale", Vector2.ONE, 0.18)
+		tw.parallel().tween_property(spr, "modulate", Color.WHITE, 0.18)
+
+
+func _anim_golpe(uid: String) -> void:
+	var t: Dictionary = tarjetas.get(uid, {})
+	if t.is_empty():
+		return
+	var spr: TextureRect = t["spr"]
+	spr.modulate = Color(1.8, 0.45, 0.45)
+	var tw := spr.create_tween()
+	tw.tween_property(spr, "position:x", 9.0, 0.04)
+	tw.tween_property(spr, "position:x", -9.0, 0.06)
+	tw.tween_property(spr, "position:x", 0.0, 0.05)
+	tw.parallel().tween_property(spr, "modulate", Color.WHITE, 0.25)
+
+
+func _anim_brillo(uid: String, color: Color) -> void:
+	var t: Dictionary = tarjetas.get(uid, {})
+	if t.is_empty():
+		return
+	var spr: TextureRect = t["spr"]
+	spr.modulate = color
+	spr.create_tween().tween_property(spr, "modulate", Color.WHITE, 0.4)
+
+
+func _anim_cae(uid: String, cae: bool) -> void:
+	var t: Dictionary = tarjetas.get(uid, {})
+	if t.is_empty():
+		return
+	var spr: TextureRect = t["spr"]
+	var dir := -1.0 if t["lado"] == Batalla.ALIADO else 1.0
+	spr.create_tween().tween_property(spr, "rotation_degrees", dir * 14.0 if cae else 0.0, 0.3)
 
 
 func _mostrar_habilidades(u) -> void:
@@ -189,7 +317,7 @@ func _mostrar_habilidades(u) -> void:
 			txt = "DEF: " + txt
 		if o.get("banda", false):
 			txt = "BANDA"
-		var bt := UI.boton(txt, _elegir_habilidad.bind(o["id"]), Vector2(0, 64))
+		var bt := UI.boton(txt, _elegir_habilidad.bind(o["id"]), Vector2(0, 56))
 		bt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		bt.add_theme_font_size_override("font_size", 17)
 		bt.disabled = not bool(o["ok"])
@@ -280,32 +408,38 @@ func _accion(u, id: String, obj) -> void:
 
 func _mostrar(eventos: Array) -> void:
 	for e in eventos:
-		var t: Dictionary = tarjetas.get(e.get("obj", ""), {})
+		var uid: String = e.get("obj", "")
+		var t: Dictionary = tarjetas.get(uid, {})
 		var pos := Vector2.ZERO
 		if not t.is_empty():
-			var bt: Button = t["boton"]
-			pos = bt.global_position - global_position + Vector2(bt.size.x * 0.45, 4)
+			var nd: Control = t["nodo"]
+			pos = nd.global_position - global_position + Vector2(nd.size.x * 0.3, nd.size.y * 0.12)
 		match e["t"]:
 			"ronda":
 				lbl_turno.text = "Ronda %d" % int(e["valor"])
 			"accion":
 				var u = b.por_uid(e["obj"])
 				lbl_info.text = "%s usa %s" % [u.nombre, e["nombre"]]
-				await get_tree().create_timer(0.25).timeout
+				_anim_accion(uid, e.get("id", ""))
+				await get_tree().create_timer(0.3).timeout
 			"dano":
 				var txt := "-%d" % int(e["valor"])
 				if String(e.get("nota", "")) != "":
 					txt += "  " + String(e["nota"])
 				UI.flotante(self, txt, Color("#ff5a5a"), pos)
-				_sacudir(t["boton"])
+				_anim_golpe(uid)
 			"cura":
 				UI.flotante(self, "+%d" % int(e["valor"]), Color("#5aff8a"), pos)
+				_anim_brillo(uid, Color(0.6, 1.6, 0.7))
 			"estado":
 				UI.flotante(self, e["texto"], UI.ESPECTRAL, pos + Vector2(0, 30))
 			"cae":
 				UI.flotante(self, "¡Cae!", Color("#aaaaaa"), pos + Vector2(0, 30))
+				_anim_cae(uid, true)
 			"revive":
 				UI.flotante(self, "¡Revive!", UI.ORO, pos)
+				_anim_cae(uid, false)
+				_anim_brillo(uid, Color(1.8, 1.6, 0.8))
 			"aturdido":
 				var u2 = b.por_uid(e["obj"])
 				lbl_info.text = "%s está aturdido y pierde su turno." % u2.nombre
