@@ -1,25 +1,12 @@
 extends "res://scripts/pantallas/pantalla.gd"
-## Pantalla de inicio: imagen con el nombre del juego y "Toca para comenzar".
+## Pantalla de inicio: imagen con el nombre del juego (el mensaje para tocar viene en la imagen).
+## Tocar en cualquier parte continúa.
 
 var listo := false
 
 
 func _ready() -> void:
 	UI.fondo(self, Datos.textura("escenarios", "esc_inicio"), 0.0)
-	var msg := UI.etiqueta("Toca para comenzar", 34, UI.TEXTO)
-	msg.add_theme_color_override("font_outline_color", Color.BLACK)
-	msg.add_theme_constant_override("outline_size", 10)
-	msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	msg.anchor_left = 0.0
-	msg.anchor_right = 1.0
-	msg.anchor_top = 1.0
-	msg.anchor_bottom = 1.0
-	msg.offset_top = -110
-	msg.offset_bottom = -50
-	add_child(msg)
-	var tw := msg.create_tween().set_loops()
-	tw.tween_property(msg, "modulate:a", 0.25, 0.9)
-	tw.tween_property(msg, "modulate:a", 1.0, 0.9)
 	var ver := UI.etiqueta("v0.2 · Beta de Cotoca", 16, Color(1, 1, 1, 0.5))
 	ver.position = Vector2(16, 12)
 	add_child(ver)

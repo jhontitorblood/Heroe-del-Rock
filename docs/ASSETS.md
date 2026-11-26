@@ -9,7 +9,7 @@ Todas las imágenes actuales son **provisionales**. Para poner el arte final, re
 | Archivo | Uso | Formato y medida |
 | --- | --- | --- |
 | `assets/video/intro.ogv` | Video al abrir la app (se salta tocando 2 veces) | **Ogg Theora (.ogv)**, horizontal, 1280 × 720 |
-| `assets/escenarios/esc_inicio.png` | Pantalla de inicio con el nombre del juego ("Toca para comenzar" lo agrega el juego) | PNG, 1280 × 720 |
+| `assets/escenarios/esc_inicio.png` | Pantalla de inicio con el nombre del juego y el mensaje para tocar (el juego no agrega texto) | PNG, 1280 × 720 |
 | `assets/escenarios/esc_seleccion.png` | Fondo de la selección de personaje | PNG, 1280 × 720 |
 | `assets/personajes/seleccion_protagonista_m.png` | Imagen fija del protagonista masculino en la selección | PNG transparente, 512 × 512 |
 | `assets/personajes/seleccion_protagonista_f.png` | Imagen fija de la protagonista femenina en la selección | PNG transparente, 512 × 512 |
