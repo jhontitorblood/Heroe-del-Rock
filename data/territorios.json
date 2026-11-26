@@ -1,0 +1,53 @@
+{
+  "santa_cruz": {
+    "nombre": "Santa Cruz",
+    "mapa": "mapa_santa_cruz",
+    "zonas": [
+      {
+        "id": "cotoca", "nombre": "Cotoca", "banda": "Los Bravos del Jichi", "estilo": "Rock latino",
+        "disponible": true, "pos": [760, 330], "mapa": "mapa_cotoca",
+        "jefe_nodo": "c8",
+        "comunes": ["e_cuerdero", "e_tamborero", "e_tecladista", "e_cantor"],
+        "nodos": [
+          {"id": "c1", "nombre": "Entrada de Cotoca", "tipo": "normal", "nivel": 1, "fuerza": 0.75,
+           "enemigos": ["e_cuerdero"], "despertable": "e_cuerdero", "fondo": "esc_cotoca_pueblo", "pos": [140, 560]},
+          {"id": "c2", "nombre": "Plaza del Santuario", "tipo": "normal", "nivel": 2, "fuerza": 0.8,
+           "enemigos": ["e_tamborero", "e_cantor"], "despertable": "e_cantor", "fondo": "esc_cotoca_pueblo", "pos": [300, 450],
+           "requiere": {"nodo": "c1"}},
+          {"id": "c3", "nombre": "Orilla de la Laguna", "tipo": "normal", "nivel": 3, "fuerza": 0.85,
+           "enemigos": ["e_bajista", "e_cuerdero"], "despertable": "e_bajista", "fondo": "esc_cotoca_laguna", "pos": [470, 540],
+           "requiere": {"nodo": "c2"}},
+          {"id": "c4", "nombre": "Sublíder: Brisa Taquirari", "tipo": "sublider", "nivel": 4, "fuerza": 0.9, "fuerza_hp": 1.3,
+           "enemigos": ["s_brisa", "e_corista"], "despertable": "s_brisa", "fondo": "esc_cotoca_pueblo", "pos": [600, 400],
+           "requiere": {"nodo": "c3"},
+           "dialogo_antes": [["Brisa Taquirari", "¿Vienes a desafinar nuestra fiesta? ¡A ver si sigues mi ritmo!"]]},
+          {"id": "c5", "nombre": "Curiche Oscuro", "tipo": "normal", "nivel": 5, "fuerza": 0.9,
+           "enemigos": ["e_vientista", "e_corista", "e_tamborero"], "despertable": "e_vientista", "fondo": "esc_cotoca_curiche", "pos": [760, 560],
+           "requiere": {"nodo": "c4"}},
+          {"id": "c6", "nombre": "Sublíder: Lázaro Consola", "tipo": "sublider", "nivel": 6, "fuerza": 0.95, "fuerza_hp": 1.3,
+           "enemigos": ["s_lazaro", "e_bajista", "e_tecladista"], "despertable": "s_lazaro", "fondo": "esc_cotoca_curiche", "pos": [900, 430],
+           "requiere": {"nodo": "c5"},
+           "dialogo_antes": [["Lázaro Consola", "Yo controlo cada parlante de esta laguna. Aquí suena lo que yo diga."]]},
+          {"id": "c7", "nombre": "Líder: Aruma", "tipo": "lider", "nivel": 7, "fuerza": 0.95, "fuerza_hp": 1.3,
+           "enemigos": ["l_aruma", "e_tamborero", "e_corista"], "despertable": "l_aruma", "fondo": "esc_cotoca_laguna", "pos": [1030, 560],
+           "requiere": {"nodo": "c6"},
+           "dialogo_antes": [["Aruma", "¿Un músico que despierta a los caídos? El Jichi no perdona a quien agita sus aguas."], ["Aruma", "Si quieres llegar a él, primero tendrás que callar mi voz."]],
+           "dialogo_despues": [["Aruma", "Algo me arrancaba la voz desde adentro... ahora vuelvo a sentirla."], ["Aruma", "El Jichi está furioso. Alguien lo despertó a la fuerza antes que tú."]]},
+          {"id": "c8", "nombre": "Jefe: Jichi Ancestral", "tipo": "jefe", "nivel": 9, "fuerza": 1.3, "fuerza_hp": 1.0,
+           "enemigos": ["j_jichi"], "despertable": "j_jichi", "fondo": "esc_cotoca_jichi", "pos": [1140, 300],
+           "requiere": {"nodo": "c7", "nivel": 6, "totales": {"ejercicio": 5}},
+           "dialogo_antes": [["Narrador", "La laguna hierve. Una cola de escamas negras rompe el agua."], ["Jichi Ancestral", "Otro despertador... El último que vino me obligó a obedecer. A ti no te obedeceré."]],
+           "dialogo_despues": [["Silvano Roca", "Lo lograste. Cotoca vuelve a sonar como antes."], ["Silvano Roca", "Pero esto no termina aquí: La Guardia te espera. (Disponible en la próxima versión)"]]},
+          {"id": "cs", "nombre": "Secreto: Laguna Escondida", "tipo": "secreto", "nivel": 6, "fuerza": 1.0,
+           "enemigos": ["e_vientista", "e_corista"], "despertable": "e_corista", "fondo": "esc_cotoca_laguna", "pos": [300, 230],
+           "requiere": {"nodo": "c3", "racha": 3},
+           "dialogo_antes": [["Narrador", "Tu constancia abrió un sendero oculto entre los juncos..."]]}
+        ]
+      },
+      {"id": "la_guardia", "nombre": "La Guardia", "banda": "Los Cambas Punk", "estilo": "Punk", "disponible": false, "pos": [640, 470], "bloqueo": "Vence al Jichi Ancestral (próxima versión)"},
+      {"id": "warnes", "nombre": "Warnes", "banda": "Los Jaguares del Metal", "estilo": "Heavy metal", "disponible": false, "pos": [600, 220], "bloqueo": "Próxima versión"},
+      {"id": "montero", "nombre": "Montero", "banda": "Los Surazos del Thrash", "estilo": "Thrash metal", "disponible": false, "pos": [520, 120], "bloqueo": "Próxima versión"},
+      {"id": "portachuelo", "nombre": "Portachuelo", "banda": "La Legión del Tajibo", "estilo": "Metal épico", "disponible": false, "pos": [340, 150], "bloqueo": "Próxima versión"}
+    ]
+  }
+}

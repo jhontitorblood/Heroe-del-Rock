@@ -1,0 +1,49 @@
+name: Compilar APK
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: "4.3"
+
+jobs:
+  apk:
+    name: APK Android (debug)
+    runs-on: ubuntu-22.04
+    container:
+      image: barichello/godot-ci:4.3
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Preparar Godot (plantillas y ajustes de Android)
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/ ~/.config/
+          cp -r /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable ~/.local/share/godot/export_templates/ || true
+          cp -r /root/.config/godot ~/.config/ || true
+          ls ~/.config/godot || true
+
+      - name: Importar recursos
+        run: godot --headless --verbose --import || godot --headless --editor --quit || true
+
+      - name: Prueba automática (recorre pantallas y juega Cotoca)
+        run: |
+          godot --headless res://tests/prueba_pantallas.tscn 2>&1 | tee prueba.log
+          if grep -q "FALLO\|SCRIPT ERROR" prueba.log; then echo "La prueba encontró errores"; exit 1; fi
+          grep -q "FIN DE LA PRUEBA" prueba.log
+
+      - name: Exportar APK
+        run: |
+          mkdir -v -p build
+          godot --headless --verbose --export-debug "Android" build/heroe-del-rock.apk
+          ls -la build
+
+      - name: Subir APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: heroe-del-rock-apk
+          path: build/heroe-del-rock.apk
+          if-no-files-found: error
