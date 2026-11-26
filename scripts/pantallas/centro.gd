@@ -32,10 +32,44 @@ func _ready() -> void:
 	_perfil()
 	for o in opciones:
 		_opcion(o[0], o[1], Vector2(o[2], o[3]), o[4])
-	var ver := _texto("VERSIÓN 0.2 · BETA DE COTOCA", 22, ROJO, Color.BLACK, 6)
-	ver.position = Vector2(640, 668)
+	_pista()
+	var ver := _texto("VERSIÓN 0.2 · BETA DE COTOCA", 18, ROJO, Color.BLACK, 5)
+	ver.position = Vector2(1000, 10)
 	add_child(ver)
 	_actualizar_estado()
+
+
+## Pista guía al pie, como las de los juegos de consola.
+func _pista() -> void:
+	var pild := PanelContainer.new()
+	var est := StyleBoxFlat.new()
+	est.bg_color = Color(0.08, 0.06, 0.06, 0.85)
+	est.border_color = Color("#b8b0a0")
+	est.set_border_width_all(3)
+	est.set_corner_radius_all(22)
+	est.content_margin_left = 22
+	est.content_margin_right = 22
+	est.content_margin_top = 4
+	est.content_margin_bottom = 4
+	pild.add_theme_stylebox_override("panel", est)
+	var h := HBoxContainer.new()
+	h.add_theme_constant_override("separation", 10)
+	pild.add_child(h)
+	var punto := Panel.new()
+	var ep := StyleBoxFlat.new()
+	ep.bg_color = ROJO
+	ep.set_corner_radius_all(9)
+	punto.add_theme_stylebox_override("panel", ep)
+	punto.custom_minimum_size = Vector2(18, 18)
+	punto.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	h.add_child(punto)
+	h.add_child(_texto("TOCA UNA OPCIÓN", 26, HUESO, Color.BLACK, 6))
+	add_child(pild)
+	pild.reset_size()
+	pild.position = Vector2(830 - pild.size.x / 2.0, 652)
+	var tw := punto.create_tween().set_loops()
+	tw.tween_property(punto, "modulate:a", 0.3, 0.7)
+	tw.tween_property(punto, "modulate:a", 1.0, 0.7)
 
 
 func _texto(t: String, tam: int, color: Color, borde: Color, grosor: int) -> Label:

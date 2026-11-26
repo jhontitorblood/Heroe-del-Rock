@@ -515,3 +515,28 @@ func _mejor_objetivo(u: Unidad, id: String) -> Unidad:
 
 func _puntaje(u: Unidad, t: Unidad) -> float:
 	return (1.0 - float(t.hp) / t.hp_max) + (Datos.multiplicador_afinidad(u.genero, t.genero) - 1.0) * 2.0 + randf() * 0.3
+
+
+# ---------------------------------------------------------------------
+# Orden de turnos (para la barra superior)
+# ---------------------------------------------------------------------
+
+## Próximos combatientes: [[unidad, es_ronda_siguiente], ...]
+func orden_proximo(cant: int) -> Array:
+	var r := []
+	var vistos := []
+	if actual != null and actual.vivo():
+		r.append([actual, false])
+		vistos.append(actual)
+	for u in adelantados + cola:
+		if u.vivo() and not u in vistos:
+			r.append([u, false])
+			vistos.append(u)
+	var sig := unidades.filter(func(x): return x.vivo())
+	sig.sort_custom(func(a, b): return a.vel() > b.vel())
+	while r.size() < cant and not sig.is_empty():
+		for u in sig:
+			r.append([u, true])
+			if r.size() >= cant:
+				break
+	return r.slice(0, cant)

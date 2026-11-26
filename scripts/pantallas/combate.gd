@@ -15,6 +15,8 @@ var barra_banda: ProgressBar
 var btn_usar: Button
 var btn_auto: Button
 var seleccion := ""
+var orden_box: HBoxContainer
+var ultimo_actor = null
 
 # Formaciones (x, y de los pies) según cantidad de combatientes por lado; los enemigos se reflejan
 const FORMACIONES := {
@@ -25,6 +27,94 @@ const FORMACIONES := {
 	5: [[0.07, 0.28], [0.21, 0.44], [0.35, 0.60], [0.07, 0.74], [0.21, 0.90]],
 }
 const TAM_SPRITE := {1: 210, 2: 185, 3: 155, 4: 135, 5: 125}
+
+
+## Efecto de impacto dibujado a mano, distinto para cada clase musical.
+class EfectoGolpe extends Control:
+	const DURACION := 0.55
+	var tipo := "guitarrista"
+	var t := 0.0
+	var semilla := randi()
+
+	func _ready() -> void:
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
+		z_index = 5
+
+	func _process(delta: float) -> void:
+		t += delta
+		if t >= DURACION:
+			queue_free()
+		else:
+			queue_redraw()
+
+	func _draw() -> void:
+		var p := t / DURACION
+		var a := 1.0 - p
+		var c := size * Vector2(0.5, 0.45)
+		var r := size.x * 0.5
+		var rng := RandomNumberGenerator.new()
+		rng.seed = semilla
+		match tipo:
+			"guitarrista", "charanguista":
+				# Chispas que saltan hacia afuera
+				for i in 12:
+					var ang := rng.randf() * TAU
+					var largo := r * (0.15 + 0.15 * rng.randf())
+					var d0 := r * (0.1 + 0.7 * p)
+					var dir := Vector2(cos(ang), sin(ang))
+					var col := Color("#ffd23a") if i % 2 == 0 else Color("#ff6a2a")
+					draw_line(c + dir * d0, c + dir * (d0 + largo), Color(col, a), 4.0, true)
+			"bajista":
+				# Ondas graves que se expanden
+				for i in 3:
+					var pr := clampf(p * 1.4 - i * 0.2, 0.0, 1.0)
+					if pr > 0:
+						draw_arc(c, r * 0.15 + r * 0.6 * pr, 0, TAU, 40, Color(Color("#4a8bff"), (1.0 - pr) * a), 6.0, true)
+			"baterista":
+				# Golpe seco: estrella de impacto y aro
+				var pts := PackedVector2Array()
+				for i in 16:
+					var ang2 := TAU * i / 16.0
+					var rr := (r * 0.45 if i % 2 == 0 else r * 0.2) * (0.6 + 0.6 * p)
+					pts.append(c + Vector2(cos(ang2), sin(ang2)) * rr)
+				draw_colored_polygon(pts, Color(Color("#ffe07a"), a * 0.85))
+				draw_arc(c, r * (0.3 + 0.5 * p), 0, TAU, 40, Color(Color("#ffb02e"), a), 5.0, true)
+			"vocalista", "corista":
+				# Notas musicales que suben
+				for i in 5:
+					var x := c.x + (rng.randf() - 0.5) * r * 1.2
+					var y := c.y + r * 0.3 - p * r * (0.6 + 0.5 * rng.randf())
+					var col2 := Color(Color("#ff7ad9") if i % 2 == 0 else Color("#ffffff"), a)
+					draw_circle(Vector2(x, y), 7.0, col2)
+					draw_line(Vector2(x + 6, y), Vector2(x + 6, y - 24), col2, 3.0)
+					draw_line(Vector2(x + 6, y - 24), Vector2(x + 16, y - 18), col2, 3.0)
+			"tecladista":
+				# Fallas digitales: cuadros que parpadean
+				for i in 14:
+					var q := Vector2((rng.randf() - 0.5) * r * 1.3, (rng.randf() - 0.5) * r * 1.3) * (0.5 + p)
+					var lado := 6.0 + rng.randf() * 12.0
+					if rng.randf() < 0.75:
+						draw_rect(Rect2(c + q, Vector2(lado, lado)), Color(Color("#c05cff") if i % 3 else Color("#5ef2ff"), a))
+			"ingeniero":
+				# Ondas de feedback en zigzag
+				for k in 3:
+					var y0 := c.y - r * 0.3 + k * r * 0.3
+					var pts2 := PackedVector2Array()
+					for i in 13:
+						var x2 := c.x - r * 0.6 + i * r * 0.1
+						pts2.append(Vector2(x2, y0 + (12.0 if (i + k) % 2 == 0 else -12.0) * (1.0 - p * 0.5)))
+					draw_polyline(pts2, Color(Color("#3ae8e0"), a), 3.0, true)
+			"vientista":
+				# Ráfagas de viento en espiral
+				for k in 3:
+					var base := TAU * k / 3.0 + p * 4.0
+					var pts3 := PackedVector2Array()
+					for i in 16:
+						var ang3 := base + i * 0.25
+						pts3.append(c + Vector2(cos(ang3), sin(ang3)) * (r * 0.1 + i * r * 0.03 * (0.6 + p)))
+					draw_polyline(pts3, Color(Color("#8be83a"), a), 4.0, true)
+			_:
+				draw_arc(c, r * (0.2 + 0.5 * p), 0, TAU, 32, Color(1, 1, 1, a), 5.0, true)
 
 
 ## Sombra elíptica bajo los pies: normal, turno (anillo dorado) u objetivo (anillo que late).
@@ -90,9 +180,15 @@ func _construir() -> void:
 	var top := HBoxContainer.new()
 	top.add_theme_constant_override("separation", 12)
 	v.add_child(top)
-	lbl_turno = UI.etiqueta("", 24, UI.ORO)
+	lbl_turno = UI.etiqueta("", 20, UI.ORO)
 	lbl_turno.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	lbl_turno.clip_text = true
 	top.add_child(lbl_turno)
+	# Orden de turnos: quién actúa ahora y después
+	orden_box = HBoxContainer.new()
+	orden_box.add_theme_constant_override("separation", 4)
+	orden_box.alignment = BoxContainer.ALIGNMENT_CENTER
+	top.add_child(orden_box)
 	btn_auto = UI.boton("Auto: NO", _alternar_auto, Vector2(150, 50))
 	top.add_child(btn_auto)
 	top.add_child(UI.boton("Retirarse", _retirarse, Vector2(150, 50)))
@@ -231,8 +327,40 @@ func _refrescar() -> void:
 		t["med"].value = u.medidor
 		t["nodo"].modulate = Color(1, 1, 1) if u.vivo() else Color(1, 1, 1, 0.35)
 	barra_banda.value = b.medidor_banda
+	_dibujar_orden()
 	if b.actual:
 		lbl_turno.text = "Ronda %d · Turno de %s" % [b.ronda, b.actual.nombre]
+
+
+func _dibujar_orden() -> void:
+	if orden_box == null:
+		return
+	for c in orden_box.get_children():
+		c.queue_free()
+	var primero := true
+	var separado := false
+	for par in b.orden_proximo(8):
+		var u = par[0]
+		if par[1] and not separado:
+			separado = true
+			var sep := UI.etiqueta("|", 26, UI.TENUE)
+			orden_box.add_child(sep)
+		var marco := PanelContainer.new()
+		var est := StyleBoxFlat.new()
+		est.bg_color = Color(0, 0, 0, 0.6)
+		est.border_color = UI.ORO if primero else (UI.ESPECTRAL if u.lado == Batalla.ALIADO else Color("#ff4a4a"))
+		est.set_border_width_all(3 if primero else 2)
+		est.set_corner_radius_all(8)
+		marco.add_theme_stylebox_override("panel", est)
+		var tam := 54 if primero else 42
+		var img := UI.imagen(Datos.sprite(u.imagen, u.espectral), Vector2(tam, tam))
+		img.flip_h = u.lado == Batalla.ENEMIGO
+		marco.add_child(img)
+		marco.tooltip_text = u.nombre
+		if par[1]:
+			marco.modulate = Color(1, 1, 1, 0.6)
+		orden_box.add_child(marco)
+		primero = false
 
 
 func _resaltar(validos: Array) -> void:
@@ -270,6 +398,20 @@ func _anim_accion(uid: String, id: String) -> void:
 		tw.tween_property(spr, "modulate", Color(1.4, 1.4, 1.7), 0.14)
 		tw.chain().tween_property(spr, "scale", Vector2.ONE, 0.18)
 		tw.parallel().tween_property(spr, "modulate", Color.WHITE, 0.18)
+
+
+## Efecto visual de impacto según la clase de quien ataca.
+func _efecto_golpe(uid: String, clase: String) -> void:
+	var t: Dictionary = tarjetas.get(uid, {})
+	if t.is_empty():
+		return
+	var nd: Control = t["nodo"]
+	var fx := EfectoGolpe.new()
+	fx.tipo = clase
+	var s: float = nd.size.x
+	fx.size = Vector2(s, s)
+	fx.position = nd.global_position - global_position + Vector2(0, s * 0.05)
+	add_child(fx)
 
 
 func _anim_golpe(uid: String) -> void:
@@ -421,6 +563,7 @@ func _mostrar(eventos: Array) -> void:
 				var u = b.por_uid(e["obj"])
 				lbl_info.text = "%s usa %s" % [u.nombre, e["nombre"]]
 				_anim_accion(uid, e.get("id", ""))
+				ultimo_actor = u
 				await get_tree().create_timer(0.3).timeout
 			"dano":
 				var txt := "-%d" % int(e["valor"])
@@ -428,6 +571,8 @@ func _mostrar(eventos: Array) -> void:
 					txt += "  " + String(e["nota"])
 				UI.flotante(self, txt, Color("#ff5a5a"), pos)
 				_anim_golpe(uid)
+				if ultimo_actor != null and String(e.get("nota", "")) != "Quemadura":
+					_efecto_golpe(uid, ultimo_actor.clase)
 			"cura":
 				UI.flotante(self, "+%d" % int(e["valor"]), Color("#5aff8a"), pos)
 				_anim_brillo(uid, Color(0.6, 1.6, 0.7))
