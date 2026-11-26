@@ -8,6 +8,7 @@ var main: Control
 func _ready() -> void:
 	DirAccess.remove_absolute("user://partida.json")
 	Engine.time_scale = 20.0
+	seed(20261126)
 	main = load("res://scenes/main.tscn").instantiate()
 	add_child(main)
 	await _esperar(5)
@@ -31,7 +32,14 @@ func _ready() -> void:
 	Estado.d["energia"] = 200
 	Estado.d["nivel"] = 1
 	for nodo in ["c1", "c2", "c3", "c4", "c5", "c6", "c7"]:
-		await _combate_auto(nodo)
+		for intento in 3:
+			await _combate_auto(nodo)
+			Estado.d["desafinado_hasta"] = 0
+			Estado.curar_equipo(1.0)
+			if Estado.nodo_vencido(nodo):
+				break
+			# Si la IA pierde, sube un nivel (como haría el jugador entrenando) y reintenta
+			Estado.d["nivel"] = int(Estado.d["nivel"]) + 1
 		print("  ", nodo, " vencido=", Estado.nodo_vencido(nodo), " nivel=", Estado.d["nivel"], " seguidores=", Estado.d["seguidores"].size(), " equipo=", Estado.d["equipo"], " tam=", Estado.d["tam_equipo"])
 		Estado.d["desafinado_hasta"] = 0
 		Estado.curar_equipo(1.0)
@@ -43,8 +51,14 @@ func _ready() -> void:
 		Estado.registrar_ejercicio_extra()
 	Estado.d["nivel"] = max(6, int(Estado.d["nivel"]))
 	_ok("jefe desbloqueado", Estado.bloqueo_nodo(n8) == "")
-	await _combate_auto("c8")
-	print("  jefe vencido=", Estado.nodo_vencido("c8"))
+	for intento in 3:
+		await _combate_auto("c8")
+		Estado.d["desafinado_hasta"] = 0
+		Estado.curar_equipo(1.0)
+		if Estado.nodo_vencido("c8"):
+			break
+		Estado.d["nivel"] = int(Estado.d["nivel"]) + 1
+	_ok("jefe vencido", Estado.nodo_vencido("c8"))
 	# Derrota y desafinados
 	Estado.aplicar_derrota()
 	_ok("desafinado", Estado.esta_desafinado())
@@ -59,7 +73,22 @@ func _ready() -> void:
 	get_tree().quit()
 
 
+func _mejor_escuadron() -> void:
+	# Como haría un jugador: lleva a los seguidores de mayor rareza y nivel
+	var orden := ["comun", "raro", "epico", "legendario", "mitico"]
+	var lista: Array = Estado.d["seguidores"].duplicate()
+	lista.sort_custom(func(a, b):
+		var ra := orden.find(Datos.personaje(a["base_id"])["rareza"]) * 100 + int(a["nivel"])
+		var rb := orden.find(Datos.personaje(b["base_id"])["rareza"]) * 100 + int(b["nivel"])
+		return ra > rb)
+	Estado.d["equipo"] = []
+	for s in lista:
+		if Estado.d["equipo"].size() < int(Estado.d["tam_equipo"]) - 1:
+			Estado.d["equipo"].append(s["uid"])
+
+
 func _combate_auto(nodo: String) -> void:
+	_mejor_escuadron()
 	Estado.ir("combate", {"zona": "cotoca", "nodo": nodo})
 	await _esperar(3)
 	var c = main.actual
