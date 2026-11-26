@@ -139,3 +139,16 @@ func textura(carpeta: String, nombre: String) -> Texture2D:
 
 func sprite(imagen: String, espectral: bool) -> Texture2D:
 	return textura("personajes", "pj_%s_%s" % [imagen, "espectral" if espectral else "normal"])
+
+
+## Cuadros de una animación: assets/animaciones/<nombre>/0001.png, 0002.png, ...
+func animacion(nombre: String) -> Array:
+	var cuadros := []
+	var i := 1
+	while i < 1000:
+		var ruta := "res://assets/animaciones/%s/%04d.png" % [nombre, i]
+		if not ResourceLoader.exists(ruta):
+			break
+		cuadros.append(load(ruta))
+		i += 1
+	return cuadros

@@ -7,14 +7,14 @@ on:
   workflow_dispatch:
 
 env:
-  GODOT_VERSION: "4.3"
+  GODOT_VERSION: "4.6.1"
 
 jobs:
   apk:
     name: APK Android (debug)
     runs-on: ubuntu-22.04
     container:
-      image: barichello/godot-ci:4.3
+      image: barichello/godot-ci:4.6.1
     steps:
       - name: Descargar código
         uses: actions/checkout@v4

@@ -8,9 +8,13 @@ var cat_nueva: OptionButton
 var cats: Array = []
 
 
+func es_vertical() -> bool:
+	return true
+
+
 func _ready() -> void:
 	Estado.revisar_dia()
-	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando"), 0.7)
+	UI.fondo(self, Datos.textura("escenarios", "esc_centro_mando_vertical"), 0.7)
 	var m := UI.margen(self, 20)
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 10)
@@ -20,10 +24,8 @@ func _ready() -> void:
 	var p := UI.panel()
 	p.add_child(resumen)
 	v.add_child(p)
-	var fila_extra := HBoxContainer.new()
-	fila_extra.add_theme_constant_override("separation", 10)
-	fila_extra.add_child(UI.boton("+ Ejercicio extra (−1 min de Desafinados)", _extra, Vector2(0, 56)))
-	v.add_child(fila_extra)
+	var b_extra := UI.boton("+ Ejercicio extra (−1 min de Desafinados)", _extra, Vector2(0, 56))
+	v.add_child(b_extra)
 	var sc := ScrollContainer.new()
 	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -32,17 +34,18 @@ func _ready() -> void:
 	lista.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	lista.add_theme_constant_override("separation", 6)
 	sc.add_child(lista)
-	# Nueva tarea
-	var nueva := HBoxContainer.new()
-	nueva.add_theme_constant_override("separation", 10)
+	# Nueva tarea (dos filas para caber en vertical)
 	nombre_nueva = LineEdit.new()
 	nombre_nueva.placeholder_text = "Nueva tarea (ej.: 30 sentadillas)"
 	nombre_nueva.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	nombre_nueva.custom_minimum_size = Vector2(0, 56)
 	nombre_nueva.max_length = 50
-	nueva.add_child(nombre_nueva)
+	v.add_child(nombre_nueva)
+	var nueva := HBoxContainer.new()
+	nueva.add_theme_constant_override("separation", 10)
 	cat_nueva = OptionButton.new()
 	cat_nueva.custom_minimum_size = Vector2(260, 56)
+	cat_nueva.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	for c in Datos.tareas["categorias"]:
 		cats.append(c)
 		cat_nueva.add_item(Datos.tareas["categorias"][c]["nombre"])
@@ -70,14 +73,14 @@ func _refrescar() -> void:
 		c.queue_free()
 	for cat in Datos.tareas["categorias"]:
 		var ci: Dictionary = Datos.tareas["categorias"][cat]
-		lista.add_child(UI.etiqueta("%s  —  %s" % [ci["nombre"], ci["efecto"]], 20, UI.ORO))
+		lista.add_child(UI.etiqueta("%s  —  %s" % [ci["nombre"], ci["efecto"]], 20, UI.ORO, true))
 		for t in d["tareas"]:
 			if t["categoria"] != cat:
 				continue
 			var h := HBoxContainer.new()
 			h.add_theme_constant_override("separation", 10)
 			var hecha := Estado.tarea_hecha_hoy(t["id"])
-			var l := UI.etiqueta(("[Hecha] " if hecha else "") + t["nombre"], 20, UI.TENUE if hecha else UI.TEXTO)
+			var l := UI.etiqueta(("[Hecha] " if hecha else "") + t["nombre"], 20, UI.TENUE if hecha else UI.TEXTO, true)
 			l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			h.add_child(l)
 			var b := UI.boton("¡Hecho!", _registrar.bind(t["id"]), Vector2(150, 52))

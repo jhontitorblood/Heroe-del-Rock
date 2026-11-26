@@ -46,8 +46,8 @@ def hex_rgb(h):
     return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
 
 
-def silueta(color, instrumento, semilla, femenino=False, monstruo=False):
-    """Figura de 256x256 con fondo transparente."""
+def silueta(color, instrumento, semilla, femenino=False, monstruo=False, tam=256, brazo=None):
+    """Figura con fondo transparente (256x256 por defecto). brazo=0..1 levanta la mano con la señal de rock."""
     random.seed(semilla)
     s = 512  # se dibuja al doble y se reduce (bordes suaves)
     im = Image.new("RGBA", (s, s), (0, 0, 0, 0))
@@ -119,7 +119,22 @@ def silueta(color, instrumento, semilla, femenino=False, monstruo=False):
             d.line([(270, 160), (420, 230)], fill=(170, 120, 60, 255), width=16)
             for i in range(4):
                 d.ellipse([300 + i * 28, 168 + i * 13, 310 + i * 28, 178 + i * 13], fill=o)
-    im = im.resize((256, 256), Image.LANCZOS)
+    if brazo is not None:
+        piel = (240, 205, 170, 255)
+        hx = 380 + 30 * brazo
+        hy = 330 - 190 * brazo
+        d.line([(330, 250), (hx, hy)], fill=c, width=34)
+        d.ellipse([hx - 26, hy - 26, hx + 26, hy + 26], fill=piel, outline=oscuro, width=4)
+        if brazo > 0.6:
+            # Índice y meñique arriba: la señal de rock
+            d.rounded_rectangle([hx - 24, hy - 78, hx - 10, hy - 14], 6, fill=piel, outline=oscuro, width=3)
+            d.rounded_rectangle([hx + 10, hy - 70, hx + 24, hy - 14], 6, fill=piel, outline=oscuro, width=3)
+            for k in range(3):
+                ang = random.uniform(0, math.tau)
+                rx, ry = hx + math.cos(ang) * 95, hy - 40 + math.sin(ang) * 60
+                d.line([(rx - 10, ry), (rx + 10, ry)], fill=(255, 210, 60, 255), width=5)
+                d.line([(rx, ry - 10), (rx, ry + 10)], fill=(255, 210, 60, 255), width=5)
+    im = im.resize((tam, tam), Image.LANCZOS)
     return im
 
 
@@ -137,8 +152,7 @@ def espectral(img):
     return out
 
 
-def escenario(nombre, arriba, abajo, tipo):
-    w, h = 1280, 720
+def escenario(nombre, arriba, abajo, tipo, w=1280, h=720):
     im = Image.new("RGB", (w, h))
     d = ImageDraw.Draw(im)
     for y in range(h):
@@ -248,7 +262,6 @@ def main():
         guardar(normal, "personajes", "pj_%s_normal" % img_id)
         guardar(espectral(normal), "personajes", "pj_%s_espectral" % img_id)
     esc = {
-        "esc_titulo": ((60, 10, 40), (10, 5, 20), "escenario"),
         "esc_centro_mando": ((30, 15, 50), (10, 5, 15), "sala"),
         "esc_sala_ensayo": ((50, 25, 20), (15, 10, 10), "sala"),
         "esc_cotoca_pueblo": ((250, 150, 80), (80, 40, 60), "pueblo"),
@@ -263,6 +276,28 @@ def main():
     for z in sc["zonas"]:
         if z.get("mapa"):
             guardar(mapa_zona(z["id"], z.get("nodos", [])), "mapas", z["mapa"])
+    # Pantalla de inicio y selección
+    ini = escenario("esc_inicio", (70, 10, 40), (10, 5, 20), "escenario")
+    d = ImageDraw.Draw(ini)
+    d.text((640, 300), "HÉROE DEL ROCK", font=fuente(110), fill=(255, 58, 94), anchor="mm", stroke_width=8, stroke_fill=(0, 0, 0))
+    d.text((640, 400), "imagen provisional · assets/escenarios/esc_inicio.png", font=fuente(26), fill=(255, 210, 60), anchor="mm")
+    guardar(ini, "escenarios", "esc_inicio")
+    guardar(escenario("esc_centro_mando_vertical", (30, 15, 50), (10, 5, 15), "sala", 720, 1280), "escenarios", "esc_centro_mando_vertical")
+    guardar(escenario("esc_seleccion", (40, 15, 60), (10, 5, 20), "escenario"), "escenarios", "esc_seleccion")
+    # Logo del menú principal (1000x300, transparente)
+    logo = Image.new("RGBA", (1000, 300), (0, 0, 0, 0))
+    d = ImageDraw.Draw(logo)
+    d.polygon([(40, 150), (120, 40), (880, 40), (960, 150), (880, 260), (120, 260)], fill=(30, 12, 40, 230), outline=(255, 210, 60, 255), width=8)
+    d.text((500, 150), "HÉROE DEL ROCK", font=fuente(96), fill=(255, 58, 94), anchor="mm", stroke_width=6, stroke_fill=(0, 0, 0))
+    guardar(logo, "ui", "logo")
+    # Protagonistas: imagen fija de selección y animación de la señal de rock
+    for g in ("m", "f"):
+        color = hex_rgb(clases["guitarrista"]["color"])
+        guardar(silueta(color, "guitarrista", "protagonista_" + g, femenino=(g == "f"), tam=512), "personajes", "seleccion_protagonista_" + g)
+        pasos = [0.0, 0.3, 0.6, 0.85, 1.0, 0.95, 1.0, 0.95]
+        for i, b in enumerate(pasos):
+            cuadro = silueta(color, "guitarrista", "protagonista_%s_%d" % (g, i), femenino=(g == "f"), tam=512, brazo=b)
+            guardar(cuadro, os.path.join("animaciones", "protagonista_%s_rock" % g), "%04d" % (i + 1))
     ruta_icono = os.path.join(RAIZ, "icon.png")
     if not os.path.exists(ruta_icono) or Image.open(ruta_icono).info.get("origen") == MARCA:
         meta = PngInfo()

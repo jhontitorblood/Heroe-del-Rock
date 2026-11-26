@@ -4,7 +4,33 @@ Todas las imágenes actuales son **provisionales**. Para poner el arte final, re
 
 `tools/generar_placeholders.py` no sobrescribe una imagen que ya sea arte final.
 
-## Personajes — `assets/personajes/` — 256 × 256 px, fondo transparente
+## Entrada del juego
+
+| Archivo | Uso | Formato y medida |
+| --- | --- | --- |
+| `assets/video/intro.ogv` | Video al abrir la app (se salta tocando 2 veces) | **Ogg Theora (.ogv)**, horizontal, 1280 × 720 |
+| `assets/escenarios/esc_inicio.png` | Pantalla de inicio con el nombre del juego ("Toca para comenzar" lo agrega el juego) | PNG, 1280 × 720 |
+| `assets/escenarios/esc_seleccion.png` | Fondo de la selección de personaje | PNG, 1280 × 720 |
+| `assets/personajes/seleccion_protagonista_m.png` | Imagen fija del protagonista masculino en la selección | PNG transparente, 512 × 512 |
+| `assets/personajes/seleccion_protagonista_f.png` | Imagen fija de la protagonista femenina en la selección | PNG transparente, 512 × 512 |
+| `assets/animaciones/protagonista_m_rock/0001.png`, `0002.png`, ... | Animación "señal de rock" masculina (reemplaza al GIF) | Cuadros PNG numerados, 512 × 512 |
+| `assets/animaciones/protagonista_f_rock/0001.png`, `0002.png`, ... | Animación "señal de rock" femenina | Cuadros PNG numerados, 512 × 512 |
+
+**Video:** si tu video es .mp4, conviértelo a .ogv. Con ffmpeg:
+`ffmpeg -i video.mp4 -c:v libtheora -q:v 7 -c:a libvorbis -q:a 5 intro.ogv`
+
+**GIF → cuadros:** Godot no reproduce GIF. Sepáralo en cuadros (por ejemplo en ezgif.com, opción "Split GIF"), renómbralos `0001.png`, `0002.png`, ... y súbelos a la carpeta. Se reproducen a 12 cuadros por segundo; puedes subir la cantidad de cuadros que quieras. Borra los cuadros de ejemplo que sobren.
+
+Las imágenes fijas de selección también se usan en el menú principal mientras el jugador no elija una foto propia.
+
+## Menú principal (vertical)
+
+| Archivo | Uso | Medida |
+| --- | --- | --- |
+| `assets/ui/logo.png` | Logo en la parte superior del menú principal | PNG transparente, 1000 × 300 |
+| `assets/escenarios/esc_centro_mando_vertical.png` | Fondo del menú principal, Equipo, Archivo y Tareas reales | PNG, 720 × 1280 |
+
+## Personajes en combate — `assets/personajes/` — 256 × 256 px, fondo transparente
 
 Cada personaje tiene dos versiones:
 
@@ -33,8 +59,7 @@ Los enemigos se muestran volteados horizontalmente: dibújalos mirando a la dere
 
 | Archivo | Uso |
 | --- | --- |
-| `esc_titulo.png` | Pantalla de título y creación |
-| `esc_centro_mando.png` | Centro de Mando y menús |
+| `esc_centro_mando.png` | Escuadrón (horizontal) |
 | `esc_sala_ensayo.png` | Sala de Ensayo |
 | `esc_cotoca_pueblo.png` | Combates en el pueblo |
 | `esc_cotoca_laguna.png` | Combates en la laguna |

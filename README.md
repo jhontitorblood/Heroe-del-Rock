@@ -2,7 +2,7 @@
 
 RPG táctico por turnos para Android, ambientado en Bolivia, donde el progreso nace de **tareas reales**: ejercicio, práctica de instrumento, tareas de la casa y trabajo o estudio.
 
-**Versión 0.1.0: beta de Cotoca.** Arte provisional.
+**Versión 0.2.0: beta de Cotoca.** Arte provisional. Hecho con Godot 4.6.1.
 
 ## Descargar e instalar el APK
 
@@ -15,7 +15,10 @@ Es un APK de prueba (debug). No necesita internet y guarda la partida en el prop
 
 ## Qué incluye la beta
 
+- Video de entrada (se salta tocando 2 veces), pantalla de inicio "Toca para comenzar" y selección de personaje con animación de la señal de rock.
 - Creación de personaje (masculino o femenino) con nombre propio.
+- **Orientación por pantalla:** el menú principal, Equipo, Archivo y Tareas reales van en vertical; el resto (incluido el combate) en horizontal.
+- **Foto del protagonista:** el jugador puede usar una foto de su galería en el menú principal.
 - **Centro de Mando:** Campaña, Mapa, Escuadrón, Equipo, Archivo, Tareas reales y Sala de Ensayo.
 - **Cotoca completo:** 7 combates (con 2 sublíderes y la líder Aruma), el jefe Jichi Ancestral y una zona secreta que se abre con una racha de 3 días.
 - **Combate por turnos:** una acción por combatiente cada ronda, orden por velocidad, selección de objetivo, 9 clases musicales, afinidades de género, sinergias en ataques conjuntos, definitivas individuales y de banda, resurrección y modo automático.
@@ -46,7 +49,7 @@ Consulta [`docs/ASSETS.md`](docs/ASSETS.md). Cada imagen final debe tener **el m
 
 ## Compilar en tu computadora
 
-Necesitas Godot 4.3 con las plantillas de exportación para Android. Abre el proyecto y usa *Proyecto → Exportar → Android*.
+Necesitas Godot 4.6.1 con las plantillas de exportación para Android. Abre el proyecto y usa *Proyecto → Exportar → Android*.
 
 Las pruebas automáticas se ejecutan así:
 

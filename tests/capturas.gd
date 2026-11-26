@@ -9,9 +9,19 @@ func _ready() -> void:
 	DirAccess.remove_absolute("user://partida.json")
 	main = load("res://scenes/main.tscn").instantiate()
 	add_child(main)
-	await _foto("01_titulo")
+	await _foto("00_intro")
+	main.actual._salir()
+	await _foto("01_inicio")
 	Estado.ir("creacion")
 	await _foto("02_creacion")
+	var cr = main.actual
+	cr._elegir("f")
+	cr.nombre_edit.text = "Joser"
+	await _foto("02b_creacion_elegida")
+	cr._aceptar()
+	for i in 25:
+		await get_tree().process_frame
+	await _foto("02c_creacion_rock")
 	Estado.nueva_partida("m", "Joser")
 	for t in ["t_flexiones", "t_instrumento", "t_ordenar"]:
 		Estado.registrar_tarea(t)
@@ -56,7 +66,12 @@ func _ready() -> void:
 
 
 func _foto(nombre: String) -> void:
+	# Cada ejecución captura solo una orientación (la ventana de prueba no gira sola):
+	#   -- vertical   → solo pantallas verticales;  sin argumento → solo horizontales
+	var quiero_vertical := "vertical" in OS.get_cmdline_user_args()
 	for i in 20:
 		await get_tree().process_frame
 	await RenderingServer.frame_post_draw
+	if main.vertical_actual != quiero_vertical:
+		return
 	get_viewport().get_texture().get_image().save_png("/tmp/capturas/%s.png" % nombre)

@@ -105,7 +105,45 @@ func guardar() -> void:
 func borrar_partida() -> void:
 	if hay_partida():
 		DirAccess.remove_absolute(RUTA)
+	if FileAccess.file_exists(RUTA_FOTO):
+		DirAccess.remove_absolute(RUTA_FOTO)
 	d = {}
+
+
+# =====================================================================
+# Foto del protagonista (elegida por el jugador)
+# =====================================================================
+
+const RUTA_FOTO := "user://foto_protagonista.png"
+
+
+## Foto elegida por el jugador, o la imagen del protagonista si no hay foto.
+func textura_protagonista() -> Texture2D:
+	if FileAccess.file_exists(RUTA_FOTO):
+		var img := Image.load_from_file(RUTA_FOTO)
+		if img:
+			return ImageTexture.create_from_image(img)
+	var g: String = d.get("protagonista", {}).get("genero", "m")
+	var t := Datos.textura("personajes", "seleccion_protagonista_" + g)
+	return t if t else Datos.sprite("protagonista_" + g, false)
+
+
+## Copia una foto al juego (recortada en cuadrado de 512 px). Devuelve "" o el error.
+func guardar_foto(ruta: String) -> String:
+	var img := Image.load_from_file(ruta)
+	if img == null or img.is_empty():
+		return "No se pudo abrir esa imagen. Prueba con una foto JPG o PNG."
+	var lado: int = min(img.get_width(), img.get_height())
+	img = img.get_region(Rect2i((img.get_width() - lado) / 2, (img.get_height() - lado) / 2, lado, lado))
+	img.resize(512, 512, Image.INTERPOLATE_LANCZOS)
+	if img.save_png(RUTA_FOTO) != OK:
+		return "No se pudo guardar la foto."
+	return ""
+
+
+func quitar_foto() -> void:
+	if FileAccess.file_exists(RUTA_FOTO):
+		DirAccess.remove_absolute(RUTA_FOTO)
 
 
 func nombre_jugador() -> String:

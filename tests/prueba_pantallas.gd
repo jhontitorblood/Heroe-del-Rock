@@ -12,14 +12,24 @@ func _ready() -> void:
 	main = load("res://scenes/main.tscn").instantiate()
 	add_child(main)
 	await _esperar(5)
+	_ok("intro (video)", main.nombre_actual == "intro")
+	_ok("intro horizontal", not main.vertical_actual)
+	main.actual._salir()
+	await _esperar(5)
 	_ok("titulo", main.nombre_actual == "titulo")
 	Estado.ir("creacion")
 	await _esperar(5)
+	_ok("animacion de rock", Datos.animacion("protagonista_m_rock").size() == 8)
 	Estado.nueva_partida("f", "Prueba")
-	for p in ["centro", "campana", "escuadron", "equipo", "archivo", "tareas", "ensayo"]:
-		Estado.ir(p)
+	var verticales := ["centro", "equipo", "archivo", "tareas"]
+	for p in ["centro", "campana", "mapa", "escuadron", "equipo", "archivo", "tareas", "ensayo"]:
+		Estado.ir(p, {"zona": "cotoca"})
 		await _esperar(4)
 		_ok(p, main.nombre_actual == p)
+		_ok(p + (" vertical" if p in verticales else " horizontal"), main.vertical_actual == (p in verticales))
+	# Foto del protagonista: se copia y recorta en cuadrado
+	_ok("foto guardada", Estado.guardar_foto("res://icon.png") == "" or Estado.guardar_foto(ProjectSettings.globalize_path("res://icon.png")) == "")
+	Estado.quitar_foto()
 	Estado.ir("mapa", {"zona": "cotoca"})
 	await _esperar(4)
 	# Tareas reales: cadena completa
