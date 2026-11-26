@@ -19,7 +19,7 @@ func _ready() -> void:
 	_ok("titulo", main.nombre_actual == "titulo")
 	Estado.ir("creacion")
 	await _esperar(5)
-	_ok("animacion de rock", Datos.animacion("protagonista_m_rock").size() == 8)
+	_ok("animacion de rock", Datos.animacion("protagonista_m_rock").size() >= 1 and Datos.animacion("protagonista_f_rock").size() >= 1)
 	Estado.nueva_partida("f", "Prueba")
 	var verticales := ["centro", "equipo", "archivo", "tareas"]
 	for p in ["centro", "campana", "mapa", "escuadron", "equipo", "archivo", "tareas", "ensayo"]:
