@@ -336,8 +336,13 @@ def main():
             # Arte final del usuario: las variantes provisionales salen de su dibujo
             normal = Image.open(ruta_normal).convert("RGBA").resize((256, 256), Image.LANCZOS)
         guardar(espectral(normal), "personajes", "pj_%s_espectral" % img_id)
-        pose = ataque(normal)
-        guardar(pose, "personajes", "pj_%s_normal_ataque" % img_id)
+        ruta_ataque = os.path.join(ASSETS, "personajes", "pj_%s_normal_ataque.png" % img_id)
+        if es_provisional(ruta_ataque):
+            pose = ataque(normal)
+            guardar(pose, "personajes", "pj_%s_normal_ataque" % img_id)
+        else:
+            # Pose de ataque dibujada por el usuario
+            pose = Image.open(ruta_ataque).convert("RGBA").resize((256, 256), Image.LANCZOS)
         guardar(espectral(pose), "personajes", "pj_%s_espectral_ataque" % img_id)
     esc = {
         "esc_centro_mando": ((30, 15, 50), (10, 5, 15), "sala"),
