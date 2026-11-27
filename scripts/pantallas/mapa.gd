@@ -30,74 +30,19 @@ func _ready() -> void:
 	info.add_child(UI.etiqueta("%s\nEnergía: %d   ·   Púas: %d" % [txt, int(Estado.d["energia"]), int(Estado.d["pua"])], 20))
 
 
-const TAM_ICONO := 74.0
-const FUENTE := preload("res://assets/fuentes/Bangers-Regular.ttf")
-
-
-## Punto del mapa: ícono (bloqueado, desbloqueado o vencido) sobre el marcador del arte,
-## con una etiqueta corta debajo. El desbloqueado late para indicar que se puede jugar.
+## Punto del mapa: ícono de estado sobre el marcador del arte y etiqueta corta debajo.
 func _crear_boton(n: Dictionary) -> void:
 	var en := Estado.estado_nodo(n["id"])
 	var bloqueo := Estado.bloqueo_nodo(n)
 	var secreto: bool = n["tipo"] == "secreto"
 	var estado := "bloqueado" if bloqueo != "" else ("vencido" if bool(en["vencido"]) else "desbloqueado")
 	var espera := Estado.segundos_reaparece(n["id"])
-	var centro := Vector2(n["pos"][0], n["pos"][1])
-	var raiz := Control.new()
-	raiz.position = centro
-	raiz.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	lienzo.add_child(raiz)
-	# Ícono
-	var ico := TextureRect.new()
-	ico.texture = Datos.textura("ui", "icono_" + estado)
-	ico.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	ico.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	ico.size = Vector2(TAM_ICONO, TAM_ICONO)
-	ico.position = -ico.size / 2.0
-	ico.pivot_offset = ico.size / 2.0
-	ico.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	if espera > 0:
-		ico.modulate = Color(0.5, 0.5, 0.5)
-	raiz.add_child(ico)
-	if estado == "desbloqueado" and espera == 0:
-		var tw := ico.create_tween().set_loops()
-		tw.tween_property(ico, "scale", Vector2(1.15, 1.15), 0.6).set_trans(Tween.TRANS_SINE)
-		tw.tween_property(ico, "scale", Vector2.ONE, 0.6).set_trans(Tween.TRANS_SINE)
-	# Etiqueta corta
 	var tipos := {"sublider": "SUBLÍDER · ", "lider": "LÍDER · ", "jefe": "JEFE · ", "secreto": ""}
 	var txt: String = "???" if secreto and bloqueo != "" else tipos.get(n["tipo"], "") + String(n.get("corto", n["nombre"])).to_upper()
 	txt += "  NV %d" % int(n["nivel"])
 	if espera > 0:
 		txt += "\nREAPARECE EN " + Estado.formato_tiempo(espera)
-	var et := Label.new()
-	et.text = txt
-	et.add_theme_font_override("font", FUENTE)
-	et.add_theme_font_size_override("font_size", 20)
-	et.add_theme_color_override("font_color", {"bloqueado": Color("#b8b0c0"), "desbloqueado": Color("#ece3d0"), "vencido": Color("#ffd23a")}[estado])
-	et.add_theme_color_override("font_outline_color", Color.BLACK)
-	et.add_theme_constant_override("outline_size", 7)
-	et.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	et.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var fondo_et := StyleBoxFlat.new()
-	fondo_et.bg_color = Color(0, 0, 0, 0.72)
-	fondo_et.set_corner_radius_all(8)
-	fondo_et.content_margin_left = 8
-	fondo_et.content_margin_right = 8
-	fondo_et.content_margin_top = 1
-	fondo_et.content_margin_bottom = 1
-	et.add_theme_stylebox_override("normal", fondo_et)
-	raiz.add_child(et)
-	et.reset_size()
-	et.position = Vector2(-et.size.x / 2.0, TAM_ICONO / 2.0 - 4)
-	# Zona tocable (ícono + etiqueta)
-	var b := Button.new()
-	for e in ["normal", "hover", "pressed", "focus", "disabled"]:
-		b.add_theme_stylebox_override(e, StyleBoxEmpty.new())
-	b.size = Vector2(max(TAM_ICONO, et.size.x), TAM_ICONO + et.size.y)
-	b.position = Vector2(-b.size.x / 2.0, -TAM_ICONO / 2.0)
-	b.pressed.connect(_abrir.bind(n))
-	raiz.add_child(b)
-	botones[n["id"]] = b
+	botones[n["id"]] = UI.marcador(lienzo, Vector2(n["pos"][0], n["pos"][1]), estado, txt, _abrir.bind(n), espera > 0)
 
 
 func _abrir(n: Dictionary) -> void:

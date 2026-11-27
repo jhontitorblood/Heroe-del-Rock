@@ -76,7 +76,7 @@ En combate se muestran sin recuadro, con la sombra bajo los pies: deja los pies 
 
 | Archivo | Uso |
 | --- | --- |
-| `mapa_santa_cruz.png` | Mapa de campaña de Santa Cruz (la posición de cada zona está en `data/territorios.json`) |
+| `mapa_santa_cruz.png` | Mapa de campaña de Santa Cruz, **2520 × 1440** con zona segura: Yapacaní, Portachuelo, Montero, Warnes, Cotoca y la capital. El espacio vacío de la izquierda lleva el panel de información |
 | `mapa_cotoca.png` | Mapa de la zona Cotoca, **2520 × 1440** con zona segura. Marcadores 01–08 = misiones en orden, 09 = zona secreta |
 
 ## Íconos de los puntos del mapa — `assets/ui/` — 256 × 256 px, fondo transparente

@@ -8,6 +8,8 @@ const ORO := Color("#ffd23a")
 const TEXTO := Color("#f4eefc")
 const TENUE := Color("#b9aecb")
 const ESPECTRAL := Color("#5ef2ff")
+const FUENTE_ROCK := preload("res://assets/fuentes/Bangers-Regular.ttf")
+const TAM_ICONO := 74.0
 
 
 static func crear_tema() -> Theme:
@@ -193,6 +195,58 @@ class Lienzo extends Control:
 		position = (p - BASE * k) / 2.0
 
 
+## Marcador de mapa: ícono de estado ("bloqueado", "desbloqueado", "vencido") centrado en
+## `centro`, con etiqueta corta debajo. El desbloqueado late. Devuelve el botón tocable.
+static func marcador(padre: Control, centro: Vector2, estado: String, texto: String, al_tocar: Callable, apagado := false) -> Button:
+	var raiz := Control.new()
+	raiz.position = centro
+	raiz.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	padre.add_child(raiz)
+	var ico := TextureRect.new()
+	ico.texture = Datos.textura("ui", "icono_" + estado)
+	ico.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	ico.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	ico.size = Vector2(TAM_ICONO, TAM_ICONO)
+	ico.position = -ico.size / 2.0
+	ico.pivot_offset = ico.size / 2.0
+	ico.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if apagado:
+		ico.modulate = Color(0.5, 0.5, 0.5)
+	raiz.add_child(ico)
+	if estado == "desbloqueado" and not apagado:
+		var tw := ico.create_tween().set_loops()
+		tw.tween_property(ico, "scale", Vector2(1.15, 1.15), 0.6).set_trans(Tween.TRANS_SINE)
+		tw.tween_property(ico, "scale", Vector2.ONE, 0.6).set_trans(Tween.TRANS_SINE)
+	var et := Label.new()
+	et.text = texto
+	et.add_theme_font_override("font", FUENTE_ROCK)
+	et.add_theme_font_size_override("font_size", 20)
+	et.add_theme_color_override("font_color", {"bloqueado": Color("#b8b0c0"), "desbloqueado": Color("#ece3d0"), "vencido": Color("#ffd23a")}.get(estado, TEXTO))
+	et.add_theme_color_override("font_outline_color", Color.BLACK)
+	et.add_theme_constant_override("outline_size", 7)
+	et.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	et.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var fondo_et := StyleBoxFlat.new()
+	fondo_et.bg_color = Color(0, 0, 0, 0.72)
+	fondo_et.set_corner_radius_all(8)
+	fondo_et.content_margin_left = 8
+	fondo_et.content_margin_right = 8
+	fondo_et.content_margin_top = 1
+	fondo_et.content_margin_bottom = 1
+	et.add_theme_stylebox_override("normal", fondo_et)
+	raiz.add_child(et)
+	et.reset_size()
+	et.position = Vector2(-et.size.x / 2.0, TAM_ICONO / 2.0 - 4)
+	var b := Button.new()
+	for e in ["normal", "hover", "pressed", "focus", "disabled"]:
+		b.add_theme_stylebox_override(e, StyleBoxEmpty.new())
+	b.size = Vector2(max(TAM_ICONO, et.size.x), TAM_ICONO + et.size.y)
+	b.position = Vector2(-b.size.x / 2.0, -TAM_ICONO / 2.0)
+	b.pressed.connect(al_tocar)
+	raiz.add_child(b)
+	return b
+
+
 ## Contenedor con márgenes a pantalla completa.
 static func margen(padre: Control, m := 24) -> MarginContainer:
 	var mc := MarginContainer.new()
@@ -208,6 +262,14 @@ static func encabezado(titulo: String, volver: Callable) -> HBoxContainer:
 	h.add_theme_constant_override("separation", 16)
 	h.add_child(boton("< Volver", volver, Vector2(150, 56)))
 	var l := etiqueta(titulo, 34, ORO)
+	var fondo_t := StyleBoxFlat.new()
+	fondo_t.bg_color = Color(0.05, 0.02, 0.08, 0.72)
+	fondo_t.set_corner_radius_all(10)
+	fondo_t.content_margin_left = 16
+	fondo_t.content_margin_right = 16
+	fondo_t.content_margin_top = 2
+	fondo_t.content_margin_bottom = 4
+	l.add_theme_stylebox_override("normal", fondo_t)
 	h.add_child(l)
 	return h
 
