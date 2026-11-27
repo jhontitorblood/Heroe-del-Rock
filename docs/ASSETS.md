@@ -77,7 +77,17 @@ En combate se muestran sin recuadro, con la sombra bajo los pies: deja los pies 
 | Archivo | Uso |
 | --- | --- |
 | `mapa_santa_cruz.png` | Mapa de campaña de Santa Cruz (la posición de cada zona está en `data/territorios.json`) |
-| `mapa_cotoca.png` | Mapa de la zona Cotoca (la posición de cada combate está en `data/territorios.json`) |
+| `mapa_cotoca.png` | Mapa de la zona Cotoca, **2520 × 1440** con zona segura. Marcadores 01–08 = misiones en orden, 09 = zona secreta |
+
+## Íconos de los puntos del mapa — `assets/ui/` — 256 × 256 px, fondo transparente
+
+| Archivo | Cuándo se muestra |
+| --- | --- |
+| `icono_bloqueado.png` | El punto todavía no se puede jugar |
+| `icono_desbloqueado.png` | El punto se puede jugar (late suavemente) |
+| `icono_vencido.png` | El punto ya fue vencido |
+
+Los íconos tapan los marcadores dibujados en el mapa. Las posiciones de cada punto están en `data/territorios.json` (coordenadas 1280 × 720 sobre la zona segura del mapa). Si mueves un marcador en el dibujo, avísame o cambia ahí su `pos`.
 
 ## Ícono de la app
 

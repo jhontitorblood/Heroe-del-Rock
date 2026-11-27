@@ -8,33 +8,9 @@ var botones := {}
 var lienzo: Control  # nodos y caminos sobre el arte del mapa (coordenadas 1280×720)
 
 
-class Lineas extends Control:
-	var segmentos: Array = []  # [[Vector2 a, Vector2 b, Color]]
-
-	func _draw() -> void:
-		for s in segmentos:
-			draw_line(s[0], s[1], s[2], 5.0, true)
-
-	func _notification(what: int) -> void:
-		if what == NOTIFICATION_RESIZED:
-			queue_redraw()
-
-
 func _ready() -> void:
 	zona = Datos.zona(params.get("zona", "cotoca"))
 	lienzo = UI.lienzo(self, Datos.textura("mapas", zona.get("mapa", "")))
-	var lineas := Lineas.new()
-	lineas.size = BASE
-	lineas.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	lienzo.add_child(lineas)
-	var pos := {}
-	for n in zona["nodos"]:
-		pos[n["id"]] = Vector2(n["pos"][0], n["pos"][1])
-	for n in zona["nodos"]:
-		var req: Dictionary = n.get("requiere", {})
-		if req.has("nodo") and pos.has(req["nodo"]):
-			var col := Color("#ffd23a") if Estado.nodo_vencido(req["nodo"]) else Color("#ffffff40")
-			lineas.segmentos.append([pos[req["nodo"]], pos[n["id"]], col])
 	for n in zona["nodos"]:
 		_crear_boton(n)
 
@@ -54,36 +30,73 @@ func _ready() -> void:
 	info.add_child(UI.etiqueta("%s\nEnergía: %d   ·   Púas: %d" % [txt, int(Estado.d["energia"]), int(Estado.d["pua"])], 20))
 
 
+const TAM_ICONO := 74.0
+const FUENTE := preload("res://assets/fuentes/Bangers-Regular.ttf")
+
+
+## Punto del mapa: ícono (bloqueado, desbloqueado o vencido) sobre el marcador del arte,
+## con una etiqueta corta debajo. El desbloqueado late para indicar que se puede jugar.
 func _crear_boton(n: Dictionary) -> void:
-	var b := Button.new()
 	var en := Estado.estado_nodo(n["id"])
 	var bloqueo := Estado.bloqueo_nodo(n)
 	var secreto: bool = n["tipo"] == "secreto"
-	if secreto and bloqueo != "":
-		b.text = "???\nZona secreta"
-	else:
-		var marca := "[Vencido] " if bool(en["vencido"]) else ""
-		b.text = "%s%s\nNv %d" % [marca, n["nombre"], int(n["nivel"])]
-	var colores := {"normal": Color("#2a1838"), "sublider": Color("#3b1f5c"), "lider": Color("#5c1f3b"), "jefe": Color("#7a1020"), "secreto": Color("#0f3b40")}
-	var estilo := StyleBoxFlat.new()
-	estilo.bg_color = colores.get(n["tipo"], Color("#2a1838"))
-	estilo.border_color = Color("#ffd23a") if bool(en["vencido"]) else (Color("#555") if bloqueo != "" else Color("#ff3a5e"))
-	estilo.set_border_width_all(3)
-	estilo.set_corner_radius_all(14)
-	estilo.content_margin_left = 10
-	estilo.content_margin_right = 10
-	b.add_theme_stylebox_override("normal", estilo)
-	b.add_theme_font_size_override("font_size", 18)
-	if bloqueo != "":
-		b.modulate = Color(0.75, 0.75, 0.75)
-	if Estado.segundos_reaparece(n["id"]) > 0:
-		b.text += "\nReaparece en " + Estado.formato_tiempo(Estado.segundos_reaparece(n["id"]))
-	var ancho := 210.0
-	var alto := 86.0
-	b.size = Vector2(ancho, alto)
-	b.position = Vector2(n["pos"][0], n["pos"][1]) - b.size / 2.0
+	var estado := "bloqueado" if bloqueo != "" else ("vencido" if bool(en["vencido"]) else "desbloqueado")
+	var espera := Estado.segundos_reaparece(n["id"])
+	var centro := Vector2(n["pos"][0], n["pos"][1])
+	var raiz := Control.new()
+	raiz.position = centro
+	raiz.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	lienzo.add_child(raiz)
+	# Ícono
+	var ico := TextureRect.new()
+	ico.texture = Datos.textura("ui", "icono_" + estado)
+	ico.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	ico.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	ico.size = Vector2(TAM_ICONO, TAM_ICONO)
+	ico.position = -ico.size / 2.0
+	ico.pivot_offset = ico.size / 2.0
+	ico.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	if espera > 0:
+		ico.modulate = Color(0.5, 0.5, 0.5)
+	raiz.add_child(ico)
+	if estado == "desbloqueado" and espera == 0:
+		var tw := ico.create_tween().set_loops()
+		tw.tween_property(ico, "scale", Vector2(1.15, 1.15), 0.6).set_trans(Tween.TRANS_SINE)
+		tw.tween_property(ico, "scale", Vector2.ONE, 0.6).set_trans(Tween.TRANS_SINE)
+	# Etiqueta corta
+	var tipos := {"sublider": "SUBLÍDER · ", "lider": "LÍDER · ", "jefe": "JEFE · ", "secreto": ""}
+	var txt: String = "???" if secreto and bloqueo != "" else tipos.get(n["tipo"], "") + String(n.get("corto", n["nombre"])).to_upper()
+	txt += "  NV %d" % int(n["nivel"])
+	if espera > 0:
+		txt += "\nREAPARECE EN " + Estado.formato_tiempo(espera)
+	var et := Label.new()
+	et.text = txt
+	et.add_theme_font_override("font", FUENTE)
+	et.add_theme_font_size_override("font_size", 20)
+	et.add_theme_color_override("font_color", {"bloqueado": Color("#b8b0c0"), "desbloqueado": Color("#ece3d0"), "vencido": Color("#ffd23a")}[estado])
+	et.add_theme_color_override("font_outline_color", Color.BLACK)
+	et.add_theme_constant_override("outline_size", 7)
+	et.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	et.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var fondo_et := StyleBoxFlat.new()
+	fondo_et.bg_color = Color(0, 0, 0, 0.72)
+	fondo_et.set_corner_radius_all(8)
+	fondo_et.content_margin_left = 8
+	fondo_et.content_margin_right = 8
+	fondo_et.content_margin_top = 1
+	fondo_et.content_margin_bottom = 1
+	et.add_theme_stylebox_override("normal", fondo_et)
+	raiz.add_child(et)
+	et.reset_size()
+	et.position = Vector2(-et.size.x / 2.0, TAM_ICONO / 2.0 - 4)
+	# Zona tocable (ícono + etiqueta)
+	var b := Button.new()
+	for e in ["normal", "hover", "pressed", "focus", "disabled"]:
+		b.add_theme_stylebox_override(e, StyleBoxEmpty.new())
+	b.size = Vector2(max(TAM_ICONO, et.size.x), TAM_ICONO + et.size.y)
+	b.position = Vector2(-b.size.x / 2.0, -TAM_ICONO / 2.0)
 	b.pressed.connect(_abrir.bind(n))
-	lienzo.add_child(b)
+	raiz.add_child(b)
 	botones[n["id"]] = b
 
 

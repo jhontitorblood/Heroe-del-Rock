@@ -233,6 +233,43 @@ def mapa_zona(nombre, nodos):
     return im
 
 
+def icono_mapa(estado):
+    """Púa de guitarra: bloqueada (gris con candado), desbloqueada (roja) o vencida (dorada con visto)."""
+    s = 512
+    im = Image.new("RGBA", (s, s), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    colores = {"bloqueado": ((70, 66, 74), (30, 28, 34)), "desbloqueado": ((225, 35, 45), (90, 8, 14)), "vencido": ((240, 190, 50), (120, 80, 10))}
+    relleno, borde = colores[estado]
+    # Contorno de púa (triángulo redondeado)
+    pts = []
+    for i in range(120):
+        t = i / 120 * math.tau
+        r = 200 * (1 + 0.18 * math.cos(3 * t - math.pi / 2) * 0 )
+        x = 256 + 190 * math.sin(t)
+        y = 236 - 150 * math.cos(t) + 60 * (math.cos(t) < 0) * (-math.cos(t)) ** 2 * 1.6
+        pts.append((x, y))
+    d.polygon(pts, fill=borde)
+    pts2 = [(256 + (x - 256) * 0.84, 236 + (y - 236) * 0.84) for x, y in pts]
+    d.polygon(pts2, fill=relleno)
+    d.ellipse([150, 120, 250, 190], fill=tuple(min(255, c + 60) for c in relleno))  # brillo
+    if estado == "bloqueado":
+        d.rounded_rectangle([186, 230, 326, 340], 18, fill=(20, 18, 24), outline=(150, 145, 160), width=10)
+        d.arc([206, 168, 306, 296], 180, 360, fill=(150, 145, 160), width=22)
+        d.ellipse([244, 266, 268, 290], fill=(150, 145, 160))
+        d.rectangle([251, 285, 261, 315], fill=(150, 145, 160))
+    elif estado == "desbloqueado":
+        # Estrella blanca
+        estrella = []
+        for i in range(10):
+            a = -math.pi / 2 + i * math.pi / 5
+            rr = 90 if i % 2 == 0 else 38
+            estrella.append((256 + rr * math.cos(a), 250 + rr * math.sin(a)))
+        d.polygon(estrella, fill=(255, 245, 235))
+    else:
+        d.line([(180, 250), (238, 310), (340, 190)], fill=(255, 255, 255), width=34, joint="curve")
+    return im.resize((256, 256), Image.LANCZOS)
+
+
 def icono():
     im = Image.new("RGBA", (192, 192), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
@@ -291,6 +328,9 @@ def main():
         for i, b in enumerate(pasos):
             cuadro = silueta(color, "guitarrista", "protagonista_%s_%d" % (g, i), femenino=(g == "f"), tam=512, brazo=b)
             guardar(cuadro, os.path.join("animaciones", "protagonista_%s_rock" % g), "%04d" % (i + 1))
+    # Íconos de los puntos del mapa (256x256, transparentes)
+    for estado in ("bloqueado", "desbloqueado", "vencido"):
+        guardar(icono_mapa(estado), "ui", "icono_" + estado)
     ruta_icono = os.path.join(RAIZ, "icon.png")
     if not os.path.exists(ruta_icono) or Image.open(ruta_icono).info.get("origen") == MARCA:
         meta = PngInfo()
