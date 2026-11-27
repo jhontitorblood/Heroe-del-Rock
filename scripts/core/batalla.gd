@@ -16,6 +16,7 @@ class Unidad:
 	var rareza: String
 	var imagen: String
 	var espectral: bool = false
+	var mira_izquierda: bool = false  # el dibujo original mira a la izquierda
 	var lado: int
 	var nivel: int
 	var hp_max: int
@@ -34,6 +35,11 @@ class Unidad:
 
 	func vivo() -> bool:
 		return hp > 0
+
+	## Si hay que voltear el dibujo para que mire hacia el bando rival.
+	func voltear() -> bool:
+		# Aliados miran a la derecha y enemigos a la izquierda
+		return (lado == 1) != mira_izquierda
 
 	func tiene(tipo: String) -> bool:
 		for e in estados:
@@ -94,6 +100,7 @@ func agregar(datos: Dictionary, lado: int) -> Unidad:
 	u.rareza = p.get("rareza", "comun")
 	u.imagen = p.get("imagen", datos["base_id"])
 	u.espectral = bool(datos.get("espectral", false))
+	u.mira_izquierda = p.get("mira", "derecha") == "izquierda"
 	u.lado = lado
 	u.nivel = int(datos["nivel"])
 	var fuerza := float(datos.get("fuerza", 1.0))

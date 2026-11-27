@@ -262,7 +262,7 @@ func _unidad(u, fx: float, fy: float, s: int) -> Control:
 	spr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	spr.size = Vector2(s, s)
 	spr.pivot_offset = Vector2(s / 2.0, s * 0.95)
-	spr.flip_h = u.lado == Batalla.ENEMIGO
+	spr.flip_h = u.voltear()
 	spr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	n.add_child(spr)
 	# Zona tocable para elegir objetivo
@@ -355,7 +355,7 @@ func _dibujar_orden() -> void:
 		marco.add_theme_stylebox_override("panel", est)
 		var tam := 54 if primero else 42
 		var img := UI.imagen(Datos.sprite(u.imagen, u.espectral), Vector2(tam, tam))
-		img.flip_h = u.lado == Batalla.ENEMIGO
+		img.flip_h = u.voltear()
 		marco.add_child(img)
 		marco.tooltip_text = u.nombre
 		if par[1]:

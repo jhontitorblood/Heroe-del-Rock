@@ -46,7 +46,7 @@ Cada personaje tiene cuatro imágenes:
 
 Si subes solo la imagen normal, `tools/generar_placeholders.py` crea a partir de ella las otras tres como provisionales (espectral con filtro azul y ataque inclinado con líneas de velocidad), hasta que subas las definitivas. Si falta la imagen de ataque, el personaje ataca con su imagen normal.
 
-Los enemigos se muestran volteados horizontalmente: dibújalos mirando a la derecha.
+Dibuja a los personajes **mirando a la derecha**: el juego voltea a los enemigos para que miren hacia tu equipo. Si un dibujo mira a la izquierda, agrega `"mira": "izquierda"` a ese personaje en `data/personajes.json` y el juego lo voltea al revés (como Sonso de Cotoca).
 En combate se muestran sin recuadro, con la sombra bajo los pies: deja los pies cerca del borde inferior de la imagen.
 
 | id | Personaje |
