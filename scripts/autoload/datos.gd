@@ -146,6 +146,11 @@ func sprite(imagen: String, espectral: bool) -> Texture2D:
 	return textura("personajes", "pj_%s_%s" % [imagen, "espectral" if espectral else "normal"])
 
 
+## Imagen en pose de ataque (pj_<id>_normal_ataque / pj_<id>_espectral_ataque), o null si no hay.
+func sprite_ataque(imagen: String, espectral: bool) -> Texture2D:
+	return textura("personajes", "pj_%s_%s_ataque" % [imagen, "espectral" if espectral else "normal"])
+
+
 ## Cuadros de una animación: assets/animaciones/<nombre>/0001.png, 0002.png, ...
 func animacion(nombre: String) -> Array:
 	var cuadros := []

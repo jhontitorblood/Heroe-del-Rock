@@ -157,6 +157,34 @@ def espectral(img):
     return out
 
 
+def ataque(img):
+    """Pose de ataque PROVISIONAL a partir de la imagen normal: inclinada hacia adelante,
+    un poco más brillante y con líneas de velocidad detrás."""
+    w, h = img.size
+    base = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(base)
+    a = img.split()[3]
+    caja = a.getbbox() or (0, 0, w, h)
+    cy = (caja[1] + caja[3]) // 2
+    for i, dy in enumerate((-40, -10, 20, 50)):
+        y = cy + dy * h // 256
+        x0 = max(0, caja[0] - 50 * w // 256)
+        d.line([(x0, y), (x0 + (36 - i * 4) * w // 256, y)], fill=(255, 230, 160, 200), width=max(2, 4 * w // 256))
+    inclinada = img.rotate(-9, resample=Image.BICUBIC, center=(w // 2, h - 4))
+    inclinada = Image.eval(inclinada, lambda v: min(255, int(v * 1.08)))
+    base.alpha_composite(inclinada, (int(w * 0.04), 0))
+    return base
+
+
+def es_provisional(ruta):
+    if not os.path.exists(ruta):
+        return True
+    try:
+        return Image.open(ruta).info.get("origen") == MARCA
+    except Exception:
+        return True
+
+
 def escenario(nombre, arriba, abajo, tipo, w=1280, h=720):
     im = Image.new("RGB", (w, h))
     d = ImageDraw.Draw(im)
@@ -300,9 +328,17 @@ def main():
         color = hex_rgb(clases[p["clase"]]["color"])
         if pid.startswith("e_"):
             color = tuple(int(c * 0.85) for c in color)
-        normal = silueta(color, p["clase"], img_id, femenino=img_id.endswith("_f") or img_id in ("l_aruma", "s_brisa", "e_corista"), monstruo=img_id == "j_jichi")
-        guardar(normal, "personajes", "pj_%s_normal" % img_id)
+        ruta_normal = os.path.join(ASSETS, "personajes", "pj_%s_normal.png" % img_id)
+        if es_provisional(ruta_normal):
+            normal = silueta(color, p["clase"], img_id, femenino=img_id.endswith("_f") or img_id in ("l_aruma", "s_brisa", "e_corista"), monstruo=img_id == "j_jichi")
+            guardar(normal, "personajes", "pj_%s_normal" % img_id)
+        else:
+            # Arte final del usuario: las variantes provisionales salen de su dibujo
+            normal = Image.open(ruta_normal).convert("RGBA").resize((256, 256), Image.LANCZOS)
         guardar(espectral(normal), "personajes", "pj_%s_espectral" % img_id)
+        pose = ataque(normal)
+        guardar(pose, "personajes", "pj_%s_normal_ataque" % img_id)
+        guardar(espectral(pose), "personajes", "pj_%s_espectral_ataque" % img_id)
     esc = {
         "esc_centro_mando": ((30, 15, 50), (10, 5, 15), "sala"),
         "esc_sala_ensayo": ((50, 25, 20), (15, 10, 10), "sala"),

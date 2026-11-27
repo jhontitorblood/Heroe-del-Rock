@@ -301,7 +301,8 @@ func _unidad(u, fx: float, fy: float, s: int) -> Control:
 	bob.tween_interval(randf() * 0.8)
 	bob.tween_property(spr, "position:y", -4.0, 0.9).set_trans(Tween.TRANS_SINE)
 	bob.tween_property(spr, "position:y", 0.0, 0.9).set_trans(Tween.TRANS_SINE)
-	tarjetas[u.uid] = {"nodo": n, "spr": spr, "sombra": sombra, "hp": hp, "hp_txt": hp_txt, "med": med, "lado": u.lado}
+	tarjetas[u.uid] = {"nodo": n, "spr": spr, "sombra": sombra, "hp": hp, "hp_txt": hp_txt, "med": med, "lado": u.lado,
+		"tex_normal": spr.texture, "tex_ataque": Datos.sprite_ataque(u.imagen, u.espectral)}
 	return n
 
 
@@ -387,10 +388,14 @@ func _anim_accion(uid: String, id: String) -> void:
 	var spr: TextureRect = t["spr"]
 	var tw := spr.create_tween()
 	if float(b.hab(id).get("poder", 0)) > 0:
-		# Embestida hacia el rival
+		# Embestida hacia el rival, con la imagen de ataque solo durante el golpe
 		var dir := 1.0 if t["lado"] == Batalla.ALIADO else -1.0
+		if t["tex_ataque"] != null:
+			spr.texture = t["tex_ataque"]
 		tw.tween_property(spr, "position:x", dir * 55.0, 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tw.tween_interval(0.12)
 		tw.tween_property(spr, "position:x", 0.0, 0.22).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+		tw.tween_callback(func(): spr.texture = t["tex_normal"])
 	else:
 		# Apoyo: pequeño salto con brillo
 		tw.set_parallel(true)

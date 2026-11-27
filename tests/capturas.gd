@@ -70,6 +70,15 @@ func _ready() -> void:
 	await RenderingServer.frame_post_draw
 	if not ("vertical" in OS.get_cmdline_user_args()):
 		get_viewport().get_texture().get_image().save_png("/tmp/capturas/12b_efectos.png")
+	# Imagen de ataque: se fuerza una acción y se captura a mitad de la embestida
+	var atacante = c.b.lado(0)[0]
+	c._anim_accion(atacante.uid, atacante.habilidades[0])
+	for i in 6:
+		await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	if not ("vertical" in OS.get_cmdline_user_args()):
+		get_viewport().get_texture().get_image().save_png("/tmp/capturas/12c_ataque.png")
+	await get_tree().create_timer(0.6).timeout
 	c._despertar("s_lazaro", 6)
 	await _foto("13_despertar")
 	get_tree().quit()
