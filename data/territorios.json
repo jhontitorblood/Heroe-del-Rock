@@ -244,7 +244,7 @@
               ],
               [
                 "Silvano Roca",
-                "Pero esto no termina aquí: La Guardia te espera. (Disponible en la próxima versión)"
+                "Pero esto no termina aquí: los Cambas Punk de Yapacaní te esperan. (Disponible en la próxima versión)"
               ]
             ]
           },
@@ -279,16 +279,6 @@
         ]
       },
       {
-        "id": "la_guardia",
-        "nombre": "La Guardia",
-        "banda": "Los Cambas Punk",
-        "estilo": "Punk",
-        "disponible": false,
-        "bloqueo": "Vence al Jichi Ancestral (próxima versión)",
-        "en_mapa": false,
-        "nota": "No aparece en el mapa actual de Santa Cruz: falta decidir si se mantiene o la reemplaza Yapacaní"
-      },
-      {
         "id": "warnes",
         "nombre": "Warnes",
         "banda": "Los Jaguares del Metal",
@@ -298,7 +288,9 @@
           847,
           340
         ],
-        "bloqueo": "Próxima versión"
+        "bloqueo": "Próxima versión",
+        "lider": "Kairón",
+        "jefe": "Yaguareté de Acero"
       },
       {
         "id": "montero",
@@ -310,7 +302,9 @@
           715,
           42
         ],
-        "bloqueo": "Próxima versión"
+        "bloqueo": "Próxima versión",
+        "lider": "Dante Vértigo",
+        "jefe": "Surazo Negro"
       },
       {
         "id": "portachuelo",
@@ -322,19 +316,23 @@
           431,
           42
         ],
-        "bloqueo": "Próxima versión"
+        "bloqueo": "Próxima versión",
+        "lider": "Elarion",
+        "jefe": "Juez de las Puertas del Cielo"
       },
       {
         "id": "yapacani",
         "nombre": "Yapacaní",
-        "banda": "Banda por definir",
-        "estilo": "Por definir",
+        "banda": "Los Cambas Punk",
+        "estilo": "Punk",
         "disponible": false,
         "pos": [
           64,
           84
         ],
-        "bloqueo": "Próxima versión"
+        "bloqueo": "Vence al Jichi Ancestral (próxima versión)",
+        "lider": "Damián Ráfaga",
+        "jefe": "Capitán Pogo, el Caos Callejero"
       }
     ],
     "lugares": [

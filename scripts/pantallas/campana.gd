@@ -39,7 +39,12 @@ func _tocar_zona(z: Dictionary) -> void:
 	if bool(z.get("disponible", false)):
 		Estado.ir("mapa", {"zona": z["id"]})
 	else:
-		UI.aviso(self, z["nombre"], "Banda: %s\nEstilo: %s\n\n%s" % [z["banda"], z["estilo"], z.get("bloqueo", "Bloqueado")])
+		var txt := "Banda: %s\nEstilo: %s" % [z["banda"], z["estilo"]]
+		if z.has("lider"):
+			txt += "\nLíder: %s" % z["lider"]
+		if z.has("jefe"):
+			txt += "\nJefe territorial: %s" % z["jefe"]
+		UI.aviso(self, z["nombre"], txt + "\n\n" + String(z.get("bloqueo", "Bloqueado")))
 
 
 ## Lugar sin combate (texto sobre el mapa).
