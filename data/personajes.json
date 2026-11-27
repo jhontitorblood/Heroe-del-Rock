@@ -1,44 +1,212 @@
 {
   "protagonista_m": {
-    "nombre": "Protagonista", "clase": "guitarrista", "genero": "raiz", "rareza": "mitico",
-    "mult": {"hp": 1.6, "atk": 1.15, "def": 1.2, "spd": 1.0},
-    "habilidades": ["p_riff", "p_acorde", "p_respiro", "p_distorsion"], "definitiva": "p_solo",
-    "imagen": "protagonista_m", "bio": "Un músico de Santa Cruz con el don de despertar a los espectros."
+    "nombre": "Protagonista",
+    "clase": "guitarrista",
+    "genero": "raiz",
+    "rareza": "mitico",
+    "mult": {
+      "hp": 1.6,
+      "atk": 1.15,
+      "def": 1.2,
+      "spd": 1.0
+    },
+    "habilidades": [
+      "p_riff",
+      "p_acorde",
+      "p_respiro",
+      "p_distorsion"
+    ],
+    "definitiva": "p_solo",
+    "imagen": "protagonista_m",
+    "bio": "Un músico de Santa Cruz con el don de despertar a los espectros."
   },
   "protagonista_f": {
-    "nombre": "Protagonista", "clase": "guitarrista", "genero": "raiz", "rareza": "mitico",
-    "mult": {"hp": 1.6, "atk": 1.15, "def": 1.2, "spd": 1.0},
-    "habilidades": ["p_riff", "p_acorde", "p_respiro", "p_distorsion"], "definitiva": "p_solo",
-    "imagen": "protagonista_f", "bio": "Una música de Santa Cruz con el don de despertar a los espectros."
+    "nombre": "Protagonista",
+    "clase": "guitarrista",
+    "genero": "raiz",
+    "rareza": "mitico",
+    "mult": {
+      "hp": 1.6,
+      "atk": 1.15,
+      "def": 1.2,
+      "spd": 1.0
+    },
+    "habilidades": [
+      "p_riff",
+      "p_acorde",
+      "p_respiro",
+      "p_distorsion"
+    ],
+    "definitiva": "p_solo",
+    "imagen": "protagonista_f",
+    "bio": "Una música de Santa Cruz con el don de despertar a los espectros."
   },
-
-  "e_cuerdero": {"nombre": "Cuerdero de la Laguna", "clase": "guitarrista", "genero": "raiz", "rareza": "comun", "banda": "Los Bravos del Jichi", "imagen": "e_cuerdero"},
-  "e_tamborero": {"nombre": "Tamborero del Jichi", "clase": "baterista", "genero": "raiz", "rareza": "comun", "banda": "Los Bravos del Jichi", "imagen": "e_tamborero"},
-  "e_tecladista": {"nombre": "Tecladista del Pantano", "clase": "tecladista", "genero": "raiz", "rareza": "comun", "banda": "Los Bravos del Jichi", "imagen": "e_tecladista"},
-  "e_bajista": {"nombre": "Bajista del Curiche", "clase": "bajista", "genero": "raiz", "rareza": "raro", "banda": "Los Bravos del Jichi", "imagen": "e_bajista"},
-  "e_corista": {"nombre": "Corista de Cotoca", "clase": "corista", "genero": "raiz", "rareza": "raro", "banda": "Los Bravos del Jichi", "imagen": "e_corista"},
-  "e_vientista": {"nombre": "Flautero de la Niebla", "clase": "vientista", "genero": "gotico", "rareza": "raro", "banda": "Los Bravos del Jichi", "imagen": "e_vientista"},
-  "e_cantor": {"nombre": "Cantor del Taquirari", "clase": "vocalista", "genero": "raiz", "rareza": "comun", "banda": "Los Bravos del Jichi", "imagen": "e_cantor"},
-
+  "e_cuerdero": {
+    "nombre": "Cuerdero de la Laguna",
+    "clase": "guitarrista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_cuerdero",
+    "legado": true
+  },
+  "e_tamborero": {
+    "nombre": "Tamborero del Jichi",
+    "clase": "baterista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_tamborero"
+  },
+  "e_tecladista": {
+    "nombre": "Tecladista del Pantano",
+    "clase": "tecladista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_tecladista"
+  },
+  "e_bajista": {
+    "nombre": "Bajista del Curiche",
+    "clase": "bajista",
+    "genero": "raiz",
+    "rareza": "raro",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_bajista"
+  },
+  "e_corista": {
+    "nombre": "Corista de Cotoca",
+    "clase": "corista",
+    "genero": "raiz",
+    "rareza": "raro",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_corista"
+  },
+  "e_vientista": {
+    "nombre": "Flautero de la Niebla",
+    "clase": "vientista",
+    "genero": "gotico",
+    "rareza": "raro",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_vientista"
+  },
+  "e_cantor": {
+    "nombre": "Cantor del Taquirari",
+    "clase": "vocalista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_cantor",
+    "legado": true
+  },
   "s_brisa": {
-    "nombre": "Brisa Taquirari", "clase": "charanguista", "genero": "raiz", "rareza": "epico", "banda": "Los Bravos del Jichi",
-    "imagen": "s_brisa", "mult": {"hp": 1.1, "atk": 1.05},
-    "bio": "Sublíder de Los Bravos del Jichi. Toca el charango eléctrico en las fiestas de Cotoca y nunca pierde el ritmo."
+    "nombre": "Brisa Taquirari",
+    "clase": "vocalista",
+    "genero": "raiz",
+    "rareza": "epico",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "s_brisa",
+    "mult": {
+      "hp": 1.1,
+      "atk": 1.05
+    },
+    "bio": "Sublíder de Los Bravos del Jichi. Su voz domina la plaza principal de Cotoca en cada fiesta."
   },
   "s_lazaro": {
-    "nombre": "Lázaro Consola", "clase": "ingeniero", "genero": "metal", "rareza": "epico", "banda": "Los Bravos del Jichi",
-    "imagen": "s_lazaro", "mult": {"hp": 1.15, "atk": 1.05},
+    "nombre": "Lázaro Consola",
+    "clase": "ingeniero",
+    "genero": "metal",
+    "rareza": "epico",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "s_lazaro",
+    "mult": {
+      "hp": 1.15,
+      "atk": 1.05
+    },
     "bio": "Sublíder y sonidista de la banda. Llegó de Warnes con gustos metaleros y controla cada parlante de la laguna."
   },
   "l_aruma": {
-    "nombre": "Aruma", "clase": "vocalista", "genero": "raiz", "rareza": "legendario", "banda": "Los Bravos del Jichi",
-    "imagen": "l_aruma", "mult": {"hp": 1.3, "atk": 1.2, "def": 1.1},
+    "nombre": "Aruma",
+    "clase": "vocalista",
+    "genero": "raiz",
+    "rareza": "legendario",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "l_aruma",
+    "mult": {
+      "hp": 1.3,
+      "atk": 1.2,
+      "def": 1.1
+    },
     "bio": "Líder de Los Bravos del Jichi. Su voz calmaba la laguna, hasta que algo empezó a arrancársela desde adentro."
   },
   "j_jichi": {
-    "nombre": "Jichi Ancestral, Señor de la Laguna", "clase": "bajista", "genero": "gotico", "rareza": "mitico", "banda": "Espíritu de la laguna",
-    "imagen": "j_jichi", "mult": {"hp": 1.4, "atk": 2.3, "def": 0.6, "spd": 1.2},
-    "habilidades": ["jichi_cola", "jichi_ola", "jichi_abismo", "jichi_escamas"], "definitiva": "jichi_def",
+    "nombre": "Jichi Ancestral, Señor de la Laguna",
+    "clase": "bajista",
+    "genero": "gotico",
+    "rareza": "mitico",
+    "banda": "Espíritu de la laguna",
+    "imagen": "j_jichi",
+    "mult": {
+      "hp": 1.4,
+      "atk": 2.3,
+      "def": 0.6,
+      "spd": 1.2
+    },
+    "habilidades": [
+      "jichi_cola",
+      "jichi_ola",
+      "jichi_abismo",
+      "jichi_escamas"
+    ],
+    "definitiva": "jichi_def",
     "bio": "El espíritu guardián de las aguas de Cotoca. Las leyendas dicen que, si se va, la laguna se seca."
+  },
+  "e_sonso": {
+    "nombre": "Sonso de Cotoca",
+    "clase": "guitarrista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_sonso"
+  },
+  "e_masaco": {
+    "nombre": "Masaco de Cotoca",
+    "clase": "baterista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_masaco"
+  },
+  "e_boca_de_loca": {
+    "nombre": "Boca de Loca",
+    "clase": "vocalista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_boca_de_loca"
+  },
+  "e_acopaibau": {
+    "nombre": "Acopaibau de Cotoca",
+    "clase": "bajista",
+    "genero": "raiz",
+    "rareza": "raro",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_acopaibau"
+  },
+  "e_acopaibau_charango": {
+    "nombre": "Acopaibau",
+    "clase": "charanguista",
+    "genero": "raiz",
+    "rareza": "raro",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_acopaibau_charango"
+  },
+  "e_huracanes_max": {
+    "nombre": "Huracanes Max",
+    "clase": "vientista",
+    "genero": "gotico",
+    "rareza": "raro",
+    "banda": "Los Bravos del Jichi",
+    "imagen": "e_huracanes_max"
   }
 }

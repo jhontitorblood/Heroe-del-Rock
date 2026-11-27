@@ -115,6 +115,11 @@ def silueta(color, instrumento, semilla, femenino=False, monstruo=False, tam=256
             d.ellipse([168, 120, 204, 170], fill=o)
             d.ellipse([308, 120, 344, 170], fill=o)
             d.rectangle([110, 360, 220, 420], fill=(60, 60, 70, 255), outline=o, width=5)
+        elif instrumento == "violinista":
+            d.ellipse([300, 190, 380, 250], fill=(150, 80, 30, 255), outline=o, width=5)
+            d.ellipse([310, 235, 400, 305], fill=(150, 80, 30, 255), outline=o, width=5)
+            d.line([(330, 200), (250, 120)], fill=o, width=10)
+            d.line([(200, 330), (420, 170)], fill=(220, 200, 160, 255), width=6)
         elif instrumento == "vientista":
             d.line([(270, 160), (420, 230)], fill=(170, 120, 60, 255), width=16)
             for i in range(4):

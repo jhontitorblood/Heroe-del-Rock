@@ -1,7 +1,30 @@
 {
-  "orden": ["metal", "punk", "gotico", "psicodelico", "raiz"],
-  "nombres": {"metal": "Metal", "punk": "Punk", "gotico": "Gótico", "psicodelico": "Psicodélico", "raiz": "Raíz y Clásico"},
-  "colores": {"metal": "#ff5a36", "punk": "#ff3ab0", "gotico": "#8a6bff", "psicodelico": "#3affc8", "raiz": "#ffd23a"},
+  "orden": [
+    "metal",
+    "punk",
+    "gotico",
+    "psicodelico",
+    "raiz"
+  ],
+  "nombres": {
+    "metal": "Metal",
+    "punk": "Punk",
+    "gotico": "Gótico",
+    "psicodelico": "Psicodélico",
+    "raiz": "Rock Folk"
+  },
+  "colores": {
+    "metal": "#ff5a36",
+    "punk": "#ff3ab0",
+    "gotico": "#8a6bff",
+    "psicodelico": "#3affc8",
+    "raiz": "#ffd23a"
+  },
   "ventaja": 0.25,
-  "sinergia": {"mismo": 0.10, "complementario": 0.15, "enfrentado": -0.10, "quimica_max": 15}
+  "sinergia": {
+    "mismo": 0.1,
+    "complementario": 0.15,
+    "enfrentado": -0.1,
+    "quimica_max": 15
+  }
 }

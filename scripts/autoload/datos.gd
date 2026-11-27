@@ -42,6 +42,11 @@ func clase_de(base_id: String) -> Dictionary:
 	return clases.get(personaje(base_id).get("clase", ""), {})
 
 
+## Instrumento del personaje (propio o el de su clase).
+func instrumento_de(base_id: String) -> String:
+	return personaje(base_id).get("instrumento", clase_de(base_id).get("instrumento", "—"))
+
+
 func rareza(id: String) -> Dictionary:
 	return reglas["rarezas"].get(id, reglas["rarezas"]["comun"])
 

@@ -16,10 +16,9 @@
         "mapa": "mapa_cotoca",
         "jefe_nodo": "c8",
         "comunes": [
-          "e_cuerdero",
-          "e_tamborero",
-          "e_tecladista",
-          "e_cantor"
+          "e_sonso",
+          "e_masaco",
+          "e_boca_de_loca"
         ],
         "nodos": [
           {
@@ -29,9 +28,9 @@
             "nivel": 1,
             "fuerza": 0.75,
             "enemigos": [
-              "e_cuerdero"
+              "e_sonso"
             ],
-            "despertable": "e_cuerdero",
+            "despertable": "e_sonso",
             "fondo": "esc_cotoca_pueblo",
             "pos": [
               313,
@@ -41,56 +40,56 @@
           },
           {
             "id": "c2",
-            "nombre": "Plaza del Santuario",
+            "nombre": "Monumento de bienvenida",
             "tipo": "normal",
             "nivel": 2,
             "fuerza": 0.8,
             "enemigos": [
-              "e_tamborero",
-              "e_cantor"
+              "e_masaco",
+              "e_boca_de_loca"
             ],
-            "despertable": "e_cantor",
+            "despertable": "e_boca_de_loca",
             "fondo": "esc_cotoca_pueblo",
             "pos": [
               568,
               484
             ],
-            "corto": "Plaza",
+            "corto": "Monumento",
             "requiere": {
               "nodo": "c1"
             }
           },
           {
             "id": "c3",
-            "nombre": "Orilla de la Laguna",
+            "nombre": "Cancha municipal",
             "tipo": "normal",
             "nivel": 3,
             "fuerza": 0.85,
             "enemigos": [
-              "e_bajista",
-              "e_cuerdero"
+              "e_acopaibau",
+              "e_sonso"
             ],
-            "despertable": "e_bajista",
+            "despertable": "e_acopaibau",
             "fondo": "esc_cotoca_laguna",
             "pos": [
               667,
               562
             ],
-            "corto": "Orilla",
+            "corto": "Cancha",
             "requiere": {
               "nodo": "c2"
             }
           },
           {
             "id": "c4",
-            "nombre": "Sublíder: Brisa Taquirari",
+            "nombre": "Plaza principal",
             "tipo": "sublider",
             "nivel": 4,
             "fuerza": 0.9,
             "fuerza_hp": 1.3,
             "enemigos": [
               "s_brisa",
-              "e_corista"
+              "e_acopaibau_charango"
             ],
             "despertable": "s_brisa",
             "fondo": "esc_cotoca_pueblo",
@@ -105,31 +104,30 @@
             "dialogo_antes": [
               [
                 "Brisa Taquirari",
-                "¿Vienes a desafinar nuestra fiesta? ¡A ver si sigues mi ritmo!"
+                "¿Vienes a desafinar la plaza principal? ¡A ver si sigues mi voz!"
               ]
             ]
           },
           {
             "id": "c5",
-            "nombre": "Curiche Oscuro",
+            "nombre": "Centrada de Curichi",
             "tipo": "normal",
             "nivel": 5,
-            "fuerza": 0.9,
+            "fuerza": 1.0,
             "enemigos": [
-              "e_vientista",
-              "e_corista",
-              "e_tamborero"
+              "e_huracanes_max"
             ],
-            "despertable": "e_vientista",
+            "despertable": "e_huracanes_max",
             "fondo": "esc_cotoca_curiche",
             "pos": [
               884,
               619
             ],
-            "corto": "Curiche",
+            "corto": "Curichi",
             "requiere": {
               "nodo": "c4"
-            }
+            },
+            "fuerza_hp": 1.8
           },
           {
             "id": "c6",

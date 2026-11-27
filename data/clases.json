@@ -1,47 +1,205 @@
 {
   "guitarrista": {
-    "nombre": "Guitarrista", "funcion": "Daño", "color": "#e8553a",
-    "base": {"hp": 110, "atk": 20, "def": 8, "spd": 12},
-    "habilidades": ["g_riff", "g_power", "g_tremolo", "g_solo"], "definitiva": "g_def"
+    "nombre": "Guitarrista",
+    "funcion": "Daño",
+    "color": "#e8553a",
+    "base": {
+      "hp": 110,
+      "atk": 20,
+      "def": 8,
+      "spd": 12
+    },
+    "habilidades": [
+      "g_riff",
+      "g_power",
+      "g_tremolo",
+      "g_solo"
+    ],
+    "definitiva": "g_def",
+    "instrumento": "Guitarra eléctrica",
+    "oficial": true
   },
   "bajista": {
-    "nombre": "Bajista", "funcion": "Protección", "color": "#3a7be8",
-    "base": {"hp": 150, "atk": 13, "def": 14, "spd": 8},
-    "habilidades": ["b_golpe", "b_muralla", "b_linea", "b_retumbe"], "definitiva": "b_def"
+    "nombre": "Bajista",
+    "funcion": "Protección",
+    "color": "#3a7be8",
+    "base": {
+      "hp": 150,
+      "atk": 13,
+      "def": 14,
+      "spd": 8
+    },
+    "habilidades": [
+      "b_golpe",
+      "b_muralla",
+      "b_linea",
+      "b_retumbe"
+    ],
+    "definitiva": "b_def",
+    "instrumento": "Bajo eléctrico",
+    "oficial": true
   },
   "baterista": {
-    "nombre": "Baterista", "funcion": "Aturdimiento y control", "color": "#e8b23a",
-    "base": {"hp": 120, "atk": 16, "def": 10, "spd": 11},
-    "habilidades": ["d_golpe", "d_redoble", "d_platillos", "d_bombo"], "definitiva": "d_def"
+    "nombre": "Baterista",
+    "funcion": "Aturdimiento y control",
+    "color": "#e8b23a",
+    "base": {
+      "hp": 120,
+      "atk": 16,
+      "def": 10,
+      "spd": 11
+    },
+    "habilidades": [
+      "d_golpe",
+      "d_redoble",
+      "d_platillos",
+      "d_bombo"
+    ],
+    "definitiva": "d_def",
+    "instrumento": "Batería",
+    "oficial": true
   },
   "vocalista": {
-    "nombre": "Vocalista", "funcion": "Curación", "color": "#3ae889",
-    "base": {"hp": 100, "atk": 13, "def": 8, "spd": 10},
-    "habilidades": ["v_grito", "v_coro", "v_balada", "v_himno"], "definitiva": "v_def"
+    "nombre": "Vocalista",
+    "funcion": "Curación",
+    "color": "#3ae889",
+    "base": {
+      "hp": 100,
+      "atk": 13,
+      "def": 8,
+      "spd": 10
+    },
+    "habilidades": [
+      "v_grito",
+      "v_coro",
+      "v_balada",
+      "v_himno"
+    ],
+    "definitiva": "v_def",
+    "instrumento": "Voz (micrófono)",
+    "oficial": true
   },
   "tecladista": {
-    "nombre": "Tecladista", "funcion": "Debilitación", "color": "#b03ae8",
-    "base": {"hp": 100, "atk": 15, "def": 8, "spd": 11},
-    "habilidades": ["t_nota", "t_disonancia", "t_arpegio", "t_acido"], "definitiva": "t_def"
+    "nombre": "Tecladista",
+    "funcion": "Debilitación",
+    "color": "#b03ae8",
+    "base": {
+      "hp": 100,
+      "atk": 15,
+      "def": 8,
+      "spd": 11
+    },
+    "habilidades": [
+      "t_nota",
+      "t_disonancia",
+      "t_arpegio",
+      "t_acido"
+    ],
+    "definitiva": "t_def",
+    "instrumento": "Teclado / sintetizador",
+    "oficial": true
   },
   "charanguista": {
-    "nombre": "Charanguista", "funcion": "Daño y mejoras", "color": "#e83a9c",
-    "base": {"hp": 110, "atk": 17, "def": 9, "spd": 13},
-    "habilidades": ["c_rasgueo", "c_taquirari", "c_punteo", "c_cueca"], "definitiva": "c_def"
+    "nombre": "Charanguista",
+    "funcion": "Daño y mejoras",
+    "color": "#e83a9c",
+    "base": {
+      "hp": 110,
+      "atk": 17,
+      "def": 9,
+      "spd": 13
+    },
+    "habilidades": [
+      "c_rasgueo",
+      "c_taquirari",
+      "c_punteo",
+      "c_cueca"
+    ],
+    "definitiva": "c_def",
+    "instrumento": "Charango",
+    "oficial": false,
+    "nota": "Fuera de las 7 clases oficiales; se mantiene mientras haya personajes que la usan"
   },
   "corista": {
-    "nombre": "Corista", "funcion": "Resurrección y escudos", "color": "#f0f0f0",
-    "base": {"hp": 100, "atk": 12, "def": 9, "spd": 10},
-    "habilidades": ["k_voz", "k_escudo", "k_segunda", "k_armonia"], "definitiva": "k_def"
+    "nombre": "Corista",
+    "funcion": "Resurrección y escudos",
+    "color": "#f0f0f0",
+    "base": {
+      "hp": 100,
+      "atk": 12,
+      "def": 9,
+      "spd": 10
+    },
+    "habilidades": [
+      "k_voz",
+      "k_escudo",
+      "k_segunda",
+      "k_armonia"
+    ],
+    "definitiva": "k_def",
+    "instrumento": "Voz (coros)",
+    "oficial": false,
+    "nota": "Fuera de las 7 clases oficiales; se mantiene mientras haya personajes que la usan"
   },
   "ingeniero": {
-    "nombre": "Ingeniero de sonido", "funcion": "Turnos y velocidad", "color": "#3ae8e0",
-    "base": {"hp": 105, "atk": 14, "def": 9, "spd": 14},
-    "habilidades": ["i_feedback", "i_ecualizar", "i_corte", "i_volumen"], "definitiva": "i_def"
+    "nombre": "Ingeniero de sonido",
+    "funcion": "Turnos y velocidad",
+    "color": "#3ae8e0",
+    "base": {
+      "hp": 105,
+      "atk": 14,
+      "def": 9,
+      "spd": 14
+    },
+    "habilidades": [
+      "i_feedback",
+      "i_ecualizar",
+      "i_corte",
+      "i_volumen"
+    ],
+    "definitiva": "i_def",
+    "instrumento": "Consola de sonido",
+    "oficial": false,
+    "nota": "Fuera de las 7 clases oficiales; se mantiene mientras haya personajes que la usan"
   },
   "vientista": {
-    "nombre": "Vientista", "funcion": "Daño en área y continuo", "color": "#8be83a",
-    "base": {"hp": 100, "atk": 16, "def": 8, "spd": 12},
-    "habilidades": ["w_soplo", "w_sikus", "w_quena", "w_erke"], "definitiva": "w_def"
+    "nombre": "Flautista",
+    "funcion": "Daño en área y continuo",
+    "color": "#8be83a",
+    "base": {
+      "hp": 100,
+      "atk": 16,
+      "def": 8,
+      "spd": 12
+    },
+    "habilidades": [
+      "w_soplo",
+      "w_sikus",
+      "w_quena",
+      "w_erke"
+    ],
+    "definitiva": "w_def",
+    "instrumento": "Flauta / quena",
+    "oficial": true
+  },
+  "violinista": {
+    "nombre": "Violinista",
+    "funcion": "Apoyo: mejoras y resurrección",
+    "color": "#d8a24a",
+    "instrumento": "Violín",
+    "base": {
+      "hp": 105,
+      "atk": 14,
+      "def": 9,
+      "spd": 12
+    },
+    "habilidades": [
+      "vi_arco",
+      "vi_vibrato",
+      "vi_requiem",
+      "vi_pizzicato"
+    ],
+    "definitiva": "vi_def",
+    "oficial": true
   }
 }

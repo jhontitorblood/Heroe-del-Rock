@@ -53,7 +53,7 @@ func _ficha(base_id: String, espectral: bool, nivel: int) -> Button:
 	v.add_child(l)
 	b.pressed.connect(func():
 		var cl: Dictionary = Datos.clases[p["clase"]]
-		var txt := "%s · %s · %s\nBanda: %s" % [rz["nombre"], cl["nombre"], Datos.nombre_genero(p["genero"]), p.get("banda", "—")]
+		var txt := "%s · %s · %s\nInstrumento: %s\nBanda: %s" % [rz["nombre"], cl["nombre"], Datos.nombre_genero(p["genero"]), Datos.instrumento_de(base_id), p.get("banda", "—")]
 		if nivel > 0:
 			txt += "\nNivel %d" % nivel
 		txt += "\n\n" + p.get("bio", "Seguidor sin historia propia (rareza %s)." % rz["nombre"].to_lower())

@@ -7,14 +7,14 @@ const Batalla = preload("res://scripts/core/batalla.gd")
 # [nodo, nivel prota, [seguidores base_id:nivel]]
 var casos := [
 	["c1", 1, []],
-	["c2", 2, [["e_cuerdero", 1]]],
-	["c3", 3, [["e_cantor", 2]]],
-	["c4", 4, [["e_bajista", 3]]],
+	["c2", 2, [["e_sonso", 1]]],
+	["c3", 3, [["e_boca_de_loca", 2]]],
+	["c4", 4, [["e_acopaibau", 3]]],
 	["c5", 5, [["s_brisa", 4]]],
+	["c5", 4, [["e_acopaibau", 3]]],
 	["c6", 6, [["s_brisa", 5]]],
-	["c7", 7, [["s_lazaro", 6]]],
-	["c8", 7, [["l_aruma", 7], ["s_lazaro", 6]]],
-	["c8", 6, [["l_aruma", 7], ["s_brisa", 5]]],
+	["c7", 7, [["e_huracanes_max", 6]]],
+	["c8", 7, [["l_aruma", 7], ["s_brisa", 6]]],
 	["cs", 6, [["s_brisa", 5]]],
 ]
 
