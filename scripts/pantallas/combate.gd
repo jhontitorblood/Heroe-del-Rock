@@ -17,6 +17,9 @@ var btn_auto: Button
 var seleccion := ""
 var orden_box: HBoxContainer
 var ultimo_actor = null
+var ultima_hab := ""
+var golpe_sonado := false
+var parlantes: Array[AudioStreamPlayer] = []
 
 # Formaciones (x, y de los pies) según cantidad de combatientes por lado; los enemigos se reflejan
 const FORMACIONES := {
@@ -592,6 +595,10 @@ func _mostrar(eventos: Array) -> void:
 				lbl_info.text = "%s usa %s" % [u.nombre, e["nombre"]]
 				_anim_accion(uid, e.get("id", ""))
 				ultimo_actor = u
+				ultima_hab = e.get("id", "")
+				golpe_sonado = false
+				if float(b.hab(ultima_hab).get("poder", 0)) > 0:
+					_sonar(Datos.sonido_ataque(u.base_id))
 				await get_tree().create_timer(0.3).timeout
 			"dano":
 				var txt := "-%d" % int(e["valor"])
@@ -601,6 +608,11 @@ func _mostrar(eventos: Array) -> void:
 				_anim_golpe(uid)
 				if ultimo_actor != null and String(e.get("nota", "")) != "Quemadura":
 					_efecto_golpe(uid, ultimo_actor.clase)
+					# Un solo golpe por acción, aunque el ataque alcance a varios
+					if not golpe_sonado:
+						golpe_sonado = true
+						var fuerte := bool(b.hab(ultima_hab).get("definitiva", false))
+						_sonar(Datos.sonido("golpe_fuerte" if fuerte else "golpe"), -3.0)
 			"cura":
 				UI.flotante(self, "+%d" % int(e["valor"]), Color("#5aff8a"), pos)
 				_anim_brillo(uid, Color(0.6, 1.6, 0.7))
@@ -623,6 +635,27 @@ func _mostrar(eventos: Array) -> void:
 			await get_tree().create_timer(0.18).timeout
 		if not is_inside_tree():
 			return
+
+
+## Reproduce un sonido corto; varios pueden sonar a la vez (ataque y golpe se superponen).
+func _sonar(st: AudioStream, volumen_db := 0.0) -> void:
+	if st == null:
+		return
+	var p: AudioStreamPlayer = null
+	for x in parlantes:
+		if not x.playing:
+			p = x
+			break
+	if p == null:
+		if parlantes.size() >= 6:
+			p = parlantes[0]
+		else:
+			p = AudioStreamPlayer.new()
+			add_child(p)
+			parlantes.append(p)
+	p.stream = st
+	p.volume_db = volumen_db
+	p.play()
 
 
 func _sacudir(c: Control) -> void:

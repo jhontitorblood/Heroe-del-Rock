@@ -117,3 +117,34 @@ Los colores están en `data/familias.json`.
 ## Ícono de la app
 
 `icon.png` — 192 × 192 px.
+
+## Sonidos de combate — `assets/sonidos/`
+
+Los sonidos actuales son **provisionales**, creados por código con `tools/generar_sonidos.py`. Para cambiar uno, sube tu archivo con el **mismo nombre** en `.ogg`, `.wav` o `.mp3`. Si hay un `.ogg` o `.mp3`, el juego lo usa en lugar del `.wav` provisional. Son sonidos cortos de 0,5 a 1,5 segundos.
+
+**Al atacar** (solo con habilidades que hacen daño). El juego busca en este orden: sonido propio del personaje, de su clase o de su tipo de instrumento.
+
+| Archivo | Cuándo suena |
+| --- | --- |
+| `ataque_guitarrista` | Guitarra eléctrica con distorsión |
+| `ataque_bajista` | Bajo eléctrico |
+| `ataque_vocalista` | Grito rockero |
+| `ataque_corista` | Coro |
+| `ataque_tecladista` | Sintetizador |
+| `ataque_vientista` | Flauta / quena (clase Flautista) |
+| `ataque_clarinetista` | Clarinete |
+| `ataque_violinista` | Violín |
+| `ataque_charanguista` | Charango |
+| `ataque_laudista` | Laúd |
+| `ataque_baterista` | Redoble de batería |
+| `ataque_tamborilero` | Redoble de tambor |
+| `ataque_ingeniero` | Acople de consola |
+| `ataque_j_jichi` | Marimba del Jichi (sonido propio de un personaje: `ataque_<id>`) |
+| `ataque_cordofono`, `ataque_membranofono`, `ataque_aerofono`, `ataque_electrofono`, `ataque_idiofono` | Respaldo por tipo de instrumento si la clase no tiene sonido |
+
+**Al recibir el golpe**
+
+| Archivo | Cuándo suena |
+| --- | --- |
+| `golpe` | El rival recibe un ataque (una vez por ataque, aunque alcance a varios) |
+| `golpe_fuerte` | El rival recibe una definitiva |

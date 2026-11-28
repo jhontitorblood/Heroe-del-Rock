@@ -187,6 +187,25 @@ func sprite_ataque(imagen: String, espectral: bool) -> Texture2D:
 	return textura("personajes", "pj_%s_%s_ataque" % [imagen, "espectral" if espectral else "normal"])
 
 
+## Sonido de assets/sonidos/<nombre> (.ogg, .wav o .mp3; el primero que exista), o null.
+func sonido(nombre: String) -> AudioStream:
+	for ext: String in [".ogg", ".wav", ".mp3"]:
+		var ruta: String = "res://assets/sonidos/" + nombre + ext
+		if ResourceLoader.exists(ruta):
+			return load(ruta)
+	return null
+
+
+## Sonido de ataque de un personaje: propio, de su clase o de su tipo de instrumento.
+func sonido_ataque(base_id: String) -> AudioStream:
+	var s := sonido("ataque_" + base_id)
+	if s == null:
+		s = sonido("ataque_" + personaje(base_id).get("clase", ""))
+	if s == null:
+		s = sonido("ataque_" + familia_de(base_id))
+	return s
+
+
 ## Cuadros de una animación: assets/animaciones/<nombre>/0001.png, 0002.png, ...
 func animacion(nombre: String) -> Array:
 	var cuadros := []

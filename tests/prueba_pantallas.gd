@@ -94,6 +94,13 @@ func _ready() -> void:
 	await _esperar(4)
 	Estado.ir("archivo")
 	await _esperar(4)
+	# Sonidos: cada personaje tiene sonido de ataque, y existe el golpe al recibir
+	var sin_sonido := []
+	for id in Datos.personajes:
+		if Datos.sonido_ataque(id) == null:
+			sin_sonido.append(id)
+	_ok("sonido de ataque para todos los personajes " + str(sin_sonido), sin_sonido.is_empty())
+	_ok("sonidos de golpe", Datos.sonido("golpe") != null and Datos.sonido("golpe_fuerte") != null)
 	print("FIN DE LA PRUEBA")
 	get_tree().quit()
 
