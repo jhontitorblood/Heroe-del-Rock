@@ -166,7 +166,7 @@ func _ready() -> void:
 	var bonus := b.preparar_bonus_banda()
 	_construir()
 	if not bonus.is_empty():
-		lbl_info.text = "%s Tu equipo junta %s familias de instrumentos: +%d%% de daño y la Definitiva de banda se carga más rápido." % [
+		lbl_info.text = "%s Tu equipo junta %s tipos de instrumento distintos: +%d%% de daño y la Definitiva de banda se carga más rápido." % [
 			bonus["nombre"], "las 5" if bonus["nombre"].contains("Orquesta") else "3 o más", int(float(bonus["dano"]) * 100)]
 		await get_tree().create_timer(1.6).timeout
 	_siguiente()

@@ -1,5 +1,5 @@
 {
-  "_nota": "Familias de instrumentos: deciden las ventajas en combate. Los géneros de rock son solo el estilo de cada banda.",
+  "_nota": "Tipos de instrumento: deciden las ventajas en combate. Los géneros de rock son solo el estilo de cada banda. Los ids internos (electrofono, etc.) no se muestran al jugador.",
   "orden": [
     "electrofono",
     "membranofono",
@@ -8,11 +8,11 @@
     "idiofono"
   ],
   "nombres": {
-    "electrofono": "Electrófono",
-    "membranofono": "Membranófono",
-    "cordofono": "Cordófono",
-    "aerofono": "Aerófono",
-    "idiofono": "Idiófono"
+    "electrofono": "Eléctricos/Digitales",
+    "membranofono": "De membrana",
+    "cordofono": "De cuerda",
+    "aerofono": "De viento",
+    "idiofono": "De cuerpo"
   },
   "colores": {
     "electrofono": "#3ae8e0",
