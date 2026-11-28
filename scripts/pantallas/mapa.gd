@@ -19,7 +19,7 @@ func _ready() -> void:
 	var v := VBoxContainer.new()
 	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	m.add_child(v)
-	v.add_child(UI.encabezado("%s (Banda %s)" % [zona["nombre"], zona["banda"]], volver_centro))
+	v.add_child(UI.encabezado(zona["nombre"], volver_centro))
 	var info := UI.panel()
 	info.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	v.add_child(info)
@@ -29,6 +29,7 @@ func _ready() -> void:
 		txt = "¡Zona liberada! Puedes volver a combatir para entrenar y despertar seguidores."
 	var iv := VBoxContainer.new()
 	info.add_child(iv)
+	iv.add_child(UI.etiqueta("Banda: %s" % zona["banda"], 22, UI.ORO))
 	iv.add_child(UI.etiqueta("%s\nEnergía: %d   ·   Púas: %d" % [txt, int(Estado.d["energia"]), int(Estado.d["pua"])], 20))
 	var ident: Dictionary = zona.get("identidad", {})
 	if not ident.is_empty():
