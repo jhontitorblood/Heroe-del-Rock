@@ -19,7 +19,7 @@ func _ready() -> void:
 	var v := VBoxContainer.new()
 	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	m.add_child(v)
-	v.add_child(UI.encabezado(zona["nombre"], volver_centro))
+	v.add_child(UI.encabezado("%s (Banda %s)" % [zona["nombre"], zona["banda"]], volver_centro))
 	var info := UI.panel()
 	info.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	v.add_child(info)
