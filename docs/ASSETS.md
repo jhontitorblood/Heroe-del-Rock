@@ -148,3 +148,11 @@ Los sonidos actuales son **provisionales**, creados por código con `tools/gener
 | --- | --- |
 | `golpe` | El rival recibe un ataque (una vez por ataque, aunque alcance a varios) |
 | `golpe_fuerte` | El rival recibe una definitiva |
+
+## Música — `assets/musica/`
+
+| Archivo | Dónde suena |
+| --- | --- |
+| `menu.mp3` | Música de los menús ("Last Lap Hero"): inicio, selección de personaje, menú principal, Escuadrón, Equipo, Archivo, Tareas reales y Sala de Ensayo. Se repite sola y no se reinicia al pasar de un menú a otro. Se apaga con un desvanecido en el video de intro, campaña, mapa y combate |
+
+Para cambiarla, sube otra canción con el mismo nombre (`menu.mp3` u `menu.ogg`). El volumen y el encendido de la música y de los efectos se ajustan en **SONIDO** del menú principal y se guardan aparte de la partida.

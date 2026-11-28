@@ -35,6 +35,8 @@ func _ready() -> void:
 	Estado.guardar()
 	Estado.ir("centro")
 	await _foto("03_centro")
+	main.actual._ventana_sonido()
+	await _foto("03b_sonido")
 	Estado.ir("campana")
 	await _foto("04_campana")
 	Estado.ir("mapa", {"zona": "cotoca"})

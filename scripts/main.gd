@@ -27,6 +27,7 @@ func _ir(nombre: String, params: Dictionary) -> void:
 	actual = s
 	nombre_actual = nombre
 	add_child(s)
+	Sonido.pantalla(nombre)
 
 
 func _orientar(vertical: bool) -> void:

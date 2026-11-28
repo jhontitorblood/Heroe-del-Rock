@@ -109,6 +109,19 @@ func _ready() -> void:
 			sin_sonido.append(id)
 	_ok("sonido de ataque para todos los personajes " + str(sin_sonido), sin_sonido.is_empty())
 	_ok("sonidos de golpe", Datos.sonido("golpe") != null and Datos.sonido("golpe_fuerte") != null)
+	# Música de menús: suena en el menú principal y se apaga en campaña
+	_ok("musica de menu cargada", Sonido.reproductor.stream != null)
+	Estado.ir("centro")
+	await _esperar(4)
+	_ok("musica suena en el menu", Sonido.reproductor.playing)
+	Estado.ir("campana")
+	await get_tree().create_timer(1.2).timeout
+	_ok("musica se apaga en campaña", not Sonido.reproductor.playing)
+	Estado.ir("centro")
+	await _esperar(4)
+	main.actual._ventana_sonido()
+	await _esperar(2)
+	_ok("ventana de sonido", true)
 	print("FIN DE LA PRUEBA")
 	get_tree().quit()
 

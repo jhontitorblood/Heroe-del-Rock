@@ -16,6 +16,7 @@ config/quit_on_go_back=false
 
 Datos="*res://scripts/autoload/datos.gd"
 Estado="*res://scripts/autoload/estado.gd"
+Sonido="*res://scripts/autoload/sonido.gd"
 
 [display]
 

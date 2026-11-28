@@ -16,7 +16,8 @@ var opciones := [
 	["ARCHIVO", 54, 1040, 336, "archivo"],
 	["TAREAS REALES", 48, 1058, 400, "tareas"],
 	["SALA DE ENSAYO", 52, 1035, 464, "ensayo"],
-	["SALIR", 46, 1020, 560, "titulo"],
+	["SONIDO", 46, 1065, 530, "sonido"],
+	["SALIR", 46, 1010, 596, "titulo"],
 ]
 
 var lbl_desafinado: Label
@@ -67,7 +68,7 @@ func _pista() -> void:
 	h.add_child(_texto("TOCA UNA OPCIÓN", 26, HUESO, Color.BLACK, 6))
 	lienzo.add_child(pild)
 	pild.reset_size()
-	pild.position = Vector2(1045 - pild.size.x / 2.0, 640)
+	pild.position = Vector2(1045 - pild.size.x / 2.0, 664)
 	var tw := punto.create_tween().set_loops()
 	tw.tween_property(punto, "modulate:a", 0.3, 0.7)
 	tw.tween_property(punto, "modulate:a", 1.0, 0.7)
@@ -171,6 +172,9 @@ func _opcion(texto: String, tam: int, centro: Vector2, destino: String) -> void:
 	b.pressed.connect(func():
 		if navegando:
 			return
+		if destino == "sonido":
+			_ventana_sonido()
+			return
 		navegando = true
 		var tw := b.create_tween()
 		tw.tween_property(b, "scale", Vector2(1.12, 1.12), 0.08)
@@ -247,3 +251,73 @@ func _aplicar_foto(ruta: String) -> void:
 		UI.aviso(self, "Foto", err)
 		return
 	foto.texture = Estado.textura_protagonista()
+
+
+## Ventana de sonido: música y efectos, cada uno con encendido y volumen.
+func _ventana_sonido() -> void:
+	var capa := UI.capa_modal(self)
+	var v := UI.centrado(capa, 700)
+	v.add_child(UI.etiqueta("SONIDO", 34, UI.ORO))
+	for fila in [["musica", "Música de los menús"], ["efectos", "Efectos de combate"]]:
+		var clave: String = fila[0]
+		v.add_child(UI.etiqueta(fila[1], 24, UI.TEXTO))
+		var h := HBoxContainer.new()
+		h.add_theme_constant_override("separation", 18)
+		v.add_child(h)
+		var on: bool = Sonido.ajustes[clave + "_on"]
+		var bt := Button.new()
+		bt.custom_minimum_size = Vector2(150, 60)
+		var lbl_vol := UI.etiqueta("", 22, UI.TEXTO)
+		lbl_vol.custom_minimum_size = Vector2(70, 0)
+		var sl := HSlider.new()
+		sl.min_value = 0
+		sl.max_value = 100
+		sl.step = 5
+		sl.value = round(float(Sonido.ajustes[clave + "_vol"]) * 100)
+		sl.custom_minimum_size = Vector2(360, 60)
+		sl.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		_estilo_deslizador(sl)
+		var refrescar := func():
+			var encendido: bool = Sonido.ajustes[clave + "_on"]
+			bt.text = "SÍ" if encendido else "NO"
+			bt.modulate = Color.WHITE if encendido else Color(0.6, 0.6, 0.6)
+			sl.editable = encendido
+			sl.modulate = Color.WHITE if encendido else Color(1, 1, 1, 0.4)
+			lbl_vol.text = "%d%%" % int(sl.value)
+		bt.pressed.connect(func():
+			Sonido.cambiar(clave + "_on", not bool(Sonido.ajustes[clave + "_on"]))
+			refrescar.call())
+		sl.value_changed.connect(func(x: float):
+			Sonido.cambiar(clave + "_vol", x / 100.0)
+			refrescar.call())
+		h.add_child(bt)
+		h.add_child(sl)
+		h.add_child(lbl_vol)
+		refrescar.call()
+	v.add_child(UI.boton("Listo", func(): capa.queue_free(), Vector2(0, 60)))
+
+
+## Deslizador grande y fácil de mover con el dedo.
+func _estilo_deslizador(sl: HSlider) -> void:
+	var riel := StyleBoxFlat.new()
+	riel.bg_color = Color(1, 1, 1, 0.15)
+	riel.set_corner_radius_all(6)
+	riel.content_margin_top = 7
+	riel.content_margin_bottom = 7
+	var lleno := StyleBoxFlat.new()
+	lleno.bg_color = ROJO
+	lleno.set_corner_radius_all(6)
+	lleno.content_margin_top = 7
+	lleno.content_margin_bottom = 7
+	sl.add_theme_stylebox_override("slider", riel)
+	sl.add_theme_stylebox_override("grabber_area", lleno)
+	sl.add_theme_stylebox_override("grabber_area_highlight", lleno)
+	var img := Image.create(40, 40, false, Image.FORMAT_RGBA8)
+	for y in 40:
+		for x in 40:
+			var d := Vector2(x - 19.5, y - 19.5).length()
+			if d <= 19.5:
+				img.set_pixel(x, y, HUESO if d < 15.5 else ROJO_OSCURO)
+	var icono := ImageTexture.create_from_image(img)
+	sl.add_theme_icon_override("grabber", icono)
+	sl.add_theme_icon_override("grabber_highlight", icono)

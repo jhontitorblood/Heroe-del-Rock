@@ -651,6 +651,7 @@ func _sonar(st: AudioStream, volumen_db := 0.0) -> void:
 			p = parlantes[0]
 		else:
 			p = AudioStreamPlayer.new()
+			p.bus = Sonido.BUS_EFECTOS
 			add_child(p)
 			parlantes.append(p)
 	p.stream = st
