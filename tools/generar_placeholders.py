@@ -303,6 +303,48 @@ def icono_mapa(estado):
     return im.resize((256, 256), Image.LANCZOS)
 
 
+def icono_tipo(tipo, color):
+    """Ícono plano de tipo de instrumento: círculo de color con un pictograma blanco (128x128)."""
+    S = 512
+    im = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    blanco = (255, 255, 255, 255)
+    d.ellipse([16, 16, S - 16, S - 16], fill=(20, 14, 24, 255))
+    d.ellipse([40, 40, S - 40, S - 40], fill=color + (255,))
+    c = S // 2
+    if tipo == "cordofono":
+        # Púa con tres cuerdas
+        d.polygon([(c - 120, c - 110), (c + 120, c - 110), (c + 130, c - 60), (c, c + 140), (c - 130, c - 60)], fill=blanco)
+        for dx in (-50, 0, 50):
+            d.line([(c + dx, c - 90), (c + dx * 0.4, c + 90)], fill=color + (255,), width=16)
+    elif tipo == "aerofono":
+        # Quena con agujeros y soplo
+        d.rounded_rectangle([c - 50, c - 160, c + 50, c + 160], 40, fill=blanco)
+        for dy in (-80, -20, 40, 100):
+            d.ellipse([c - 18, c + dy - 18, c + 18, c + dy + 18], fill=color + (255,))
+        for k, dy in enumerate((-110, -30)):
+            d.arc([c + 75, c + dy - 40, c + 175, c + dy + 40], 270, 90, fill=blanco, width=16)
+    elif tipo == "membranofono":
+        # Tambor
+        d.rectangle([c - 130, c - 60, c + 130, c + 110], fill=blanco)
+        d.ellipse([c - 130, c - 110, c + 130, c - 10], fill=blanco, outline=color + (255,), width=14)
+        d.ellipse([c - 130, c + 60, c + 130, c + 160], fill=blanco)
+        for x in (-80, 0, 80):
+            d.line([(c + x - 30, c - 10), (c + x + 30, c + 100)], fill=color + (255,), width=12)
+        d.line([(c + 60, c - 190), (c + 170, c - 90)], fill=blanco, width=22)
+    elif tipo == "idiofono":
+        # Campana
+        d.pieslice([c - 130, c - 150, c + 130, c + 110], 180, 360, fill=blanco)
+        d.polygon([(c - 130, c - 20), (c + 130, c - 20), (c + 160, c + 90), (c - 160, c + 90)], fill=blanco)
+        d.rectangle([c - 175, c + 80, c + 175, c + 115], fill=blanco)
+        d.ellipse([c - 35, c + 105, c + 35, c + 170], fill=blanco)
+        d.ellipse([c - 25, c - 190, c + 25, c - 140], fill=blanco)
+    elif tipo == "electrofono":
+        # Rayo
+        d.polygon([(c + 40, c - 190), (c - 110, c + 20), (c - 10, c + 20), (c - 50, c + 190), (c + 110, c - 30), (c + 10, c - 30)], fill=blanco)
+    return im.resize((128, 128), Image.LANCZOS)
+
+
 def icono():
     im = Image.new("RGBA", (192, 192), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
@@ -374,6 +416,11 @@ def main():
         for i, b in enumerate(pasos):
             cuadro = silueta(color, "guitarrista", "protagonista_%s_%d" % (g, i), femenino=(g == "f"), tam=512, brazo=b)
             guardar(cuadro, os.path.join("animaciones", "protagonista_%s_rock" % g), "%04d" % (i + 1))
+    # Íconos de tipo de instrumento (128x128)
+    with open(os.path.join(RAIZ, "data", "familias.json"), encoding="utf-8") as f:
+        fams = json.load(f)
+    for fam, col in fams["colores"].items():
+        guardar(icono_tipo(fam, hex_rgb(col)), "ui", "tipo_" + fam)
     # Íconos de los puntos del mapa (256x256, transparentes)
     for estado in ("bloqueado", "desbloqueado", "vencido"):
         guardar(icono_mapa(estado), "ui", "icono_" + estado)

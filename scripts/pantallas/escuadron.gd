@@ -55,6 +55,7 @@ func _refrescar() -> void:
 		b.add_child(h)
 		var img := UI.imagen(Datos.sprite(p.get("imagen", s["base_id"]), true), Vector2(96, 96))
 		img.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		UI.marcar_tipo(img, Datos.familia_de(s["base_id"]), 28)
 		h.add_child(img)
 		var rz := Datos.rareza(p["rareza"])
 		var l := UI.etiqueta("%s%s\n%s · %s · %s · Nv %d · Vida %d%%" % ["[EN EQUIPO] " if en_equipo else "", p["nombre"], rz["nombre"],

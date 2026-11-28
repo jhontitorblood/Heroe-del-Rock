@@ -95,6 +95,10 @@ func familia_de(base_id: String) -> String:
 	return personaje(base_id).get("familia", clase_de(base_id).get("familia", "cordofono"))
 
 
+func icono_tipo(f: String) -> Texture2D:
+	return textura("ui", "tipo_" + f)
+
+
 func nombre_familia(f: String) -> String:
 	return familias["nombres"].get(f, f)
 

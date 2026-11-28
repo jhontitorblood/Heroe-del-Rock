@@ -60,7 +60,9 @@ func _abrir(n: Dictionary) -> void:
 		for id in info["ids"]:
 			var p := Datos.personaje(id)
 			var c := VBoxContainer.new()
-			c.add_child(UI.imagen(Datos.sprite(p.get("imagen", id), false), Vector2(120, 120)))
+			var im := UI.imagen(Datos.sprite(p.get("imagen", id), false), Vector2(120, 120))
+			UI.marcar_tipo(im, Datos.familia_de(id), 30)
+			c.add_child(im)
 			var rz := Datos.rareza(p.get("rareza", "comun"))
 			c.add_child(UI.etiqueta(p.get("nombre", id), 16, Color(rz["color"])))
 			c.add_child(UI.etiqueta("%s · %s" % [Datos.clases[p["clase"]]["nombre"], Datos.nombre_familia(Datos.familia_de(id))], 14, Datos.color_familia(Datos.familia_de(id))))

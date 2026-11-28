@@ -47,6 +47,8 @@ func _ready() -> void:
 	await _foto("08_escuadron")
 	Estado.ir("equipo")
 	await _foto("09_equipo")
+	main.actual._ver_ciclo()
+	await _foto("09b_ciclo_tipos")
 	Estado.ir("archivo")
 	await _foto("10_archivo")
 	Estado.ir("combate", {"zona": "cotoca", "nodo": "c4"})

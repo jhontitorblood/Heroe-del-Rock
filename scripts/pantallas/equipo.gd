@@ -10,7 +10,9 @@ func _ready() -> void:
 	var v := VBoxContainer.new()
 	v.add_theme_constant_override("separation", 10)
 	m.add_child(v)
-	v.add_child(UI.encabezado("Equipo", volver_centro))
+	var cab := UI.encabezado("Equipo", volver_centro)
+	cab.add_child(UI.boton("Ventajas por tipo", _ver_ciclo, Vector2(260, 56)))
+	v.add_child(cab)
 	# Lista de personajes (desliza a los lados)
 	var sc := ScrollContainer.new()
 	sc.custom_minimum_size = Vector2(0, 76)
@@ -57,7 +59,9 @@ func _mostrar(uid: String) -> void:
 	var fila := HBoxContainer.new()
 	fila.add_theme_constant_override("separation", 16)
 	detalle.add_child(fila)
-	fila.add_child(UI.imagen(tex, Vector2(220, 220)))
+	var img_det := UI.imagen(tex, Vector2(220, 220))
+	UI.marcar_tipo(img_det, Datos.familia_de(base_id), 48)
+	fila.add_child(img_det)
 	var col := VBoxContainer.new()
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	fila.add_child(col)
@@ -82,3 +86,36 @@ func _mostrar(uid: String) -> void:
 		var cd := int(hb.get("enfriamiento", 0))
 		var extra := "  (espera %d turnos)" % cd if cd > 0 else ""
 		detalle.add_child(UI.etiqueta("• %s%s — %s" % [hb.get("nombre", id), extra, hb.get("desc", "")], 19, UI.TEXTO, true))
+
+
+## Muestra el ciclo de ventajas con los íconos de tipo de instrumento.
+func _ver_ciclo() -> void:
+	var capa := UI.capa_modal(self)
+	var v := UI.centrado(capa, 1100)
+	v.add_child(UI.etiqueta("Ventajas por tipo de instrumento", 30, UI.ORO))
+	v.add_child(UI.etiqueta("Cada tipo hace +25% de daño al siguiente y recibe +25% del anterior.", 19, UI.TEXTO, true))
+	var fila := HBoxContainer.new()
+	fila.alignment = BoxContainer.ALIGNMENT_CENTER
+	fila.add_theme_constant_override("separation", 6)
+	v.add_child(fila)
+	var orden: Array = Datos.familias["orden"]
+	for i in orden.size() + 1:
+		var f: String = orden[i % orden.size()]
+		var col := VBoxContainer.new()
+		col.add_child(UI.icono_tipo(f, 84))
+		var l := UI.etiqueta(Datos.nombre_familia(f), 15, Datos.color_familia(f))
+		l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		l.custom_minimum_size = Vector2(110, 0)
+		l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		col.add_child(l)
+		fila.add_child(col)
+		if i < orden.size():
+			var flecha := UI.etiqueta(">", 40, UI.ORO)
+			flecha.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+			flecha.custom_minimum_size = Vector2(0, 84)
+			flecha.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			fila.add_child(flecha)
+	for f in orden:
+		var r: String = Datos.familias["razones"].get(f, "")
+		v.add_child(UI.etiqueta("%s le gana a %s: %s." % [Datos.nombre_familia(f), Datos.nombre_familia(orden[(orden.find(f) + 1) % orden.size()]), r.to_lower()], 17, UI.TENUE, true))
+	v.add_child(UI.boton("Cerrar", func(): capa.queue_free(), Vector2(0, 56)))

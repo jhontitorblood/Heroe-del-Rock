@@ -287,8 +287,15 @@ func _unidad(u, fx: float, fy: float, s: int) -> Control:
 	n.add_child(barras)
 	var rz := Datos.rareza(u.rareza)
 	var color_nombre: Color = Color(rz["color"]) if u.lado == Batalla.ENEMIGO else (UI.ESPECTRAL if u.espectral else UI.ORO)
+	var fila_nom := HBoxContainer.new()
+	fila_nom.alignment = BoxContainer.ALIGNMENT_CENTER
+	fila_nom.add_theme_constant_override("separation", 4)
+	fila_nom.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	fila_nom.add_child(UI.icono_tipo(u.familia, 20))
 	var nom := _texto(u.nombre, 14, color_nombre)
-	barras.add_child(nom)
+	nom.clip_text = false
+	fila_nom.add_child(nom)
+	barras.add_child(fila_nom)
 	var hp := UI.barra(u.hp, u.hp_max, Color("#3ae889") if u.lado == Batalla.ALIADO else Color("#ff4a4a"), 9)
 	hp.custom_minimum_size.x = s * 0.8
 	hp.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -325,7 +332,7 @@ func _refrescar() -> void:
 		var t: Dictionary = tarjetas[u.uid]
 		t["hp"].max_value = u.hp_max
 		t["hp"].value = u.hp
-		var txt: String = "Nv %d · %s · %d/%d" % [u.nivel, Datos.nombre_familia(u.familia), u.hp, u.hp_max] if u.vivo() else "Fuera de combate"
+		var txt: String = "Nv %d · %d / %d" % [u.nivel, u.hp, u.hp_max] if u.vivo() else "Fuera de combate"
 		var est: String = u.texto_estados()
 		if est != "" and u.vivo():
 			txt += " · " + est
@@ -362,6 +369,7 @@ func _dibujar_orden() -> void:
 		var img := UI.imagen(Datos.sprite(u.imagen, u.espectral), Vector2(tam, tam))
 		img.flip_h = u.voltear()
 		marco.add_child(img)
+		UI.marcar_tipo(img, u.familia, 18 if primero else 15)
 		marco.tooltip_text = u.nombre
 		if par[1]:
 			marco.modulate = Color(1, 1, 1, 0.6)
@@ -691,6 +699,7 @@ func _despertar(id: String, nivel: int) -> void:
 	v.add_child(h)
 	var img := UI.imagen(Datos.sprite(p.get("imagen", id), false), Vector2(200, 200))
 	h.add_child(img)
+	UI.marcar_tipo(img, Datos.familia_de(id), 44)
 	var col := VBoxContainer.new()
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	h.add_child(col)

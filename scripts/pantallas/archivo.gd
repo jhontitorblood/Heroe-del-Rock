@@ -46,6 +46,7 @@ func _ficha(base_id: String, espectral: bool, nivel: int) -> Button:
 	b.add_child(v)
 	var img := UI.imagen(Datos.sprite(p.get("imagen", base_id), espectral), Vector2(150, 150))
 	img.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	UI.marcar_tipo(img, Datos.familia_de(base_id), 34)
 	v.add_child(img)
 	var l := UI.etiqueta(p.get("nombre", base_id), 15, Color(rz["color"]), true)
 	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

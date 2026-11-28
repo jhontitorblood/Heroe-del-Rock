@@ -92,6 +92,26 @@ static func barra(valor: float, maximo: float, color: Color, alto := 14) -> Prog
 	return b
 
 
+## Ícono de tipo de instrumento (círculo de color).
+static func icono_tipo(familia: String, tam := 24.0) -> TextureRect:
+	var r := imagen(Datos.icono_tipo(familia), Vector2(tam, tam))
+	r.tooltip_text = Datos.nombre_familia(familia)
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return r
+
+
+## Pone un ícono de tipo en la esquina inferior derecha de un control.
+static func marcar_tipo(sobre: Control, familia: String, tam := 22.0) -> void:
+	var ic := icono_tipo(familia, tam)
+	ic.anchor_left = 1.0
+	ic.anchor_top = 1.0
+	ic.anchor_right = 1.0
+	ic.anchor_bottom = 1.0
+	ic.offset_left = -tam
+	ic.offset_top = -tam
+	sobre.add_child(ic)
+
+
 static func imagen(tex: Texture2D, tam: Vector2) -> TextureRect:
 	var r := TextureRect.new()
 	r.texture = tex

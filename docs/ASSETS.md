@@ -93,6 +93,20 @@ En combate se muestran sin recuadro, con la sombra bajo los pies: deja los pies 
 
 Los íconos tapan los marcadores dibujados en el mapa. Las posiciones de cada punto están en `data/territorios.json` (coordenadas 1280 × 720 sobre la zona segura del mapa). Si mueves un marcador en el dibujo, avísame o cambia ahí su `pos`.
 
+## Íconos de tipo de instrumento — `assets/ui/` — 128 × 128 px, fondo transparente
+
+Ícono plano de un color por tipo. Se muestra junto al nombre en combate, en la barra de turnos, en el mapa, el Despertar, Escuadrón, Archivo y Equipo.
+
+| Archivo | Tipo | Color |
+| --- | --- | --- |
+| `tipo_cordofono.png` | De cuerda | Rojo |
+| `tipo_aerofono.png` | De viento | Verde |
+| `tipo_membranofono.png` | De membrana | Naranja |
+| `tipo_idiofono.png` | De cuerpo | Morado |
+| `tipo_electrofono.png` | Eléctricos/Digitales | Celeste |
+
+Los colores están en `data/familias.json`.
+
 ## Ícono de la app
 
 `icon.png` — 192 × 192 px.
