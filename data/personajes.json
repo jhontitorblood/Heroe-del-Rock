@@ -58,21 +58,22 @@
     "banda": "Los Sonsos de Cotoca",
     "imagen": "e_tamborero"
   },
-  "e_tecladista": {
-    "nombre": "Tecladista del Pantano",
+  "e_herlanx": {
+    "nombre": "P. Herlanx",
     "clase": "tecladista",
     "genero": "raiz",
     "rareza": "comun",
     "banda": "Los Sonsos de Cotoca",
-    "imagen": "e_tecladista"
+    "imagen": "e_herlanx",
+    "instrumento": "Sintetizador"
   },
-  "e_bajista": {
-    "nombre": "Bajista del Curiche",
+  "e_sam": {
+    "nombre": "R. Sam",
     "clase": "bajista",
     "genero": "raiz",
     "rareza": "raro",
     "banda": "Los Sonsos de Cotoca",
-    "imagen": "e_bajista"
+    "imagen": "e_sam"
   },
   "e_corista": {
     "nombre": "Corista de Cotoca",
@@ -99,31 +100,32 @@
     "imagen": "e_cantor",
     "legado": true
   },
-  "s_brisa": {
-    "nombre": "Brisa Taquirari",
+  "s_ivy": {
+    "nombre": "R. Ivy",
     "clase": "vocalista",
     "genero": "raiz",
     "rareza": "epico",
     "banda": "Los Sonsos de Cotoca",
-    "imagen": "s_brisa",
+    "imagen": "s_ivy",
     "mult": {
       "hp": 1.1,
       "atk": 1.05
     },
     "bio": "Sublíder de Los Sonsos de Cotoca. Su voz domina la plaza principal de Cotoca en cada fiesta."
   },
-  "s_lazaro": {
-    "nombre": "Lázaro Consola",
-    "clase": "ingeniero",
+  "s_jiujiu": {
+    "nombre": "JiuJiu",
+    "clase": "tecladista",
     "genero": "metal",
     "rareza": "epico",
     "banda": "Los Sonsos de Cotoca",
-    "imagen": "s_lazaro",
+    "imagen": "s_jiujiu",
     "mult": {
       "hp": 1.15,
       "atk": 1.05
     },
-    "bio": "Sublíder y sonidista de la banda. Llegó de Warnes con gustos metaleros y controla cada parlante de la laguna."
+    "bio": "Sublíder y tecladista de la banda. Llegó de Warnes con gustos metaleros.",
+    "instrumento": "Teclado"
   },
   "l_aruma": {
     "nombre": "Aruma",
@@ -163,52 +165,61 @@
     "familia": "idiofono",
     "instrumento": "Marimba"
   },
-  "e_sonso": {
-    "nombre": "Sonso de Cotoca",
+  "e_hawkins": {
+    "nombre": "J. Hawkins",
     "clase": "guitarrista",
     "genero": "raiz",
     "rareza": "comun",
     "banda": "Los Sonsos de Cotoca",
-    "imagen": "e_sonso"
+    "imagen": "e_hawkins"
   },
-  "e_masaco": {
-    "nombre": "Masaco de Cotoca",
-    "clase": "baterista",
+  "e_idarkness": {
+    "nombre": "P. IDarkness",
+    "clase": "guitarrista",
+    "instrumento": "Guitarra acústica",
     "genero": "raiz",
     "rareza": "comun",
     "banda": "Los Sonsos de Cotoca",
-    "imagen": "e_masaco"
+    "imagen": "e_idarkness"
   },
-  "e_boca_de_loca": {
-    "nombre": "Boca de Loca",
+  "e_lokillo": {
+    "nombre": "P. Lokillo",
+    "clase": "tamborilero",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_lokillo"
+  },
+  "e_umbra": {
+    "nombre": "R. Umbra",
     "clase": "vocalista",
     "genero": "raiz",
     "rareza": "comun",
     "banda": "Los Sonsos de Cotoca",
-    "imagen": "e_boca_de_loca"
+    "imagen": "e_umbra"
   },
-  "e_acopaibau": {
-    "nombre": "Acopaibau de Cotoca",
+  "e_rosie": {
+    "nombre": "R. Rosie",
     "clase": "bajista",
     "genero": "raiz",
     "rareza": "raro",
     "banda": "Los Sonsos de Cotoca",
-    "imagen": "e_acopaibau"
+    "imagen": "e_rosie"
   },
-  "e_acopaibau_charango": {
-    "nombre": "Acopaibau",
-    "clase": "charanguista",
+  "e_miguel": {
+    "nombre": "R. Miguel",
+    "clase": "laudista",
     "genero": "raiz",
     "rareza": "raro",
     "banda": "Los Sonsos de Cotoca",
-    "imagen": "e_acopaibau_charango"
+    "imagen": "e_miguel"
   },
-  "e_huracanes_max": {
-    "nombre": "Huracanes Max",
-    "clase": "vientista",
+  "e_darklordbeer": {
+    "nombre": "P. DarkLordBeer",
+    "clase": "clarinetista",
     "genero": "gotico",
     "rareza": "raro",
     "banda": "Los Sonsos de Cotoca",
-    "imagen": "e_huracanes_max"
+    "imagen": "e_darklordbeer"
   }
 }

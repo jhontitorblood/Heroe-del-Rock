@@ -53,15 +53,22 @@ En combate se muestran sin recuadro, con la sombra bajo los pies: deja los pies 
 | --- | --- |
 | `protagonista_m` | Protagonista masculino |
 | `protagonista_f` | Protagonista femenina |
-| `e_cuerdero` | Cuerdero de la Laguna (guitarrista) |
+| `e_hawkins` | 01 · J. Hawkins (guitarrista, guitarra eléctrica) |
+| `e_lokillo` | 02 · P. Lokillo (tamborilero) |
+| `e_umbra` | 02 · R. Umbra (vocalista) |
+| `e_rosie` | 03 · R. Rosie (bajista) |
+| `e_idarkness` | 03 · P. IDarkness (guitarrista, guitarra acústica) |
+| `s_ivy` | 04 · R. Ivy (sublíder, vocalista) |
+| `e_miguel` | 04 · R. Miguel (laudista) |
+| `e_darklordbeer` | 05 · P. DarkLordBeer (clarinetista) |
+| `s_jiujiu` | 06 · JiuJiu (sublíder, tecladista) |
+| `e_sam` | 06 · R. Sam (bajista) |
+| `e_herlanx` | 06 · P. Herlanx (tecladista, sintetizador) |
 | `e_tamborero` | Tamborero del Jichi (baterista) |
-| `e_tecladista` | Tecladista del Pantano |
-| `e_bajista` | Bajista del Curiche |
 | `e_corista` | Corista de Cotoca |
 | `e_vientista` | Flautero de la Niebla (vientista) |
-| `e_cantor` | Cantor del Taquirari (vocalista) |
-| `s_brisa` | Brisa Taquirari (sublíder, charanguista) |
-| `s_lazaro` | Lázaro Consola (sublíder, ingeniero de sonido) |
+| `e_cuerdero` | Cuerdero de la Laguna (guitarrista, sin uso en el mapa) |
+| `e_cantor` | Cantor del Taquirari (vocalista, sin uso en el mapa) |
 | `l_aruma` | Aruma (líder, vocalista) |
 | `j_jichi` | Jichi Ancestral, Señor de la Laguna (jefe) |
 

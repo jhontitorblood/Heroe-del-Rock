@@ -92,12 +92,12 @@ def silueta(color, instrumento, semilla, femenino=False, monstruo=False, tam=256
         d.ellipse([270, 125, 284, 139], fill=(30, 20, 30, 255))
         # Instrumento según la clase
         o = (40, 30, 40, 255)
-        if instrumento in ("guitarrista", "bajista", "charanguista"):
-            largo = {"guitarrista": 230, "bajista": 270, "charanguista": 170}[instrumento]
-            cuerpo = {"guitarrista": 70, "bajista": 80, "charanguista": 50}[instrumento]
+        if instrumento in ("guitarrista", "bajista", "charanguista", "laudista"):
+            largo = {"guitarrista": 230, "bajista": 270, "charanguista": 170, "laudista": 190}[instrumento]
+            cuerpo = {"guitarrista": 70, "bajista": 80, "charanguista": 50, "laudista": 75}[instrumento]
             d.line([(150, 380), (150 + largo, 380 - largo * 0.7)], fill=o, width=14)
             d.ellipse([150 - cuerpo, 380 - cuerpo * 0.7, 150 + cuerpo, 380 + cuerpo * 0.7], fill=(200, 60, 40, 255), outline=o, width=6)
-        elif instrumento == "baterista":
+        elif instrumento in ("baterista", "tamborilero"):
             d.ellipse([120, 380, 392, 470], fill=(220, 220, 230, 255), outline=o, width=8)
             d.line([(150, 300), (110, 220)], fill=o, width=10)
             d.line([(362, 300), (402, 220)], fill=o, width=10)
@@ -120,7 +120,7 @@ def silueta(color, instrumento, semilla, femenino=False, monstruo=False, tam=256
             d.ellipse([310, 235, 400, 305], fill=(150, 80, 30, 255), outline=o, width=5)
             d.line([(330, 200), (250, 120)], fill=o, width=10)
             d.line([(200, 330), (420, 170)], fill=(220, 200, 160, 255), width=6)
-        elif instrumento == "vientista":
+        elif instrumento in ("vientista", "clarinetista"):
             d.line([(270, 160), (420, 230)], fill=(170, 120, 60, 255), width=16)
             for i in range(4):
                 d.ellipse([300 + i * 28, 168 + i * 13, 310 + i * 28, 178 + i * 13], fill=o)
@@ -372,7 +372,7 @@ def main():
             color = tuple(int(c * 0.85) for c in color)
         ruta_normal = os.path.join(ASSETS, "personajes", "pj_%s_normal.png" % img_id)
         if es_provisional(ruta_normal):
-            normal = silueta(color, p["clase"], img_id, femenino=img_id.endswith("_f") or img_id in ("l_aruma", "s_brisa", "e_corista"), monstruo=img_id == "j_jichi")
+            normal = silueta(color, p["clase"], img_id, femenino=img_id.endswith("_f") or img_id in ("l_aruma", "s_ivy", "e_corista"), monstruo=img_id == "j_jichi")
             guardar(normal, "personajes", "pj_%s_normal" % img_id)
         else:
             # Arte final del usuario: las variantes provisionales salen de su dibujo

@@ -16,9 +16,9 @@
         "mapa": "mapa_cotoca",
         "jefe_nodo": "c8",
         "comunes": [
-          "e_sonso",
-          "e_masaco",
-          "e_boca_de_loca"
+          "e_hawkins",
+          "e_lokillo",
+          "e_umbra"
         ],
         "nodos": [
           {
@@ -28,9 +28,9 @@
             "nivel": 1,
             "fuerza": 0.75,
             "enemigos": [
-              "e_sonso"
+              "e_hawkins"
             ],
-            "despertable": "e_sonso",
+            "despertable": "e_hawkins",
             "fondo": "esc_cotoca_pueblo",
             "pos": [
               313,
@@ -45,12 +45,12 @@
             "nivel": 2,
             "fuerza": 0.8,
             "enemigos": [
-              "e_masaco",
-              "e_boca_de_loca"
+              "e_lokillo",
+              "e_umbra"
             ],
             "despertable": [
-              "e_masaco",
-              "e_boca_de_loca"
+              "e_lokillo",
+              "e_umbra"
             ],
             "fondo": "esc_cotoca_pueblo",
             "pos": [
@@ -69,10 +69,10 @@
             "nivel": 3,
             "fuerza": 0.85,
             "enemigos": [
-              "e_acopaibau",
-              "e_sonso"
+              "e_rosie",
+              "e_idarkness"
             ],
-            "despertable": "e_acopaibau",
+            "despertable": "e_rosie",
             "fondo": "esc_cotoca_laguna",
             "pos": [
               667,
@@ -91,22 +91,22 @@
             "fuerza": 0.9,
             "fuerza_hp": 1.3,
             "enemigos": [
-              "s_brisa",
-              "e_acopaibau_charango"
+              "s_ivy",
+              "e_miguel"
             ],
-            "despertable": "s_brisa",
+            "despertable": "s_ivy",
             "fondo": "esc_cotoca_pueblo",
             "pos": [
               732,
               414
             ],
-            "corto": "Brisa",
+            "corto": "Ivy",
             "requiere": {
               "nodo": "c3"
             },
             "dialogo_antes": [
               [
-                "Brisa Taquirari",
+                "R. Ivy",
                 "¿Vienes a desafinar la plaza principal? ¡A ver si sigues mi voz!"
               ]
             ]
@@ -118,9 +118,9 @@
             "nivel": 5,
             "fuerza": 1.0,
             "enemigos": [
-              "e_huracanes_max"
+              "e_darklordbeer"
             ],
-            "despertable": "e_huracanes_max",
+            "despertable": "e_darklordbeer",
             "fondo": "esc_cotoca_curiche",
             "pos": [
               884,
@@ -134,30 +134,30 @@
           },
           {
             "id": "c6",
-            "nombre": "Sublíder: Lázaro Consola",
+            "nombre": "Sublíder: JiuJiu",
             "tipo": "sublider",
             "nivel": 6,
             "fuerza": 0.95,
             "fuerza_hp": 1.3,
             "enemigos": [
-              "s_lazaro",
-              "e_bajista",
-              "e_tecladista"
+              "s_jiujiu",
+              "e_sam",
+              "e_herlanx"
             ],
-            "despertable": "s_lazaro",
+            "despertable": "s_jiujiu",
             "fondo": "esc_cotoca_curiche",
             "pos": [
               1049,
               421
             ],
-            "corto": "Lázaro",
+            "corto": "JiuJiu",
             "requiere": {
               "nodo": "c5"
             },
             "dialogo_antes": [
               [
-                "Lázaro Consola",
-                "Yo controlo cada parlante de esta laguna. Aquí suena lo que yo diga."
+                "JiuJiu",
+                "Mis teclados hacen temblar esta laguna. Aquí suena lo que yo toque."
               ]
             ]
           },

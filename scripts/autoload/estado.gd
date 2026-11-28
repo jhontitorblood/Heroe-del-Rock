@@ -90,8 +90,29 @@ func cargar() -> bool:
 	if typeof(v) != TYPE_DICTIONARY:
 		return false
 	d = v
+	migrar_ids()
 	revisar_dia()
 	return true
+
+
+## Personajes que cambiaron de id: las partidas guardadas pasan al id nuevo.
+const IDS_RENOMBRADOS := {
+	"e_sonso": "e_hawkins", "e_masaco": "e_lokillo", "e_boca_de_loca": "e_umbra",
+	"e_acopaibau": "e_rosie", "s_brisa": "s_ivy", "e_acopaibau_charango": "e_miguel",
+	"e_huracanes_max": "e_darklordbeer", "s_lazaro": "s_jiujiu", "e_bajista": "e_sam",
+	"e_tecladista": "e_herlanx",
+}
+
+
+func migrar_ids() -> void:
+	for s in d.get("seguidores", []):
+		s["base_id"] = IDS_RENOMBRADOS.get(s["base_id"], s["base_id"])
+	for clave in ["encontrados", "vistos"]:
+		var viejo: Dictionary = d.get(clave, {})
+		var nuevo := {}
+		for k in viejo:
+			nuevo[IDS_RENOMBRADOS.get(k, k)] = viejo[k]
+		d[clave] = nuevo
 
 
 func guardar() -> void:

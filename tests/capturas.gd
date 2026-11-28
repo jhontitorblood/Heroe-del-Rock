@@ -25,8 +25,8 @@ func _ready() -> void:
 	Estado.nueva_partida("m", "Joser")
 	for t in ["t_flexiones", "t_instrumento", "t_ordenar"]:
 		Estado.registrar_tarea(t)
-	Estado.agregar_seguidor("s_brisa", 4)
-	Estado.agregar_seguidor("e_bajista", 3)
+	Estado.agregar_seguidor("s_ivy", 4)
+	Estado.agregar_seguidor("e_sam", 3)
 	Estado.d["tam_equipo"] = 3
 	Estado.d["equipo"] = ["s1", "s2"]
 	Estado.d["nodos"]["c1"] = {"vencido": true, "veces": 1, "unico_despertado": false, "reaparece": 0, "fallos": 0}
@@ -81,7 +81,7 @@ func _ready() -> void:
 	if not ("vertical" in OS.get_cmdline_user_args()):
 		get_viewport().get_texture().get_image().save_png("/tmp/capturas/12c_ataque.png")
 	await get_tree().create_timer(0.6).timeout
-	c._despertar("s_lazaro", 6)
+	c._despertar("s_jiujiu", 6)
 	await _foto("13_despertar")
 	get_tree().quit()
 

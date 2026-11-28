@@ -26,6 +26,8 @@ const FORMACIONES := {
 	4: [[0.08, 0.32], [0.24, 0.50], [0.08, 0.72], [0.24, 0.90]],
 	5: [[0.07, 0.28], [0.21, 0.44], [0.35, 0.60], [0.07, 0.74], [0.21, 0.90]],
 }
+## Puesto del centro en cada formación (para el personaje importante)
+const CENTRO_FORMACION := {1: 0, 2: 0, 3: 1, 4: 1, 5: 2}
 const TAM_SPRITE := {1: 210, 2: 185, 3: 155, 4: 135, 5: 125}
 
 
@@ -55,7 +57,7 @@ class EfectoGolpe extends Control:
 		var rng := RandomNumberGenerator.new()
 		rng.seed = semilla
 		match tipo:
-			"guitarrista", "charanguista":
+			"guitarrista", "charanguista", "laudista":
 				# Chispas que saltan hacia afuera
 				for i in 12:
 					var ang := rng.randf() * TAU
@@ -70,7 +72,7 @@ class EfectoGolpe extends Control:
 					var pr := clampf(p * 1.4 - i * 0.2, 0.0, 1.0)
 					if pr > 0:
 						draw_arc(c, r * 0.15 + r * 0.6 * pr, 0, TAU, 40, Color(Color("#4a8bff"), (1.0 - pr) * a), 6.0, true)
-			"baterista":
+			"baterista", "tamborilero":
 				# Golpe seco: estrella de impacto y aro
 				var pts := PackedVector2Array()
 				for i in 16:
@@ -104,7 +106,7 @@ class EfectoGolpe extends Control:
 						var x2 := c.x - r * 0.6 + i * r * 0.1
 						pts2.append(Vector2(x2, y0 + (12.0 if (i + k) % 2 == 0 else -12.0) * (1.0 - p * 0.5)))
 					draw_polyline(pts2, Color(Color("#3ae8e0"), a), 3.0, true)
-			"vientista":
+			"vientista", "clarinetista":
 				# Ráfagas de viento en espiral
 				for k in 3:
 					var base := TAU * k / 3.0 + p * 4.0
@@ -209,8 +211,16 @@ func _construir() -> void:
 		var n: int = clamp(lista.size(), 1, 5)
 		var form: Array = FORMACIONES[n]
 		var tam: int = TAM_SPRITE[n]
-		for i in lista.size():
-			var p: Array = form[min(i, form.size() - 1)]
+		# En combates de sublíder, líder o jefe el personaje importante (el primero) va al centro
+		var puestos := range(lista.size())
+		if lado == Batalla.ENEMIGO and nodo.get("tipo", "") in ["sublider", "lider", "jefe"] \
+				and not bool(info_enemigos.get("aleatorio", false)) and lista.size() >= 3:
+			var centro: int = CENTRO_FORMACION[n]
+			puestos = range(1, lista.size())
+			puestos.insert(centro, 0)
+		for k in lista.size():
+			var i: int = puestos[k]
+			var p: Array = form[min(k, form.size() - 1)]
 			var fx: float = p[0] if lado == Batalla.ALIADO else 1.0 - p[0]
 			colocados.append([float(p[1]), _unidad(lista[i], fx, float(p[1]), tam)])
 	# Los de más abajo se dibujan delante
