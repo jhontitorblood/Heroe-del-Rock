@@ -1,0 +1,357 @@
+{
+  "santa_cruz": {
+    "nombre": "Santa Cruz",
+    "mapa": "mapa_santa_cruz",
+    "zonas": [
+      {
+        "id": "cotoca",
+        "nombre": "Cotoca",
+        "banda": "Los Sonsos de Cotoca",
+        "estilo": "Rock latino",
+        "disponible": true,
+        "pos": [
+          1180,
+          646
+        ],
+        "mapa": "mapa_cotoca",
+        "jefe_nodo": "c8",
+        "comunes": [
+          "e_hawkins",
+          "e_lokillo",
+          "e_umbra"
+        ],
+        "nodos": [
+          {
+            "id": "c1",
+            "nombre": "Entrada de Cotoca",
+            "tipo": "normal",
+            "nivel": 1,
+            "fuerza": 0.75,
+            "enemigos": [
+              "e_hawkins"
+            ],
+            "despertable": "e_hawkins",
+            "fondo": "esc_cotoca_pueblo",
+            "pos": [
+              313,
+              438
+            ],
+            "corto": "Entrada"
+          },
+          {
+            "id": "c2",
+            "nombre": "Monumento de bienvenida",
+            "tipo": "normal",
+            "nivel": 2,
+            "fuerza": 0.8,
+            "enemigos": [
+              "e_lokillo",
+              "e_umbra"
+            ],
+            "despertable": [
+              "e_lokillo",
+              "e_umbra"
+            ],
+            "fondo": "esc_cotoca_pueblo",
+            "pos": [
+              568,
+              484
+            ],
+            "corto": "Monumento",
+            "requiere": {
+              "nodo": "c1"
+            }
+          },
+          {
+            "id": "c3",
+            "nombre": "Cancha municipal",
+            "tipo": "normal",
+            "nivel": 3,
+            "fuerza": 0.85,
+            "enemigos": [
+              "e_rosie",
+              "e_idarkness"
+            ],
+            "despertable": "e_rosie",
+            "fondo": "esc_cotoca_laguna",
+            "pos": [
+              667,
+              562
+            ],
+            "corto": "Cancha",
+            "requiere": {
+              "nodo": "c2"
+            }
+          },
+          {
+            "id": "c4",
+            "nombre": "Plaza principal",
+            "tipo": "sublider",
+            "nivel": 4,
+            "fuerza": 0.9,
+            "fuerza_hp": 1.3,
+            "enemigos": [
+              "s_ivy",
+              "e_miguel"
+            ],
+            "despertable": "s_ivy",
+            "fondo": "esc_cotoca_pueblo",
+            "pos": [
+              732,
+              414
+            ],
+            "corto": "Ivy",
+            "requiere": {
+              "nodo": "c3"
+            },
+            "dialogo_antes": [
+              [
+                "R. Ivy",
+                "¿Vienes a desafinar la plaza principal? ¡A ver si sigues mi voz!"
+              ]
+            ]
+          },
+          {
+            "id": "c5",
+            "nombre": "Centrada de Curichi",
+            "tipo": "normal",
+            "nivel": 5,
+            "fuerza": 1.0,
+            "enemigos": [
+              "e_darklordbeer"
+            ],
+            "despertable": "e_darklordbeer",
+            "fondo": "esc_cotoca_curiche",
+            "pos": [
+              884,
+              619
+            ],
+            "corto": "Curichi",
+            "requiere": {
+              "nodo": "c4"
+            },
+            "fuerza_hp": 1.8
+          },
+          {
+            "id": "c6",
+            "nombre": "Sublíder: JiuJiu",
+            "tipo": "sublider",
+            "nivel": 6,
+            "fuerza": 0.95,
+            "fuerza_hp": 1.3,
+            "enemigos": [
+              "s_jiujiu",
+              "e_sam",
+              "e_herlanx"
+            ],
+            "despertable": "s_jiujiu",
+            "fondo": "esc_cotoca_curiche",
+            "pos": [
+              1049,
+              421
+            ],
+            "corto": "JiuJiu",
+            "requiere": {
+              "nodo": "c5"
+            },
+            "dialogo_antes": [
+              [
+                "JiuJiu",
+                "Mis teclados hacen temblar esta laguna. Aquí suena lo que yo toque."
+              ]
+            ]
+          },
+          {
+            "id": "c7",
+            "nombre": "Líder: Aruma",
+            "tipo": "lider",
+            "nivel": 7,
+            "fuerza": 0.95,
+            "fuerza_hp": 1.3,
+            "enemigos": [
+              "l_aruma",
+              "e_tamborero",
+              "e_corista"
+            ],
+            "despertable": "l_aruma",
+            "fondo": "esc_cotoca_laguna",
+            "pos": [
+              977,
+              139
+            ],
+            "corto": "Aruma",
+            "requiere": {
+              "nodo": "c6"
+            },
+            "dialogo_antes": [
+              [
+                "Aruma",
+                "¿Un músico que despierta a los caídos? El Jichi no perdona a quien agita sus aguas."
+              ],
+              [
+                "Aruma",
+                "Si quieres llegar a él, primero tendrás que callar mi voz."
+              ]
+            ],
+            "dialogo_despues": [
+              [
+                "Aruma",
+                "Algo me arrancaba la voz desde adentro... ahora vuelvo a sentirla."
+              ],
+              [
+                "Aruma",
+                "El Jichi está furioso. Alguien lo despertó a la fuerza antes que tú."
+              ]
+            ]
+          },
+          {
+            "id": "c8",
+            "nombre": "Jefe: Jichi Ancestral",
+            "tipo": "jefe",
+            "nivel": 9,
+            "fuerza": 1.3,
+            "fuerza_hp": 1.35,
+            "enemigos": [
+              "j_jichi"
+            ],
+            "despertable": "j_jichi",
+            "fondo": "esc_cotoca_jichi",
+            "pos": [
+              815,
+              215
+            ],
+            "corto": "Jichi",
+            "requiere": {
+              "nodo": "c7",
+              "nivel": 6,
+              "totales": {
+                "ejercicio": 5
+              }
+            },
+            "dialogo_antes": [
+              [
+                "Narrador",
+                "La laguna hierve. Una cola de escamas negras rompe el agua."
+              ],
+              [
+                "Jichi Ancestral",
+                "Otro despertador... El último que vino me obligó a obedecer. A ti no te obedeceré."
+              ]
+            ],
+            "dialogo_despues": [
+              [
+                "Silvano Roca",
+                "Lo lograste. Cotoca vuelve a sonar como antes."
+              ],
+              [
+                "Silvano Roca",
+                "Pero esto no termina aquí: los Cambas Punk de Yapacaní te esperan. (Disponible en la próxima versión)"
+              ]
+            ]
+          },
+          {
+            "id": "cs",
+            "nombre": "Secreto: Laguna Escondida",
+            "tipo": "secreto",
+            "nivel": 6,
+            "fuerza": 1.0,
+            "enemigos": [
+              "e_vientista",
+              "e_corista"
+            ],
+            "despertable": "e_corista",
+            "fondo": "esc_cotoca_laguna",
+            "pos": [
+              594,
+              104
+            ],
+            "corto": "Secreto",
+            "requiere": {
+              "nodo": "c3",
+              "racha": 3
+            },
+            "dialogo_antes": [
+              [
+                "Narrador",
+                "Tu constancia abrió un sendero oculto entre los juncos..."
+              ]
+            ]
+          }
+        ],
+        "identidad": {
+          "dominante": "aerofono",
+          "secundario": "membranofono",
+          "unico": "idiofono",
+          "descripcion": "Bandas de pueblo y voces de fiesta, el ritmo de la tamborita camba y la marimba del Jichi."
+        }
+      },
+      {
+        "id": "warnes",
+        "nombre": "Warnes",
+        "banda": "Los Jaguares del Metal",
+        "estilo": "Heavy metal",
+        "disponible": false,
+        "pos": [
+          847,
+          340
+        ],
+        "bloqueo": "Próxima versión",
+        "lider": "Kairón",
+        "jefe": "Yaguareté de Acero"
+      },
+      {
+        "id": "montero",
+        "nombre": "Montero",
+        "banda": "Los Surazos del Thrash",
+        "estilo": "Thrash metal",
+        "disponible": false,
+        "pos": [
+          715,
+          42
+        ],
+        "bloqueo": "Próxima versión",
+        "lider": "Dante Vértigo",
+        "jefe": "Surazo Negro"
+      },
+      {
+        "id": "portachuelo",
+        "nombre": "Portachuelo",
+        "banda": "La Legión del Tajibo",
+        "estilo": "Metal épico",
+        "disponible": false,
+        "pos": [
+          431,
+          42
+        ],
+        "bloqueo": "Próxima versión",
+        "lider": "Elarion",
+        "jefe": "Juez de las Puertas del Cielo"
+      },
+      {
+        "id": "yapacani",
+        "nombre": "Yapacaní",
+        "banda": "Los Cambas Punk",
+        "estilo": "Punk",
+        "disponible": false,
+        "pos": [
+          64,
+          84
+        ],
+        "bloqueo": "Vence al Jichi Ancestral (próxima versión)",
+        "lider": "Damián Ráfaga",
+        "jefe": "Capitán Pogo, el Caos Callejero"
+      }
+    ],
+    "lugares": [
+      {
+        "nombre": "Santa Cruz de la Sierra",
+        "detalle": "Base de Silvano Roca",
+        "pos": [
+          790,
+          640
+        ]
+      }
+    ],
+    "acto": "Acto I: Primer Riff"
+  }
+}

@@ -1,0 +1,187 @@
+extends Node
+## Prueba de humo: recorre todas las pantallas y juega combates en automático.
+## Uso: godot --headless --path . res://tests/prueba_pantallas.tscn
+
+var main: Control
+
+
+func _ready() -> void:
+	DirAccess.remove_absolute("user://partida.json")
+	Engine.time_scale = 20.0
+	seed(20261126)
+	main = load("res://scenes/main.tscn").instantiate()
+	add_child(main)
+	await _esperar(5)
+	_ok("intro (video)", main.nombre_actual == "intro")
+	_ok("intro horizontal", not main.vertical_actual)
+	# Doble toque: uno solo (más el clic simulado que Android envía con cada toque) no salta
+	var intro = main.actual
+	intro._gui_input(_toque())
+	var clic := InputEventMouseButton.new()
+	clic.button_index = MOUSE_BUTTON_LEFT
+	clic.pressed = true
+	clic.device = InputEvent.DEVICE_ID_EMULATION
+	intro._gui_input(clic)
+	await _esperar(3)
+	_ok("un toque no salta el video", main.nombre_actual == "intro")
+	await get_tree().create_timer(0.6 * Engine.time_scale).timeout
+	intro._gui_input(_toque())
+	await _esperar(3)
+	_ok("toques separados no saltan el video", main.nombre_actual == "intro")
+	intro._gui_input(_toque())
+	await _esperar(5)
+	_ok("dos toques saltan el video", main.nombre_actual == "titulo")
+	_ok("titulo", main.nombre_actual == "titulo")
+	Estado.ir("creacion")
+	await _esperar(5)
+	_ok("animacion de rock", Datos.animacion("protagonista_m_rock").size() >= 1 and Datos.animacion("protagonista_f_rock").size() >= 1)
+	Estado.nueva_partida("f", "Prueba")
+	var verticales := []  # todas las pantallas van en horizontal
+	for p in ["centro", "campana", "mapa", "escuadron", "equipo", "archivo", "tareas", "ensayo"]:
+		Estado.ir(p, {"zona": "cotoca"})
+		await _esperar(4)
+		_ok(p, main.nombre_actual == p)
+		_ok(p + (" vertical" if p in verticales else " horizontal"), main.vertical_actual == (p in verticales))
+	# Foto del protagonista: se copia y recorta en cuadrado
+	_ok("foto guardada", Estado.guardar_foto("res://icon.png") == "" or Estado.guardar_foto(ProjectSettings.globalize_path("res://icon.png")) == "")
+	Estado.quitar_foto()
+	Estado.ir("mapa", {"zona": "cotoca"})
+	await _esperar(4)
+	# Tareas reales: cadena completa
+	for t in ["t_flexiones", "t_caminar", "t_instrumento", "t_ordenar", "t_trabajo"]:
+		print("  tarea: ", Estado.registrar_tarea(t))
+	_ok("pua por cadena completa", int(Estado.d["pua"]) == 1)
+	print("  ensayo real: ", Estado.ensayo("real"))
+	_ok("en sintonía", bool(Estado.d["en_sintonia"]))
+	# Combates en automático por toda Cotoca
+	Estado.d["energia"] = 200
+	Estado.d["nivel"] = 1
+	for nodo in ["c1", "c2", "c3", "c4", "c5", "c6", "c7"]:
+		for intento in 3:
+			await _combate_auto(nodo)
+			Estado.d["desafinado_hasta"] = 0
+			Estado.curar_equipo(1.0)
+			if Estado.nodo_vencido(nodo):
+				break
+			# Si la IA pierde, sube un nivel (como haría el jugador entrenando) y reintenta
+			Estado.d["nivel"] = int(Estado.d["nivel"]) + 1
+		print("  ", nodo, " vencido=", Estado.nodo_vencido(nodo), " nivel=", Estado.d["nivel"], " seguidores=", Estado.d["seguidores"].size(), " equipo=", Estado.d["equipo"], " tam=", Estado.d["tam_equipo"])
+		Estado.d["desafinado_hasta"] = 0
+		Estado.curar_equipo(1.0)
+		Estado.d["nodos"][nodo]["reaparece"] = 0
+	# Requisito del jefe: 5 ejercicios acumulados
+	var n8 := Datos.nodo("cotoca", "c8")
+	print("  bloqueo jefe: ", Estado.bloqueo_nodo(n8))
+	for i in 5:
+		Estado.registrar_ejercicio_extra()
+	Estado.d["nivel"] = max(6, int(Estado.d["nivel"]))
+	_ok("jefe desbloqueado", Estado.bloqueo_nodo(n8) == "")
+	for intento in 3:
+		await _combate_auto("c8")
+		Estado.d["desafinado_hasta"] = 0
+		Estado.curar_equipo(1.0)
+		if Estado.nodo_vencido("c8"):
+			break
+		Estado.d["nivel"] = int(Estado.d["nivel"]) + 1
+	_ok("jefe vencido", Estado.nodo_vencido("c8"))
+	# Derrota y desafinados
+	Estado.aplicar_derrota()
+	_ok("desafinado", Estado.esta_desafinado())
+	var antes := Estado.segundos_desafinado()
+	Estado.registrar_ejercicio_extra()
+	_ok("ejercicio resta 1 min", antes - Estado.segundos_desafinado() >= 59)
+	Estado.ir("centro")
+	await _esperar(4)
+	Estado.ir("archivo")
+	await _esperar(4)
+	# Un personaje ya despertado no se vuelve a ofrecer para despertar
+	var seg_previos: Array = Estado.d["seguidores"].duplicate(true)
+	Estado.d["seguidores"] = []
+	var ok_antes := Estado.despertables_disponibles(["e_lokillo", "e_umbra"]).size() == 2
+	Estado.agregar_seguidor("e_lokillo", 2)
+	var quedan := Estado.despertables_disponibles(["e_lokillo", "e_umbra"])
+	_ok("ya despertado no se vuelve a despertar", ok_antes and quedan == ["e_umbra"] and Estado.despertables_disponibles("e_lokillo").is_empty())
+	Estado.d["seguidores"] = seg_previos
+	# Sonidos: cada personaje tiene sonido de ataque, y existe el golpe al recibir
+	var sin_sonido := []
+	for id in Datos.personajes:
+		if Datos.sonido_ataque(id) == null:
+			sin_sonido.append(id)
+	_ok("sonido de ataque para todos los personajes " + str(sin_sonido), sin_sonido.is_empty())
+	_ok("sonidos de golpe", Datos.sonido("golpe") != null and Datos.sonido("golpe_fuerte") != null)
+	# Música de menús: suena en el menú principal y se apaga en campaña
+	_ok("musica de menu cargada", Sonido.reproductor.stream != null)
+	Estado.ir("centro")
+	await _esperar(4)
+	_ok("musica suena en el menu", Sonido.reproductor.playing)
+	Estado.ir("campana")
+	await get_tree().create_timer(1.2).timeout
+	_ok("musica se apaga en campaña", not Sonido.reproductor.playing)
+	Estado.ir("centro")
+	await _esperar(4)
+	main.actual._ventana_sonido()
+	await _esperar(2)
+	_ok("ventana de sonido", true)
+	print("FIN DE LA PRUEBA")
+	get_tree().quit()
+
+
+func _mejor_escuadron() -> void:
+	# Como haría un jugador: lleva a los seguidores de mayor rareza y nivel
+	var orden := ["comun", "raro", "epico", "legendario", "mitico"]
+	var lista: Array = Estado.d["seguidores"].duplicate()
+	lista.sort_custom(func(a, b):
+		var ra := orden.find(Datos.personaje(a["base_id"])["rareza"]) * 100 + int(a["nivel"])
+		var rb := orden.find(Datos.personaje(b["base_id"])["rareza"]) * 100 + int(b["nivel"])
+		return ra > rb)
+	Estado.d["equipo"] = []
+	for s in lista:
+		if Estado.d["equipo"].size() < int(Estado.d["tam_equipo"]) - 1:
+			Estado.d["equipo"].append(s["uid"])
+
+
+func _combate_auto(nodo: String) -> void:
+	_mejor_escuadron()
+	Estado.ir("combate", {"zona": "cotoca", "nodo": nodo})
+	await _esperar(3)
+	var c = main.actual
+	c._alternar_auto()
+	var t := 0
+	while not c.terminado and t < 60000:
+		await _esperar(1)
+		t += 1
+	var res: String = c.b.resultado()
+	var ronda: int = c.b.ronda
+	await _esperar(3)
+	# Cerrar avisos/diálogos y despertar
+	for i in 12:
+		if main.nombre_actual != "combate":
+			break
+		_pulsar_todo(main.actual)
+		await _esperar(3)
+	print("  resultado ", nodo, ": ", res, " en ronda ", ronda)
+
+
+func _pulsar_todo(n: Node) -> void:
+	# Pulsa "Aceptar", "Continuar >", "¡DESPERTAR!" y luego "Continuar"
+	var botones := n.find_children("*", "Button", true, false)
+	for b in botones:
+		if b.is_visible_in_tree() and not b.disabled and b.text in ["Aceptar", "Continuar >", "¡DESPERTAR!", "Continuar"]:
+			b.pressed.emit()
+			return
+
+
+func _toque() -> InputEventScreenTouch:
+	var t := InputEventScreenTouch.new()
+	t.pressed = true
+	t.index = 0
+	return t
+
+
+func _esperar(frames: int) -> void:
+	for i in frames:
+		await get_tree().process_frame
+
+
+func _ok(nombre: String, cond: bool) -> void:
+	print(("OK    " if cond else "FALLO ") + nombre)

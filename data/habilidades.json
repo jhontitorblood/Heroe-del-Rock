@@ -1,0 +1,761 @@
+{
+  "p_riff": {
+    "nombre": "Riff de la Calle",
+    "desc": "Golpe directo a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 1.0,
+    "enfriamiento": 0
+  },
+  "p_acorde": {
+    "nombre": "Acorde de Poder",
+    "desc": "Golpe fuerte con 30% de aturdir 1 turno.",
+    "objetivo": "enemigo",
+    "poder": 1.5,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "aturdir",
+        "prob": 0.3,
+        "turnos": 1
+      }
+    ]
+  },
+  "p_respiro": {
+    "nombre": "Respiro de Escenario",
+    "desc": "Recupera el 25% de tu vida.",
+    "objetivo": "propio",
+    "poder": 0,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "curar",
+        "valor": 0.25
+      }
+    ]
+  },
+  "p_distorsion": {
+    "nombre": "Distorsión",
+    "desc": "Golpe que baja la defensa del enemigo 30% por 2 turnos.",
+    "objetivo": "enemigo",
+    "poder": 0.8,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "debil_def",
+        "valor": 0.3,
+        "turnos": 2
+      }
+    ]
+  },
+  "p_solo": {
+    "nombre": "Solo del Héroe",
+    "desc": "DEFINITIVA. Golpe devastador y cura 15% al equipo.",
+    "objetivo": "enemigo",
+    "poder": 2.6,
+    "definitiva": true,
+    "efectos": [
+      {
+        "tipo": "curar",
+        "a": "aliados",
+        "valor": 0.15
+      }
+    ]
+  },
+  "g_riff": {
+    "nombre": "Riff Cortante",
+    "desc": "Golpe directo a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 1.0,
+    "enfriamiento": 0
+  },
+  "g_power": {
+    "nombre": "Power Chord",
+    "desc": "Golpe muy fuerte a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 1.6,
+    "enfriamiento": 2
+  },
+  "g_tremolo": {
+    "nombre": "Trémolo",
+    "desc": "Golpea a todos los enemigos.",
+    "objetivo": "enemigos",
+    "poder": 0.6,
+    "enfriamiento": 3
+  },
+  "g_solo": {
+    "nombre": "Solo de Fuego",
+    "desc": "Golpe que quema: daño continuo 3 turnos.",
+    "objetivo": "enemigo",
+    "poder": 1.1,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "dot",
+        "valor": 0.06,
+        "turnos": 3
+      }
+    ]
+  },
+  "g_def": {
+    "nombre": "Solo Infernal",
+    "desc": "DEFINITIVA. Golpe devastador a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 2.8,
+    "definitiva": true
+  },
+  "b_golpe": {
+    "nombre": "Golpe Grave",
+    "desc": "Golpe a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 0.9,
+    "enfriamiento": 0
+  },
+  "b_muralla": {
+    "nombre": "Muralla Grave",
+    "desc": "Escudo a todo el equipo por 2 turnos.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "enfriamiento": 4,
+    "efectos": [
+      {
+        "tipo": "escudo",
+        "valor": 0.2,
+        "turnos": 2
+      }
+    ]
+  },
+  "b_linea": {
+    "nombre": "Línea de Bajo",
+    "desc": "Provoca a los enemigos 2 turnos y gana escudo.",
+    "objetivo": "propio",
+    "poder": 0,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "provocar",
+        "turnos": 2
+      },
+      {
+        "tipo": "escudo",
+        "valor": 0.2,
+        "turnos": 2
+      }
+    ]
+  },
+  "b_retumbe": {
+    "nombre": "Retumbe",
+    "desc": "Golpe que baja el ataque enemigo 20% por 2 turnos.",
+    "objetivo": "enemigo",
+    "poder": 1.1,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "debil_atk",
+        "valor": 0.2,
+        "turnos": 2
+      }
+    ]
+  },
+  "b_def": {
+    "nombre": "Muro de Sonido",
+    "desc": "DEFINITIVA. Gran escudo a todo el equipo.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "definitiva": true,
+    "efectos": [
+      {
+        "tipo": "escudo",
+        "valor": 0.5,
+        "turnos": 2
+      }
+    ]
+  },
+  "d_golpe": {
+    "nombre": "Golpe de Caja",
+    "desc": "Golpe a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 1.0,
+    "enfriamiento": 0
+  },
+  "d_redoble": {
+    "nombre": "Redoble",
+    "desc": "Golpe con 60% de aturdir 1 turno.",
+    "objetivo": "enemigo",
+    "poder": 0.8,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "aturdir",
+        "prob": 0.6,
+        "turnos": 1
+      }
+    ]
+  },
+  "d_platillos": {
+    "nombre": "Platillos",
+    "desc": "Golpe a todos con 25% de aturdir.",
+    "objetivo": "enemigos",
+    "poder": 0.5,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "aturdir",
+        "prob": 0.25,
+        "turnos": 1
+      }
+    ]
+  },
+  "d_bombo": {
+    "nombre": "Doble Bombo",
+    "desc": "Golpe fuerte a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 1.3,
+    "enfriamiento": 2
+  },
+  "d_def": {
+    "nombre": "Tormenta de Parches",
+    "desc": "DEFINITIVA. Golpe a todos con 50% de aturdir.",
+    "objetivo": "enemigos",
+    "poder": 1.0,
+    "definitiva": true,
+    "efectos": [
+      {
+        "tipo": "aturdir",
+        "prob": 0.5,
+        "turnos": 1
+      }
+    ]
+  },
+  "v_grito": {
+    "nombre": "Grito",
+    "desc": "Golpe a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 0.8,
+    "enfriamiento": 0
+  },
+  "v_coro": {
+    "nombre": "Coro Sanador",
+    "desc": "Cura 15% a todo el equipo.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "curar",
+        "valor": 0.15
+      }
+    ]
+  },
+  "v_balada": {
+    "nombre": "Balada",
+    "desc": "Cura 30% a un aliado.",
+    "objetivo": "aliado",
+    "poder": 0,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "curar",
+        "valor": 0.3
+      }
+    ]
+  },
+  "v_himno": {
+    "nombre": "Himno",
+    "desc": "Sube el ataque del equipo 20% por 2 turnos.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "mejora_atk",
+        "valor": 0.2,
+        "turnos": 2
+      }
+    ]
+  },
+  "v_def": {
+    "nombre": "Himno Eterno",
+    "desc": "DEFINITIVA. Cura 40% a todo el equipo.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "definitiva": true,
+    "efectos": [
+      {
+        "tipo": "curar",
+        "valor": 0.4
+      }
+    ]
+  },
+  "t_nota": {
+    "nombre": "Nota Fría",
+    "desc": "Golpe a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 0.9,
+    "enfriamiento": 0
+  },
+  "t_disonancia": {
+    "nombre": "Disonancia",
+    "desc": "Golpe que baja el ataque 30% por 2 turnos.",
+    "objetivo": "enemigo",
+    "poder": 0.6,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "debil_atk",
+        "valor": 0.3,
+        "turnos": 2
+      }
+    ]
+  },
+  "t_arpegio": {
+    "nombre": "Arpegio Roto",
+    "desc": "Golpe a todos y baja su defensa 25%.",
+    "objetivo": "enemigos",
+    "poder": 0.4,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "debil_def",
+        "valor": 0.25,
+        "turnos": 2
+      }
+    ]
+  },
+  "t_acido": {
+    "nombre": "Sintetizador Ácido",
+    "desc": "Golpe con daño continuo 3 turnos.",
+    "objetivo": "enemigo",
+    "poder": 0.8,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "dot",
+        "valor": 0.05,
+        "turnos": 3
+      }
+    ]
+  },
+  "t_def": {
+    "nombre": "Caos Modular",
+    "desc": "DEFINITIVA. Golpe a todos; baja ataque y defensa 30%.",
+    "objetivo": "enemigos",
+    "poder": 0.8,
+    "definitiva": true,
+    "efectos": [
+      {
+        "tipo": "debil_atk",
+        "valor": 0.3,
+        "turnos": 2
+      },
+      {
+        "tipo": "debil_def",
+        "valor": 0.3,
+        "turnos": 2
+      }
+    ]
+  },
+  "c_rasgueo": {
+    "nombre": "Rasgueo",
+    "desc": "Golpe y sube tu velocidad 2 turnos.",
+    "objetivo": "enemigo",
+    "poder": 1.0,
+    "enfriamiento": 0,
+    "efectos": [
+      {
+        "tipo": "mejora_spd",
+        "a": "propio",
+        "valor": 0.1,
+        "turnos": 2
+      }
+    ]
+  },
+  "c_taquirari": {
+    "nombre": "Taquirari",
+    "desc": "Sube el ataque del equipo 20% por 2 turnos.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "mejora_atk",
+        "valor": 0.2,
+        "turnos": 2
+      }
+    ]
+  },
+  "c_punteo": {
+    "nombre": "Punteo Veloz",
+    "desc": "Golpe fuerte a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 1.4,
+    "enfriamiento": 2
+  },
+  "c_cueca": {
+    "nombre": "Cueca Brava",
+    "desc": "Golpe y te curas 15%.",
+    "objetivo": "enemigo",
+    "poder": 0.9,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "curar",
+        "a": "propio",
+        "valor": 0.15
+      }
+    ]
+  },
+  "c_def": {
+    "nombre": "Charango Celestial",
+    "desc": "DEFINITIVA. Golpe a todos y sube el ataque del equipo.",
+    "objetivo": "enemigos",
+    "poder": 1.2,
+    "definitiva": true,
+    "efectos": [
+      {
+        "tipo": "mejora_atk",
+        "a": "aliados",
+        "valor": 0.25,
+        "turnos": 2
+      }
+    ]
+  },
+  "k_voz": {
+    "nombre": "Voz Aguda",
+    "desc": "Golpe a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 0.7,
+    "enfriamiento": 0
+  },
+  "k_escudo": {
+    "nombre": "Escudo Armónico",
+    "desc": "Escudo a un aliado por 2 turnos.",
+    "objetivo": "aliado",
+    "poder": 0,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "escudo",
+        "valor": 0.35,
+        "turnos": 2
+      }
+    ]
+  },
+  "k_segunda": {
+    "nombre": "Segunda Voz",
+    "desc": "Revive a un aliado caído con 40% de vida.",
+    "objetivo": "aliado_caido",
+    "poder": 0,
+    "enfriamiento": 4,
+    "efectos": [
+      {
+        "tipo": "revivir",
+        "valor": 0.4
+      }
+    ]
+  },
+  "k_armonia": {
+    "nombre": "Armonía",
+    "desc": "Cura 10% y da escudo al equipo.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "curar",
+        "valor": 0.1
+      },
+      {
+        "tipo": "escudo",
+        "valor": 0.1,
+        "turnos": 2
+      }
+    ]
+  },
+  "k_def": {
+    "nombre": "Coro Celestial",
+    "desc": "DEFINITIVA. Revive a los caídos con 30% y cura al equipo.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "definitiva": true,
+    "efectos": [
+      {
+        "tipo": "revivir_todos",
+        "valor": 0.3
+      },
+      {
+        "tipo": "curar",
+        "valor": 0.2
+      }
+    ]
+  },
+  "i_feedback": {
+    "nombre": "Feedback",
+    "desc": "Golpe a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 0.9,
+    "enfriamiento": 0
+  },
+  "i_ecualizar": {
+    "nombre": "Ecualizar",
+    "desc": "Un aliado actúa de inmediato y gana velocidad.",
+    "objetivo": "aliado",
+    "poder": 0,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "adelantar"
+      },
+      {
+        "tipo": "mejora_spd",
+        "valor": 0.2,
+        "turnos": 2
+      }
+    ]
+  },
+  "i_corte": {
+    "nombre": "Corte de Señal",
+    "desc": "Golpe con 35% de aturdir.",
+    "objetivo": "enemigo",
+    "poder": 0.7,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "aturdir",
+        "prob": 0.35,
+        "turnos": 1
+      }
+    ]
+  },
+  "i_volumen": {
+    "nombre": "Subir Volumen",
+    "desc": "Sube velocidad 15% y ataque 10% del equipo.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "mejora_spd",
+        "valor": 0.15,
+        "turnos": 2
+      },
+      {
+        "tipo": "mejora_atk",
+        "valor": 0.1,
+        "turnos": 2
+      }
+    ]
+  },
+  "i_def": {
+    "nombre": "Mezcla Maestra",
+    "desc": "DEFINITIVA. Sube ataque y velocidad del equipo 30%.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "definitiva": true,
+    "efectos": [
+      {
+        "tipo": "mejora_atk",
+        "valor": 0.3,
+        "turnos": 2
+      },
+      {
+        "tipo": "mejora_spd",
+        "valor": 0.3,
+        "turnos": 2
+      }
+    ]
+  },
+  "w_soplo": {
+    "nombre": "Soplo",
+    "desc": "Golpe a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 0.9,
+    "enfriamiento": 0
+  },
+  "w_sikus": {
+    "nombre": "Ráfaga de Sikus",
+    "desc": "Golpe a todos los enemigos.",
+    "objetivo": "enemigos",
+    "poder": 0.7,
+    "enfriamiento": 2
+  },
+  "w_quena": {
+    "nombre": "Quena Lúgubre",
+    "desc": "Golpe con daño continuo 3 turnos.",
+    "objetivo": "enemigo",
+    "poder": 0.8,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "dot",
+        "valor": 0.07,
+        "turnos": 3
+      }
+    ]
+  },
+  "w_erke": {
+    "nombre": "Lamento del Erke",
+    "desc": "Daño continuo a todos 3 turnos.",
+    "objetivo": "enemigos",
+    "poder": 0.5,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "dot",
+        "valor": 0.04,
+        "turnos": 3
+      }
+    ]
+  },
+  "w_def": {
+    "nombre": "Viento de los Andes",
+    "desc": "DEFINITIVA. Golpe a todos con daño continuo.",
+    "objetivo": "enemigos",
+    "poder": 1.3,
+    "definitiva": true,
+    "efectos": [
+      {
+        "tipo": "dot",
+        "valor": 0.06,
+        "turnos": 3
+      }
+    ]
+  },
+  "jichi_cola": {
+    "nombre": "Coletazo",
+    "desc": "Golpe a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 1.1,
+    "enfriamiento": 0
+  },
+  "jichi_ola": {
+    "nombre": "Ola de la Laguna",
+    "desc": "Golpe a todos.",
+    "objetivo": "enemigos",
+    "poder": 0.8,
+    "enfriamiento": 2
+  },
+  "jichi_abismo": {
+    "nombre": "Abismo",
+    "desc": "Golpe con 50% de aturdir.",
+    "objetivo": "enemigo",
+    "poder": 0.8,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "aturdir",
+        "prob": 0.5,
+        "turnos": 1
+      }
+    ]
+  },
+  "jichi_escamas": {
+    "nombre": "Escamas Antiguas",
+    "desc": "Gana escudo y se cura 6%.",
+    "objetivo": "propio",
+    "poder": 0,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "escudo",
+        "valor": 0.15,
+        "turnos": 2
+      },
+      {
+        "tipo": "curar",
+        "valor": 0.06
+      }
+    ]
+  },
+  "jichi_def": {
+    "nombre": "Diluvio del Curiche",
+    "desc": "DEFINITIVA. Golpe a todos.",
+    "objetivo": "enemigos",
+    "poder": 1.4,
+    "definitiva": true
+  },
+  "banda": {
+    "nombre": "Definitiva de Banda",
+    "desc": "Todo el equipo toca junto: golpe a todos los enemigos y cura 20% al equipo.",
+    "objetivo": "enemigos",
+    "poder": 1.5,
+    "definitiva": true,
+    "banda": true,
+    "efectos": [
+      {
+        "tipo": "curar",
+        "a": "aliados",
+        "valor": 0.2
+      }
+    ]
+  },
+  "vi_arco": {
+    "nombre": "Golpe de Arco",
+    "desc": "Golpe a un enemigo.",
+    "objetivo": "enemigo",
+    "poder": 0.9,
+    "enfriamiento": 0
+  },
+  "vi_vibrato": {
+    "nombre": "Vibrato",
+    "desc": "Sube el ataque 15% y la velocidad 10% del equipo por 2 turnos.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "enfriamiento": 3,
+    "efectos": [
+      {
+        "tipo": "mejora_atk",
+        "valor": 0.15,
+        "turnos": 2
+      },
+      {
+        "tipo": "mejora_spd",
+        "valor": 0.1,
+        "turnos": 2
+      }
+    ]
+  },
+  "vi_requiem": {
+    "nombre": "Réquiem Inverso",
+    "desc": "Revive a un aliado caído con 40% de vida.",
+    "objetivo": "aliado_caido",
+    "poder": 0,
+    "enfriamiento": 4,
+    "efectos": [
+      {
+        "tipo": "revivir",
+        "valor": 0.4
+      }
+    ]
+  },
+  "vi_pizzicato": {
+    "nombre": "Pizzicato",
+    "desc": "Golpe que baja la defensa 20% por 2 turnos.",
+    "objetivo": "enemigo",
+    "poder": 0.7,
+    "enfriamiento": 2,
+    "efectos": [
+      {
+        "tipo": "debil_def",
+        "valor": 0.2,
+        "turnos": 2
+      }
+    ]
+  },
+  "vi_def": {
+    "nombre": "Sinfonía del Alba",
+    "desc": "DEFINITIVA. Revive a los caídos con 30% y cura 20% al equipo.",
+    "objetivo": "aliados",
+    "poder": 0,
+    "definitiva": true,
+    "efectos": [
+      {
+        "tipo": "revivir_todos",
+        "valor": 0.3
+      },
+      {
+        "tipo": "curar",
+        "valor": 0.2
+      }
+    ]
+  }
+}

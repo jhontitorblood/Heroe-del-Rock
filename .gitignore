@@ -1,0 +1,10 @@
+# Godot
+.godot/
+*.import.tmp
+build/
+export_credentials.cfg
+*.keystore
+*.translation
+# Sistema
+.DS_Store
+__pycache__/

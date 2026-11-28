@@ -1,0 +1,16 @@
+{
+  "categorias": {
+    "ejercicio": {"nombre": "Ejercicio", "efecto": "+4 vida y +0.3 ataque"},
+    "practica": {"nombre": "Práctica de instrumento", "efecto": "+1 Maestría y habilita el Ensayo real"},
+    "casa": {"nombre": "Casa", "efecto": "+0.3 defensa y +1 energía"},
+    "trabajo": {"nombre": "Trabajo o estudio", "efecto": "+10 Fama"}
+  },
+  "tareas": [
+    {"id": "t_flexiones", "nombre": "20 flexiones", "categoria": "ejercicio"},
+    {"id": "t_caminar", "nombre": "Caminar o correr 20 minutos", "categoria": "ejercicio"},
+    {"id": "t_instrumento", "nombre": "Practicar instrumento 15 minutos", "categoria": "practica"},
+    {"id": "t_ordenar", "nombre": "Ordenar mi cuarto", "categoria": "casa"},
+    {"id": "t_platos", "nombre": "Lavar los platos", "categoria": "casa"},
+    {"id": "t_trabajo", "nombre": "Completar una tarea del trabajo o estudio", "categoria": "trabajo"}
+  ]
+}

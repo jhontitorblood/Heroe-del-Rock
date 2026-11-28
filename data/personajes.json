@@ -1,0 +1,225 @@
+{
+  "protagonista_m": {
+    "nombre": "Protagonista",
+    "clase": "guitarrista",
+    "genero": "raiz",
+    "rareza": "mitico",
+    "mult": {
+      "hp": 1.6,
+      "atk": 1.15,
+      "def": 1.2,
+      "spd": 1.0
+    },
+    "habilidades": [
+      "p_riff",
+      "p_acorde",
+      "p_respiro",
+      "p_distorsion"
+    ],
+    "definitiva": "p_solo",
+    "imagen": "protagonista_m",
+    "bio": "Un músico de Santa Cruz con el don de despertar a los espectros."
+  },
+  "protagonista_f": {
+    "nombre": "Protagonista",
+    "clase": "guitarrista",
+    "genero": "raiz",
+    "rareza": "mitico",
+    "mult": {
+      "hp": 1.6,
+      "atk": 1.15,
+      "def": 1.2,
+      "spd": 1.0
+    },
+    "habilidades": [
+      "p_riff",
+      "p_acorde",
+      "p_respiro",
+      "p_distorsion"
+    ],
+    "definitiva": "p_solo",
+    "imagen": "protagonista_f",
+    "bio": "Una música de Santa Cruz con el don de despertar a los espectros."
+  },
+  "e_cuerdero": {
+    "nombre": "Cuerdero de la Laguna",
+    "clase": "guitarrista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_cuerdero",
+    "legado": true
+  },
+  "e_tamborero": {
+    "nombre": "Tamborero del Jichi",
+    "clase": "baterista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_tamborero"
+  },
+  "e_herlanx": {
+    "nombre": "P. Herlanx",
+    "clase": "tecladista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_herlanx",
+    "instrumento": "Sintetizador"
+  },
+  "e_sam": {
+    "nombre": "R. Sam",
+    "clase": "bajista",
+    "genero": "raiz",
+    "rareza": "raro",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_sam"
+  },
+  "e_corista": {
+    "nombre": "Corista de Cotoca",
+    "clase": "corista",
+    "genero": "raiz",
+    "rareza": "raro",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_corista"
+  },
+  "e_vientista": {
+    "nombre": "Flautero de la Niebla",
+    "clase": "vientista",
+    "genero": "gotico",
+    "rareza": "raro",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_vientista"
+  },
+  "e_cantor": {
+    "nombre": "Cantor del Taquirari",
+    "clase": "vocalista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_cantor",
+    "legado": true
+  },
+  "s_ivy": {
+    "nombre": "R. Ivy",
+    "clase": "vocalista",
+    "genero": "raiz",
+    "rareza": "epico",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "s_ivy",
+    "mult": {
+      "hp": 1.1,
+      "atk": 1.05
+    },
+    "bio": "Sublíder de Los Sonsos de Cotoca. Su voz domina la plaza principal de Cotoca en cada fiesta."
+  },
+  "s_jiujiu": {
+    "nombre": "JiuJiu",
+    "clase": "tecladista",
+    "genero": "metal",
+    "rareza": "epico",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "s_jiujiu",
+    "mult": {
+      "hp": 1.15,
+      "atk": 1.05
+    },
+    "bio": "Sublíder y tecladista de la banda. Llegó de Warnes con gustos metaleros.",
+    "instrumento": "Teclado"
+  },
+  "l_aruma": {
+    "nombre": "Aruma",
+    "clase": "vocalista",
+    "genero": "raiz",
+    "rareza": "legendario",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "l_aruma",
+    "mult": {
+      "hp": 1.3,
+      "atk": 1.2,
+      "def": 1.1
+    },
+    "bio": "Líder de Los Sonsos de Cotoca. Su voz calmaba la laguna, hasta que algo empezó a arrancársela desde adentro."
+  },
+  "j_jichi": {
+    "nombre": "Jichi Ancestral, Señor de la Laguna",
+    "clase": "bajista",
+    "genero": "gotico",
+    "rareza": "mitico",
+    "banda": "Espíritu de la laguna",
+    "imagen": "j_jichi",
+    "mult": {
+      "hp": 1.4,
+      "atk": 2.3,
+      "def": 0.6,
+      "spd": 1.2
+    },
+    "habilidades": [
+      "jichi_cola",
+      "jichi_ola",
+      "jichi_abismo",
+      "jichi_escamas"
+    ],
+    "definitiva": "jichi_def",
+    "bio": "El espíritu guardián de las aguas de Cotoca. Las leyendas dicen que, si se va, la laguna se seca.",
+    "familia": "idiofono",
+    "instrumento": "Marimba"
+  },
+  "e_hawkins": {
+    "nombre": "J. Hawkins",
+    "clase": "guitarrista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_hawkins"
+  },
+  "e_idarkness": {
+    "nombre": "P. IDarkness",
+    "clase": "guitarrista",
+    "instrumento": "Guitarra acústica",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_idarkness"
+  },
+  "e_lokillo": {
+    "nombre": "P. Lokillo",
+    "clase": "tamborilero",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_lokillo"
+  },
+  "e_umbra": {
+    "nombre": "R. Umbra",
+    "clase": "vocalista",
+    "genero": "raiz",
+    "rareza": "comun",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_umbra"
+  },
+  "e_rosie": {
+    "nombre": "R. Rosie",
+    "clase": "bajista",
+    "genero": "raiz",
+    "rareza": "raro",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_rosie"
+  },
+  "e_miguel": {
+    "nombre": "R. Miguel",
+    "clase": "laudista",
+    "genero": "raiz",
+    "rareza": "raro",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_miguel"
+  },
+  "e_darklordbeer": {
+    "nombre": "P. DarkLordBeer",
+    "clase": "clarinetista",
+    "genero": "gotico",
+    "rareza": "raro",
+    "banda": "Los Sonsos de Cotoca",
+    "imagen": "e_darklordbeer"
+  }
+}
