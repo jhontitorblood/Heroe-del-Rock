@@ -58,7 +58,7 @@ func _refrescar() -> void:
 		h.add_child(img)
 		var rz := Datos.rareza(p["rareza"])
 		var l := UI.etiqueta("%s%s\n%s · %s · %s · Nv %d · Vida %d%%" % ["[EN EQUIPO] " if en_equipo else "", p["nombre"], rz["nombre"],
-			Datos.clases[p["clase"]]["nombre"], Datos.nombre_genero(p["genero"]), int(s["nivel"]), int(float(s.get("hp_frac", 1.0)) * 100)], 18, Color(rz["color"]))
+			Datos.clases[p["clase"]]["nombre"], Datos.nombre_familia(Datos.familia_de(s["base_id"])), int(s["nivel"]), int(float(s.get("hp_frac", 1.0)) * 100)], 18, Color(rz["color"]))
 		l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		h.add_child(l)
 		b.pressed.connect(func():

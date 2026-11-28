@@ -163,7 +163,12 @@ func _ready() -> void:
 			"fuerza": info_enemigos["fuerza"], "fuerza_hp": info_enemigos["fuerza_hp"]}, Batalla.ENEMIGO)
 		Estado.d["encontrados"][id] = true
 		i += 1
+	var bonus := b.preparar_bonus_banda()
 	_construir()
+	if not bonus.is_empty():
+		lbl_info.text = "%s Tu equipo junta %s familias de instrumentos: +%d%% de daño y la Definitiva de banda se carga más rápido." % [
+			bonus["nombre"], "las 5" if bonus["nombre"].contains("Orquesta") else "3 o más", int(float(bonus["dano"]) * 100)]
+		await get_tree().create_timer(1.6).timeout
 	_siguiente()
 
 
@@ -320,7 +325,7 @@ func _refrescar() -> void:
 		var t: Dictionary = tarjetas[u.uid]
 		t["hp"].max_value = u.hp_max
 		t["hp"].value = u.hp
-		var txt: String = "Nv %d · %d / %d" % [u.nivel, u.hp, u.hp_max] if u.vivo() else "Fuera de combate"
+		var txt: String = "Nv %d · %s · %d/%d" % [u.nivel, Datos.nombre_familia(u.familia), u.hp, u.hp_max] if u.vivo() else "Fuera de combate"
 		var est: String = u.texto_estados()
 		if est != "" and u.vivo():
 			txt += " · " + est
@@ -690,7 +695,7 @@ func _despertar(id: String, nivel: int) -> void:
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	h.add_child(col)
 	col.add_child(UI.etiqueta(p["nombre"], 26, Color(rz["color"])))
-	col.add_child(UI.etiqueta("%s · %s · %s · Nv %d" % [rz["nombre"], Datos.clases[p["clase"]]["nombre"], Datos.nombre_genero(p["genero"]), nivel], 18, UI.TENUE))
+	col.add_child(UI.etiqueta("%s · %s · %s · Nv %d" % [rz["nombre"], Datos.clases[p["clase"]]["nombre"], Datos.nombre_familia(Datos.familia_de(id)), nivel], 18, UI.TENUE))
 	var lbl_prob := UI.etiqueta("", 24, UI.ORO)
 	col.add_child(lbl_prob)
 	var lbl_res := UI.etiqueta("Tienes 3 intentos. Si fallas los 3, se desvanece y reaparece en %d horas reales." % int(rz["espera_h"]), 19, UI.TEXTO, true)

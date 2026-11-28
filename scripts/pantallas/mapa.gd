@@ -63,7 +63,7 @@ func _abrir(n: Dictionary) -> void:
 			c.add_child(UI.imagen(Datos.sprite(p.get("imagen", id), false), Vector2(120, 120)))
 			var rz := Datos.rareza(p.get("rareza", "comun"))
 			c.add_child(UI.etiqueta(p.get("nombre", id), 16, Color(rz["color"])))
-			c.add_child(UI.etiqueta("%s · %s" % [Datos.clases[p["clase"]]["nombre"], Datos.nombre_genero(p["genero"])], 14, UI.TENUE))
+			c.add_child(UI.etiqueta("%s · %s" % [Datos.clases[p["clase"]]["nombre"], Datos.nombre_familia(Datos.familia_de(id))], 14, Datos.color_familia(Datos.familia_de(id))))
 			h.add_child(c)
 		v.add_child(h)
 		if bool(info["aleatorio"]):

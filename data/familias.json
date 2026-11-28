@@ -1,0 +1,47 @@
+{
+  "_nota": "Familias de instrumentos: deciden las ventajas en combate. Los géneros de rock son solo el estilo de cada banda.",
+  "orden": [
+    "electrofono",
+    "membranofono",
+    "cordofono",
+    "aerofono",
+    "idiofono"
+  ],
+  "nombres": {
+    "electrofono": "Electrófono",
+    "membranofono": "Membranófono",
+    "cordofono": "Cordófono",
+    "aerofono": "Aerófono",
+    "idiofono": "Idiófono"
+  },
+  "colores": {
+    "electrofono": "#3ae8e0",
+    "membranofono": "#ffb02e",
+    "cordofono": "#ff4a6a",
+    "aerofono": "#8be83a",
+    "idiofono": "#c05cff"
+  },
+  "razones": {
+    "electrofono": "El amplificador tapa al tambor",
+    "membranofono": "El golpe del ritmo arrastra a la melodía",
+    "cordofono": "Las cuerdas sostienen la nota más que el aliento",
+    "aerofono": "El soplo apaga la vibración del metal",
+    "idiofono": "El metal resonante satura la señal"
+  },
+  "ventaja": 0.25,
+  "sinergia": {
+    "mismo": 0.1,
+    "complementario": 0.15,
+    "enfrentado": -0.1,
+    "quimica_max": 15
+  },
+  "banda_completa": {
+    "familias": 3,
+    "bonus_dano": 0.1,
+    "medidor_banda_extra": 0.5
+  },
+  "orquesta_total": {
+    "familias": 5,
+    "bonus_dano": 0.2
+  }
+}

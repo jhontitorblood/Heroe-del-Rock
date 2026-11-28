@@ -21,7 +21,7 @@ Es un APK de prueba (debug). No necesita internet y guarda la partida en el prop
 - **Foto del protagonista:** el jugador puede usar una foto de su galería en el menú principal.
 - **Centro de Mando:** Campaña, Mapa, Escuadrón, Equipo, Archivo, Tareas reales y Sala de Ensayo.
 - **Cotoca completo:** 7 combates (con 2 sublíderes y la líder Aruma), el jefe Jichi Ancestral y una zona secreta que se abre con una racha de 3 días.
-- **Combate por turnos:** una acción por combatiente cada ronda, orden por velocidad, selección de objetivo, 7 clases musicales (Guitarrista, Bajista, Vocalista, Tecladista, Flautista, Baterista y Violinista), afinidades de género, sinergias en ataques conjuntos, definitivas individuales y de banda, resurrección y modo automático.
+- **Combate por turnos:** una acción por combatiente cada ronda, orden por velocidad, selección de objetivo, 7 clases musicales (Guitarrista, Bajista, Vocalista, Tecladista, Flautista, Baterista y Violinista), ventajas por familia de instrumento (Electrófono → Membranófono → Cordófono → Aerófono → Idiófono), Banda completa y Orquesta total, sinergias en ataques conjuntos, definitivas individuales y de banda, resurrección y modo automático.
 - **Despertar espectral:** 3 intentos con probabilidad según la diferencia de nivel, +10 % por cada fallo y Púa Espectral (+15 %). Si fallas los 3, el enemigo reaparece en 6, 12 o 24 horas reales según su rareza.
 - **Tareas reales:** suben atributos; las cadenas de 3 tareas y la cadena completa recargan energía y dan Púas; rachas con un día de gracia por semana y un tope diario de experiencia.
 - **Sala de Ensayo:** rápido, completo y real (con práctica real de instrumento), más química entre los integrantes del equipo.
@@ -41,7 +41,7 @@ Es un APK de prueba (debug). No necesita internet y guarda la partida en el prop
 | `tests/` | Prueba automática de pantallas, prueba de balance y capturas |
 
 Para **agregar contenido** (otra zona, banda, personaje o habilidad), se editan los JSON de `data/`. No hace falta tocar el código.
-Para **ajustar el balance** (energía, probabilidades, esperas, sinergias), se edita `data/reglas.json` y `data/generos.json`.
+Para **ajustar el balance** (energía, probabilidades, esperas, ventajas y sinergias), se edita `data/reglas.json` y `data/familias.json`. Los géneros de `data/generos.json` son solo el estilo de cada banda.
 
 ## Reemplazar el arte provisional
 

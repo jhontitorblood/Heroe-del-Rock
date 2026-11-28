@@ -207,7 +207,7 @@
             "tipo": "jefe",
             "nivel": 9,
             "fuerza": 1.3,
-            "fuerza_hp": 1.0,
+            "fuerza_hp": 1.35,
             "enemigos": [
               "j_jichi"
             ],

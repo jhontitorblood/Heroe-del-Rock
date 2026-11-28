@@ -159,7 +159,9 @@
       "jichi_escamas"
     ],
     "definitiva": "jichi_def",
-    "bio": "El espíritu guardián de las aguas de Cotoca. Las leyendas dicen que, si se va, la laguna se seca."
+    "bio": "El espíritu guardián de las aguas de Cotoca. Las leyendas dicen que, si se va, la laguna se seca.",
+    "familia": "idiofono",
+    "instrumento": "Marimba"
   },
   "e_sonso": {
     "nombre": "Sonso de Cotoca",

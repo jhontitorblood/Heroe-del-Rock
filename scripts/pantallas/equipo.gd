@@ -63,8 +63,10 @@ func _mostrar(uid: String) -> void:
 	fila.add_child(col)
 	col.add_child(UI.etiqueta(nombre, 30, UI.ESPECTRAL if espectral else UI.ORO))
 	var cl: Dictionary = Datos.clases[p["clase"]]
-	col.add_child(UI.etiqueta("%s (%s) · %s · Nivel %d" % [cl["nombre"], cl["funcion"], Datos.nombre_genero(p["genero"]), nivel], 20, Datos.color_genero(p["genero"]), true))
-	col.add_child(UI.etiqueta("Instrumento: %s · Rareza: %s" % [Datos.instrumento_de(base_id), Datos.rareza(p.get("rareza", "comun"))["nombre"]], 19, UI.TEXTO, true))
+	var fam := Datos.familia_de(base_id)
+	col.add_child(UI.etiqueta("%s (%s) · Nivel %d" % [cl["nombre"], cl["funcion"], nivel], 20, UI.ORO, true))
+	col.add_child(UI.etiqueta("Instrumento: %s · Familia: %s" % [Datos.instrumento_de(base_id), Datos.nombre_familia(fam)], 19, Datos.color_familia(fam), true))
+	col.add_child(UI.etiqueta("Rareza: %s · Estilo de su banda: %s" % [Datos.rareza(p.get("rareza", "comun"))["nombre"], Datos.nombre_genero(p["genero"])], 18, UI.TENUE, true))
 	var txt := "Vida %d · Ataque %.0f · Defensa %.0f · Velocidad %.0f" % [st["hp"] + float(bonus.get("hp", 0)), st["atk"] + float(bonus.get("atk", 0)), st["def"] + float(bonus.get("def", 0)), st["spd"]]
 	col.add_child(UI.etiqueta(txt, 20, UI.TEXTO, true))
 	if uid == "prota":

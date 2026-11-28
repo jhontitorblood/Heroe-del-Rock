@@ -12,7 +12,8 @@ class Unidad:
 	var base_id: String
 	var nombre: String
 	var clase: String
-	var genero: String
+	var genero: String  # estilo de su banda (sin efecto en combate)
+	var familia: String  # familia de su instrumento (decide ventajas y sinergias)
 	var rareza: String
 	var imagen: String
 	var espectral: bool = false
@@ -81,6 +82,7 @@ var medidor_banda: float = 0.0
 var bonus_dano_aliados: float = 0.0
 var quimica: Dictionary = {}  # "a|b" -> puntos
 var adelantados: Array = []
+var bonus_banda: Dictionary = {}  # Banda completa / Orquesta total
 
 
 # ---------------------------------------------------------------------
@@ -97,6 +99,7 @@ func agregar(datos: Dictionary, lado: int) -> Unidad:
 	u.nombre = datos.get("nombre", p.get("nombre", "?"))
 	u.clase = p.get("clase", "guitarrista")
 	u.genero = p.get("genero", "raiz")
+	u.familia = Datos.familia_de(datos["base_id"])
 	u.rareza = p.get("rareza", "comun")
 	u.imagen = p.get("imagen", datos["base_id"])
 	u.espectral = bool(datos.get("espectral", false))
@@ -144,6 +147,17 @@ func por_uid(uid: String) -> Unidad:
 # ---------------------------------------------------------------------
 # Turnos
 # ---------------------------------------------------------------------
+
+## Calcula el bonus de Banda completa u Orquesta total del equipo aliado (llamar al empezar).
+func preparar_bonus_banda() -> Dictionary:
+	var fams := []
+	for u in lado(ALIADO):
+		fams.append(u.familia)
+	bonus_banda = Datos.bonus_banda(fams)
+	if not bonus_banda.is_empty():
+		bonus_dano_aliados += float(bonus_banda["dano"])
+	return bonus_banda
+
 
 func _nueva_ronda() -> void:
 	ronda += 1
@@ -280,7 +294,7 @@ func _calcular_dano(u: Unidad, t: Unidad, poder: float, eventos: Array) -> int:
 	var defe: float = t.def * maxf(0.2, 1.0 - t.mod("debil_def"))
 	var base := atk * poder * (1.0 + u.poder_extra) * (60.0 / (60.0 + defe * 2.0))
 	var notas := []
-	var af := Datos.multiplicador_afinidad(u.genero, t.genero)
+	var af := Datos.multiplicador_afinidad(u.familia, t.familia)
 	if af > 1.0:
 		notas.append("Ventaja")
 	elif af < 1.0:
@@ -297,8 +311,8 @@ func _calcular_dano(u: Unidad, t: Unidad, poder: float, eventos: Array) -> int:
 		if previo != "" and previo != u.uid:
 			var p := por_uid(previo)
 			if p != null:
-				var s := Datos.sinergia_generos(u.genero, p.genero)
-				var q: int = min(int(Datos.generos["sinergia"]["quimica_max"]), int(quimica.get(_par(u.uid, p.uid), 0)))
+				var s := Datos.sinergia_familias(u.familia, p.familia)
+				var q: int = min(int(Datos.familias["sinergia"]["quimica_max"]), int(quimica.get(_par(u.uid, p.uid), 0)))
 				s += q / 100.0
 				mult += s
 				notas.append("Sinergia %+d%%" % int(round(s * 100)))
@@ -356,7 +370,7 @@ func ejecutar(u: Unidad, id: String, objetivo: Unidad = null) -> Array:
 		if int(h.get("enfriamiento", 0)) > 0:
 			u.enfriamientos[id] = int(h["enfriamiento"])
 	if u.lado == ALIADO and not es_banda:
-		medidor_banda = min(100.0, medidor_banda + 8.0)
+		medidor_banda = min(100.0, medidor_banda + 8.0 * (1.0 + float(bonus_banda.get("banda_extra", 0.0))))
 	# Objetivos
 	var objs := []
 	match h.get("objetivo", ""):
@@ -383,6 +397,7 @@ func ejecutar(u: Unidad, id: String, objetivo: Unidad = null) -> Array:
 			tmp.uid = u.uid
 			tmp.lado = u.lado
 			tmp.genero = u.genero
+			tmp.familia = u.familia
 			tmp.atk = suma / max(1, aliados.size())
 			atacante = tmp
 		for t in objs:
@@ -521,7 +536,7 @@ func _mejor_objetivo(u: Unidad, id: String) -> Unidad:
 
 
 func _puntaje(u: Unidad, t: Unidad) -> float:
-	return (1.0 - float(t.hp) / t.hp_max) + (Datos.multiplicador_afinidad(u.genero, t.genero) - 1.0) * 2.0 + randf() * 0.3
+	return (1.0 - float(t.hp) / t.hp_max) + (Datos.multiplicador_afinidad(u.familia, t.familia) - 1.0) * 2.0 + randf() * 0.3
 
 
 # ---------------------------------------------------------------------

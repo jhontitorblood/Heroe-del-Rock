@@ -9,6 +9,7 @@ var territorios: Dictionary = {}
 var reglas: Dictionary = {}
 var generos: Dictionary = {}
 var tareas: Dictionary = {}
+var familias: Dictionary = {}
 
 
 func _ready() -> void:
@@ -19,6 +20,7 @@ func _ready() -> void:
 	reglas = _cargar("res://data/reglas.json")
 	generos = _cargar("res://data/generos.json")
 	tareas = _cargar("res://data/tareas.json")
+	familias = _cargar("res://data/familias.json")
 
 
 func _cargar(ruta: String) -> Dictionary:
@@ -86,9 +88,24 @@ func color_genero(g: String) -> Color:
 	return Color(generos["colores"].get(g, "#ffffff"))
 
 
-## true si el género a vence al género b en el ciclo.
+# ---------- Familias de instrumentos (deciden las ventajas en combate) ----------
+
+## Familia del personaje: la propia (por su instrumento) o la de su clase.
+func familia_de(base_id: String) -> String:
+	return personaje(base_id).get("familia", clase_de(base_id).get("familia", "cordofono"))
+
+
+func nombre_familia(f: String) -> String:
+	return familias["nombres"].get(f, f)
+
+
+func color_familia(f: String) -> Color:
+	return Color(familias["colores"].get(f, "#ffffff"))
+
+
+## true si la familia a vence a la familia b en el ciclo.
 func vence(a: String, b: String) -> bool:
-	var orden: Array = generos["orden"]
+	var orden: Array = familias["orden"]
 	var ia := orden.find(a)
 	var ib := orden.find(b)
 	if ia < 0 or ib < 0:
@@ -97,7 +114,7 @@ func vence(a: String, b: String) -> bool:
 
 
 func multiplicador_afinidad(atacante: String, defensor: String) -> float:
-	var v: float = generos["ventaja"]
+	var v: float = familias["ventaja"]
 	if vence(atacante, defensor):
 		return 1.0 + v
 	if vence(defensor, atacante):
@@ -105,14 +122,29 @@ func multiplicador_afinidad(atacante: String, defensor: String) -> float:
 	return 1.0
 
 
-## Ajuste de sinergia entre dos géneros que atacan al mismo objetivo en la misma ronda.
-func sinergia_generos(a: String, b: String) -> float:
-	var s: Dictionary = generos["sinergia"]
+## Ajuste de sinergia entre dos familias que atacan al mismo objetivo en la misma ronda.
+func sinergia_familias(a: String, b: String) -> float:
+	var s: Dictionary = familias["sinergia"]
 	if a == b:
 		return s["mismo"]
 	if vence(a, b) or vence(b, a):
 		return s["enfrentado"]
 	return s["complementario"]
+
+
+## Bonus de equipo según cuántas familias distintas lo forman: {nombre, dano, banda_extra}.
+func bonus_banda(familias_equipo: Array) -> Dictionary:
+	var distintas := []
+	for f in familias_equipo:
+		if not f in distintas:
+			distintas.append(f)
+	var o: Dictionary = familias["orquesta_total"]
+	var bc: Dictionary = familias["banda_completa"]
+	if distintas.size() >= int(o["familias"]):
+		return {"nombre": "¡Orquesta total!", "dano": float(o["bonus_dano"]), "banda_extra": float(bc["medidor_banda_extra"])}
+	if distintas.size() >= int(bc["familias"]):
+		return {"nombre": "¡Banda completa!", "dano": float(bc["bonus_dano"]), "banda_extra": float(bc["medidor_banda_extra"])}
+	return {}
 
 
 # ---------- Territorios ----------
