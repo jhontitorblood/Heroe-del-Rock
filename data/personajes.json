@@ -46,7 +46,7 @@
     "clase": "guitarrista",
     "genero": "raiz",
     "rareza": "comun",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_cuerdero",
     "legado": true
   },
@@ -55,7 +55,7 @@
     "clase": "baterista",
     "genero": "raiz",
     "rareza": "comun",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_tamborero"
   },
   "e_tecladista": {
@@ -63,7 +63,7 @@
     "clase": "tecladista",
     "genero": "raiz",
     "rareza": "comun",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_tecladista"
   },
   "e_bajista": {
@@ -71,7 +71,7 @@
     "clase": "bajista",
     "genero": "raiz",
     "rareza": "raro",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_bajista"
   },
   "e_corista": {
@@ -79,7 +79,7 @@
     "clase": "corista",
     "genero": "raiz",
     "rareza": "raro",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_corista"
   },
   "e_vientista": {
@@ -87,7 +87,7 @@
     "clase": "vientista",
     "genero": "gotico",
     "rareza": "raro",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_vientista"
   },
   "e_cantor": {
@@ -95,7 +95,7 @@
     "clase": "vocalista",
     "genero": "raiz",
     "rareza": "comun",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_cantor",
     "legado": true
   },
@@ -104,20 +104,20 @@
     "clase": "vocalista",
     "genero": "raiz",
     "rareza": "epico",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "s_brisa",
     "mult": {
       "hp": 1.1,
       "atk": 1.05
     },
-    "bio": "Sublíder de Los Bravos del Jichi. Su voz domina la plaza principal de Cotoca en cada fiesta."
+    "bio": "Sublíder de Los Sonsos de Cotoca. Su voz domina la plaza principal de Cotoca en cada fiesta."
   },
   "s_lazaro": {
     "nombre": "Lázaro Consola",
     "clase": "ingeniero",
     "genero": "metal",
     "rareza": "epico",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "s_lazaro",
     "mult": {
       "hp": 1.15,
@@ -130,14 +130,14 @@
     "clase": "vocalista",
     "genero": "raiz",
     "rareza": "legendario",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "l_aruma",
     "mult": {
       "hp": 1.3,
       "atk": 1.2,
       "def": 1.1
     },
-    "bio": "Líder de Los Bravos del Jichi. Su voz calmaba la laguna, hasta que algo empezó a arrancársela desde adentro."
+    "bio": "Líder de Los Sonsos de Cotoca. Su voz calmaba la laguna, hasta que algo empezó a arrancársela desde adentro."
   },
   "j_jichi": {
     "nombre": "Jichi Ancestral, Señor de la Laguna",
@@ -168,7 +168,7 @@
     "clase": "guitarrista",
     "genero": "raiz",
     "rareza": "comun",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_sonso"
   },
   "e_masaco": {
@@ -176,7 +176,7 @@
     "clase": "baterista",
     "genero": "raiz",
     "rareza": "comun",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_masaco"
   },
   "e_boca_de_loca": {
@@ -184,7 +184,7 @@
     "clase": "vocalista",
     "genero": "raiz",
     "rareza": "comun",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_boca_de_loca"
   },
   "e_acopaibau": {
@@ -192,7 +192,7 @@
     "clase": "bajista",
     "genero": "raiz",
     "rareza": "raro",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_acopaibau"
   },
   "e_acopaibau_charango": {
@@ -200,7 +200,7 @@
     "clase": "charanguista",
     "genero": "raiz",
     "rareza": "raro",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_acopaibau_charango"
   },
   "e_huracanes_max": {
@@ -208,7 +208,7 @@
     "clase": "vientista",
     "genero": "gotico",
     "rareza": "raro",
-    "banda": "Los Bravos del Jichi",
+    "banda": "Los Sonsos de Cotoca",
     "imagen": "e_huracanes_max"
   }
 }

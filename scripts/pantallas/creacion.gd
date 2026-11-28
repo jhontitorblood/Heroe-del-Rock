@@ -15,7 +15,7 @@ const INTRO := [
 	["Narrador", "Santa Cruz de la Sierra. Dicen que la música de los viejos tiempos se está apagando..."],
 	["Silvano Roca", "Te vi tocar en la plaza, {jugador}. Tienes algo que no se aprende: cuando tocas, los espectros escuchan."],
 	["Silvano Roca", "Las bandas de las provincias se han vuelto agresivas. Algo las está silenciando por dentro."],
-	["Silvano Roca", "Empieza por Cotoca. Los Bravos del Jichi dominan la laguna. Vence a sus músicos y, si puedes, despiértalos."],
+	["Silvano Roca", "Empieza por Cotoca. Los Sonsos de Cotoca dominan el pueblo y la laguna. Vence a sus músicos y, si puedes, despiértalos."],
 	["Silvano Roca", "Y lo más importante: la fuerza de un rockero se gana fuera del escenario. Entrena, ensaya, trabaja... y registra tus tareas."],
 ]
 
