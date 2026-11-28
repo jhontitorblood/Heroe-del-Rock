@@ -719,14 +719,8 @@ func _fin() -> void:
 
 
 func _ofrecer_despertar() -> void:
-	var opciones := []
-	for id in Estado.lista_despertables(info_enemigos.get("despertable", "")):
-		var p := Datos.personaje(id)
-		if p.is_empty():
-			continue
-		if bool(Datos.rareza(p["rareza"])["unico"]) and Estado.tiene_unico(id):
-			continue
-		opciones.append(id)
+	# Los que ya están en la colección no se vuelven a despertar
+	var opciones := Estado.despertables_disponibles(info_enemigos.get("despertable", ""))
 	if opciones.is_empty():
 		Estado.ir("mapa", {"zona": zona["id"]})
 	elif opciones.size() == 1:

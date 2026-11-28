@@ -94,6 +94,14 @@ func _ready() -> void:
 	await _esperar(4)
 	Estado.ir("archivo")
 	await _esperar(4)
+	# Un personaje ya despertado no se vuelve a ofrecer para despertar
+	var seg_previos: Array = Estado.d["seguidores"].duplicate(true)
+	Estado.d["seguidores"] = []
+	var ok_antes := Estado.despertables_disponibles(["e_lokillo", "e_umbra"]).size() == 2
+	Estado.agregar_seguidor("e_lokillo", 2)
+	var quedan := Estado.despertables_disponibles(["e_lokillo", "e_umbra"])
+	_ok("ya despertado no se vuelve a despertar", ok_antes and quedan == ["e_umbra"] and Estado.despertables_disponibles("e_lokillo").is_empty())
+	Estado.d["seguidores"] = seg_previos
 	# Sonidos: cada personaje tiene sonido de ataque, y existe el golpe al recibir
 	var sin_sonido := []
 	for id in Datos.personajes:

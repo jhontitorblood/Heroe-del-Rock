@@ -244,11 +244,16 @@ func agregar_seguidor(base_id: String, nivel: int) -> Dictionary:
 	return s
 
 
-func tiene_unico(base_id: String) -> bool:
+## ¿Ese personaje ya está despertado en la colección (legión)?
+func ya_despertado(base_id: String) -> bool:
 	for s in d["seguidores"]:
 		if s["base_id"] == base_id:
 			return true
 	return false
+
+
+func tiene_unico(base_id: String) -> bool:
+	return ya_despertado(base_id)
 
 
 func alternar_en_equipo(uid: String) -> String:
@@ -394,12 +399,22 @@ func enemigos_de_nodo(zona: Dictionary, n: Dictionary) -> Dictionary:
 		var lista := []
 		for i in 2:
 			lista.append(comunes[randi() % comunes.size()])
-		return {"ids": lista, "nivel": max(1, int(n["nivel"]) - 1), "despertable": lista[0], "aleatorio": true, "fuerza": 0.85, "fuerza_hp": 1.0}
+		return {"ids": lista, "nivel": max(1, int(n["nivel"]) - 1), "despertable": lista, "aleatorio": true, "fuerza": 0.85, "fuerza_hp": 1.0}
 	return {"ids": n["enemigos"], "nivel": int(n["nivel"]), "despertable": n.get("despertable", ""), "aleatorio": false,
 		"fuerza": float(n.get("fuerza", 1.0)), "fuerza_hp": float(n.get("fuerza_hp", 1.0))}
 
 
 ## Despertables de un combate como lista (en los datos puede ser un id o una lista de ids).
+## Despertables que todavía no están en la colección (sin repetir).
+## Un personaje ya despertado se puede volver a enfrentar, pero no se vuelve a despertar.
+func despertables_disponibles(valor) -> Array:
+	var r := []
+	for id in lista_despertables(valor):
+		if not Datos.personaje(id).is_empty() and not ya_despertado(id) and not (id in r):
+			r.append(id)
+	return r
+
+
 static func lista_despertables(valor) -> Array:
 	if typeof(valor) == TYPE_ARRAY:
 		return valor

@@ -85,12 +85,14 @@ func _abrir(n: Dictionary) -> void:
 			v.add_child(UI.etiqueta("Su enemigo principal ya está en tu legión: ahora aparecen músicos aleatorios de la zona.", 18, UI.TENUE, true))
 		else:
 			var nombres := []
-			for did in Estado.lista_despertables(info["despertable"]):
+			for did in Estado.despertables_disponibles(info["despertable"]):
 				var pd := Datos.personaje(did)
 				nombres.append("%s (%s)" % [pd["nombre"], Datos.rareza(pd["rareza"])["nombre"]])
 			if not nombres.is_empty():
 				var pre := "Despertable: " if nombres.size() == 1 else "Despertables (eliges uno): "
 				v.add_child(UI.etiqueta(pre + " o ".join(nombres), 20, UI.ESPECTRAL, true))
+			elif not Estado.lista_despertables(info["despertable"]).is_empty():
+				v.add_child(UI.etiqueta("Ya despertaste a este rival: puedes volver a pelear, pero no se despierta de nuevo.", 18, UI.TENUE, true))
 		v.add_child(UI.etiqueta("Costo: %d de energía (tienes %d)" % [Estado.costo_nodo(n), int(Estado.d["energia"])], 20))
 	var h2 := HBoxContainer.new()
 	h2.add_theme_constant_override("separation", 14)
