@@ -27,7 +27,19 @@ func _ready() -> void:
 	var txt := "Enemigos por vencer antes del jefe: %d" % restantes
 	if Estado.nodo_vencido(zona["jefe_nodo"]):
 		txt = "¡Zona liberada! Puedes volver a combatir para entrenar y despertar seguidores."
-	info.add_child(UI.etiqueta("%s\nEnergía: %d   ·   Púas: %d" % [txt, int(Estado.d["energia"]), int(Estado.d["pua"])], 20))
+	var iv := VBoxContainer.new()
+	info.add_child(iv)
+	iv.add_child(UI.etiqueta("%s\nEnergía: %d   ·   Púas: %d" % [txt, int(Estado.d["energia"]), int(Estado.d["pua"])], 20))
+	var ident: Dictionary = zona.get("identidad", {})
+	if not ident.is_empty():
+		var fi := HBoxContainer.new()
+		fi.add_theme_constant_override("separation", 6)
+		fi.add_child(UI.etiqueta("Sonido de la zona:", 18, UI.TENUE))
+		for par in [["dominante", "dominante"], ["secundario", "secundario"], ["unico", "único"]]:
+			if ident.has(par[0]):
+				fi.add_child(UI.icono_tipo(ident[par[0]], 28))
+				fi.add_child(UI.etiqueta(par[1] + "  ", 16, Datos.color_familia(ident[par[0]])))
+		iv.add_child(fi)
 
 
 ## Punto del mapa: ícono de estado sobre el marcador del arte y etiqueta corta debajo.
@@ -70,9 +82,14 @@ func _abrir(n: Dictionary) -> void:
 		v.add_child(h)
 		if bool(info["aleatorio"]):
 			v.add_child(UI.etiqueta("Su enemigo principal ya está en tu legión: ahora aparecen músicos aleatorios de la zona.", 18, UI.TENUE, true))
-		elif info["despertable"] != "":
-			var pd := Datos.personaje(info["despertable"])
-			v.add_child(UI.etiqueta("Despertable: %s (%s)" % [pd["nombre"], Datos.rareza(pd["rareza"])["nombre"]], 20, UI.ESPECTRAL))
+		else:
+			var nombres := []
+			for did in Estado.lista_despertables(info["despertable"]):
+				var pd := Datos.personaje(did)
+				nombres.append("%s (%s)" % [pd["nombre"], Datos.rareza(pd["rareza"])["nombre"]])
+			if not nombres.is_empty():
+				var pre := "Despertable: " if nombres.size() == 1 else "Despertables (eliges uno): "
+				v.add_child(UI.etiqueta(pre + " o ".join(nombres), 20, UI.ESPECTRAL, true))
 		v.add_child(UI.etiqueta("Costo: %d de energía (tienes %d)" % [Estado.costo_nodo(n), int(Estado.d["energia"])], 20))
 	var h2 := HBoxContainer.new()
 	h2.add_theme_constant_override("separation", 14)

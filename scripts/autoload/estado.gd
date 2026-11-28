@@ -378,6 +378,15 @@ func enemigos_de_nodo(zona: Dictionary, n: Dictionary) -> Dictionary:
 		"fuerza": float(n.get("fuerza", 1.0)), "fuerza_hp": float(n.get("fuerza_hp", 1.0))}
 
 
+## Despertables de un combate como lista (en los datos puede ser un id o una lista de ids).
+static func lista_despertables(valor) -> Array:
+	if typeof(valor) == TYPE_ARRAY:
+		return valor
+	if String(valor) == "":
+		return []
+	return [String(valor)]
+
+
 func enemigos_restantes_antes_del_jefe(zona: Dictionary) -> int:
 	var c := 0
 	for n in zona.get("nodos", []):

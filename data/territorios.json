@@ -48,7 +48,10 @@
               "e_masaco",
               "e_boca_de_loca"
             ],
-            "despertable": "e_boca_de_loca",
+            "despertable": [
+              "e_masaco",
+              "e_boca_de_loca"
+            ],
             "fondo": "esc_cotoca_pueblo",
             "pos": [
               568,
@@ -274,7 +277,13 @@
               ]
             ]
           }
-        ]
+        ],
+        "identidad": {
+          "dominante": "aerofono",
+          "secundario": "membranofono",
+          "unico": "idiofono",
+          "descripcion": "Bandas de pueblo y voces de fiesta, el ritmo de la tamborita camba y la marimba del Jichi."
+        }
       },
       {
         "id": "warnes",

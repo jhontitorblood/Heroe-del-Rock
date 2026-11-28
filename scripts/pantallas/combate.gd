@@ -676,16 +676,57 @@ func _fin() -> void:
 
 
 func _ofrecer_despertar() -> void:
-	var id: String = info_enemigos.get("despertable", "")
-	var p := Datos.personaje(id)
-	if id == "" or p.is_empty():
+	var opciones := []
+	for id in Estado.lista_despertables(info_enemigos.get("despertable", "")):
+		var p := Datos.personaje(id)
+		if p.is_empty():
+			continue
+		if bool(Datos.rareza(p["rareza"])["unico"]) and Estado.tiene_unico(id):
+			continue
+		opciones.append(id)
+	if opciones.is_empty():
 		Estado.ir("mapa", {"zona": zona["id"]})
-		return
-	var rz := Datos.rareza(p["rareza"])
-	if bool(rz["unico"]) and Estado.tiene_unico(id):
-		Estado.ir("mapa", {"zona": zona["id"]})
-		return
-	_despertar(id, int(info_enemigos["nivel"]))
+	elif opciones.size() == 1:
+		_despertar(opciones[0], int(info_enemigos["nivel"]))
+	else:
+		_elegir_despertar(opciones)
+
+
+## Si hay varios despertables, el jugador elige a quién intentar despertar.
+func _elegir_despertar(opciones: Array) -> void:
+	var capa := UI.capa_modal(self)
+	var v := UI.centrado(capa, 820)
+	v.add_child(UI.etiqueta("¿A quién intentas despertar?", 32, UI.ESPECTRAL))
+	v.add_child(UI.etiqueta("Solo puedes intentarlo con uno en este combate.", 19, UI.TENUE, true))
+	var h := HBoxContainer.new()
+	h.alignment = BoxContainer.ALIGNMENT_CENTER
+	h.add_theme_constant_override("separation", 24)
+	v.add_child(h)
+	for id in opciones:
+		var p := Datos.personaje(id)
+		var rz := Datos.rareza(p["rareza"])
+		var fam := Datos.familia_de(id)
+		var b := Button.new()
+		b.custom_minimum_size = Vector2(300, 300)
+		var col := VBoxContainer.new()
+		col.set_anchors_preset(Control.PRESET_FULL_RECT)
+		col.alignment = BoxContainer.ALIGNMENT_CENTER
+		col.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(col)
+		var img := UI.imagen(Datos.sprite(p.get("imagen", id), false), Vector2(180, 180))
+		img.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		UI.marcar_tipo(img, fam, 40)
+		col.add_child(img)
+		for t in [[p["nombre"], 20, Color(rz["color"])], ["%s · %s" % [rz["nombre"], Datos.clases[p["clase"]]["nombre"]], 16, UI.TENUE]]:
+			var l := UI.etiqueta(t[0], t[1], t[2])
+			l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			col.add_child(l)
+		b.pressed.connect(func():
+			capa.queue_free()
+			_despertar(id, int(info_enemigos["nivel"])))
+		h.add_child(b)
+	v.add_child(UI.boton("Dejarlos ir", func(): Estado.ir("mapa", {"zona": zona["id"]}), Vector2(0, 56)))
 
 
 func _despertar(id: String, nivel: int) -> void:
